@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
         expires_in: data.session.expires_in,
         expires_at: data.session.expires_at,
         token_type: data.session.token_type,
-        type: data.session.type,
       }), {
         maxAge: 60 * 60 * 24 * 365,
         sameSite: 'lax',
