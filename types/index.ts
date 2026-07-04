@@ -86,7 +86,8 @@ export type TransactionType =
   | 'income'
   | 'expense'
   | 'transfer_to_partner'
-  | 'transfer_to_worker';
+  | 'transfer_to_worker'
+  | 'driver_to_partner_transfer';
 
 export interface Transaction {
   id: string;

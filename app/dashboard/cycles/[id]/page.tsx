@@ -10,10 +10,11 @@ import { currencySymbol } from '@/lib/currency';
 type TxType = Transaction['type'];
 
 const TX_CFG: Record<TxType, { color: string; bg: string; icon: string; label: string }> = {
-  income:              { color: '#FFCD11', bg: 'rgba(255,205,17,0.08)',  icon: '↑', label: 'دخل'            },
-  expense:             { color: '#ef4444', bg: 'rgba(239,68,68,0.08)',   icon: '↓', label: 'مصروف'          },
-  transfer_to_worker:  { color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', icon: '⟳', label: 'سلفة للسائق'   },
-  transfer_to_partner: { color: '#8b5cf6', bg: 'rgba(139,92,246,0.08)', icon: '→', label: 'تحويل للشريك'  },
+  income:                     { color: '#FFCD11', bg: 'rgba(255,205,17,0.08)',  icon: '↑', label: 'دخل'              },
+  expense:                    { color: '#ef4444', bg: 'rgba(239,68,68,0.08)',   icon: '↓', label: 'مصروف'            },
+  transfer_to_worker:         { color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', icon: '⟳', label: 'سلفة للسائق'     },
+  transfer_to_partner:        { color: '#8b5cf6', bg: 'rgba(139,92,246,0.08)', icon: '→', label: 'تحويل للشريك'    },
+  driver_to_partner_transfer: { color: '#10b981', bg: 'rgba(16,185,129,0.08)', icon: '↩', label: 'تحويل للمالك'    },
 };
 
 const INPUT: React.CSSProperties = {
@@ -253,18 +254,46 @@ export default function CycleDetailPage() {
             </h2>
           </div>
 
+          {/* ملخص الأرقام */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 16 }}>
+            <div style={{ background: '#111111', padding: '12px 16px', borderRadius: 2 }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#FFCD11', textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 6px' }}>الدخل</p>
+              <p style={{ fontSize: 18, fontWeight: 900, color: '#fff', margin: 0 }} dir="ltr">
+                {fmt(Number(cycle.total_income))} <span style={{ fontSize: 12, color: '#A0A0A0' }}>{sym}</span>
+              </p>
+            </div>
+            <div style={{ background: '#111111', padding: '12px 16px', borderRadius: 2 }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 6px' }}>المصاريف</p>
+              <p style={{ fontSize: 18, fontWeight: 900, color: '#fff', margin: 0 }} dir="ltr">
+                {fmt(Number(cycle.total_expenses))} <span style={{ fontSize: 12, color: '#A0A0A0' }}>{sym}</span>
+              </p>
+            </div>
+            <div style={{ background: '#111111', padding: '12px 16px', borderRadius: 2 }}>
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 6px' }}>الصافي</p>
+              <p style={{ fontSize: 18, fontWeight: 900, color: '#fff', margin: 0 }} dir="ltr">
+                {fmt(Number(cycle.net_amount))} <span style={{ fontSize: 12, color: '#A0A0A0' }}>{sym}</span>
+              </p>
+            </div>
+          </div>
+
+          {/* حصص الطرفين */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             {/* المالك */}
             <div style={{ background: '#1A1A1A', borderRight: '3px solid #8b5cf6', padding: '20px 24px' }}>
               <p style={{ fontSize: 10, fontWeight: 700, color: '#8b5cf6', textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 12px' }}>
                 المالك ({100 - (settlement?.worker_percentage ?? 0)}%)
               </p>
-              <p style={{ fontSize: 32, fontWeight: 900, color: '#fff', margin: '0 0 8px', fontFamily: "'Barlow Condensed', sans-serif" }} dir="ltr">
+              <div style={{ marginBottom: 12 }}>
+                <p style={{ fontSize: 11, color: '#A0A0A0', margin: '0 0 4px' }} dir="ltr">
+                  الحصة الأساسية: {fmt(Number(cycle.partner_share))} {sym}
+                </p>
+                <p style={{ fontSize: 11, color: '#A0A0A0', margin: 0 }} dir="ltr">
+                  ناقص التحويلات المستقبلة: {fmt(Number(cycle.partner_transfers))} {sym}
+                </p>
+              </div>
+              <p style={{ fontSize: 24, fontWeight: 900, color: '#FFCD11', margin: '16px 0 0', fontFamily: "'Barlow Condensed', sans-serif", textAlign: 'center' }} dir="ltr">
                 {fmt(Number(cycle.partner_net))}
-                <span style={{ fontSize: 16, marginRight: 6, color: '#A0A0A0' }}>{sym}</span>
-              </p>
-              <p style={{ fontSize: 11, color: '#A0A0A0', margin: 0 }} dir="ltr">
-                الحصة: {fmt(Number(cycle.partner_share))} {sym}
+                <span style={{ fontSize: 14, marginRight: 8, color: '#A0A0A0' }}>{sym}</span>
               </p>
             </div>
 
@@ -273,12 +302,17 @@ export default function CycleDetailPage() {
               <p style={{ fontSize: 10, fontWeight: 700, color: '#22c55e', textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 12px' }}>
                 السائق ({settlement?.worker_percentage ?? 0}%)
               </p>
-              <p style={{ fontSize: 32, fontWeight: 900, color: '#fff', margin: '0 0 8px', fontFamily: "'Barlow Condensed', sans-serif" }} dir="ltr">
+              <div style={{ marginBottom: 12 }}>
+                <p style={{ fontSize: 11, color: '#A0A0A0', margin: '0 0 4px' }} dir="ltr">
+                  الحصة الأساسية: {fmt(Number(cycle.worker_share))} {sym}
+                </p>
+                <p style={{ fontSize: 11, color: '#A0A0A0', margin: 0 }} dir="ltr">
+                  ناقص السلف المأخوذة: {fmt(Number(cycle.worker_transfers))} {sym}
+                </p>
+              </div>
+              <p style={{ fontSize: 24, fontWeight: 900, color: '#22c55e', margin: '16px 0 0', fontFamily: "'Barlow Condensed', sans-serif", textAlign: 'center' }} dir="ltr">
                 {fmt(Number(cycle.worker_net))}
-                <span style={{ fontSize: 16, marginRight: 6, color: '#A0A0A0' }}>{sym}</span>
-              </p>
-              <p style={{ fontSize: 11, color: '#A0A0A0', margin: 0 }} dir="ltr">
-                الحصة: {fmt(Number(cycle.worker_share))} {sym} · سلف: {fmt(Number(cycle.worker_transfers))} {sym}
+                <span style={{ fontSize: 14, marginRight: 8, color: '#A0A0A0' }}>{sym}</span>
               </p>
             </div>
           </div>
@@ -324,6 +358,7 @@ export default function CycleDetailPage() {
                   <option value="expense">↓ مصروف</option>
                   <option value="transfer_to_worker">⟳ سلفة للسائق</option>
                   <option value="transfer_to_partner">→ تحويل للشريك</option>
+                  <option value="driver_to_partner_transfer">↩ تحويل من السائق للمالك</option>
                 </select>
               </div>
               <div>

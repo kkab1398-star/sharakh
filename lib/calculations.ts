@@ -32,17 +32,21 @@ export function calculateSettlement(
   const workerShare  = (netAmount * workerPercentage)  / 100;
   const partnerShare = (netAmount * partnerPercentage) / 100;
 
-  // 6. التحويلات خلال الدورة (السلف)
+  // 6. التحويلات خلال الدورة
+  // السلف من المالك للسائق (تخصم من حصة السائق)
   const workerTransfers = transactions
     .filter(t => t.type === 'transfer_to_worker')
     .reduce((sum, t) => sum + Number(t.amount), 0);
 
+  // التحويلات من السائق للمالك (تخصم من حصة المالك)
   const partnerTransfers = transactions
-    .filter(t => t.type === 'transfer_to_partner')
+    .filter(t => t.type === 'driver_to_partner_transfer')
     .reduce((sum, t) => sum + Number(t.amount), 0);
 
-  // 7. الصافي النهائي لكل طرف بعد خصم السلف
+  // 7. الصافي النهائي لكل طرف بعد خصم التحويلات
+  // السائق: حصته - السلف التي أخذها من المالك
   const workerNet  = workerShare  - workerTransfers;
+  // المالك: حصته - التحويلات التي استقبلها من السائق
   const partnerNet = partnerShare - partnerTransfers;
 
   return {
