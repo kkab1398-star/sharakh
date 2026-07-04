@@ -113,7 +113,7 @@ export default function DashboardPage() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#3D3D3D" />
                 <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#A0A0A0' }} />
                 <YAxis tick={{ fontSize: 11, fill: '#A0A0A0' }} />
-                <Tooltip {...CHART_TOOLTIP} formatter={(v: number) => [`${fmt(v)} ${sym}`]} />
+                <Tooltip {...CHART_TOOLTIP} formatter={(v: any) => `${fmt(v)} ${sym}`} />
                 <Legend wrapperStyle={{ fontSize: 12, color: '#A0A0A0' }} />
                 <Area type="monotone" dataKey="دخل"  stroke="#FFCD11" fill="url(#gY)" strokeWidth={2} />
                 <Area type="monotone" dataKey="صافي" stroke="#22c55e" fill="url(#gG)"  strokeWidth={2} />
@@ -129,7 +129,7 @@ export default function DashboardPage() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#3D3D3D" vertical={false} />
                 <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#A0A0A0' }} />
                 <YAxis tick={{ fontSize: 10, fill: '#A0A0A0' }} />
-                <Tooltip {...CHART_TOOLTIP} formatter={(v: number) => [`${fmt(v)} ${sym}`]} />
+                <Tooltip {...CHART_TOOLTIP} formatter={(v: any) => `${fmt(v)} ${sym}`} />
                 <Bar dataKey="دخل"    fill="#FFCD11" radius={[2,2,0,0]} />
                 <Bar dataKey="مصاريف" fill="#ef4444"  radius={[2,2,0,0]} />
               </BarChart>

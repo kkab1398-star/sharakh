@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDriverLang } from '@/contexts/DriverLangContext';
 import { LANG_META, type DriverLang } from '@/lib/driver-i18n';
+import PasswordInput from '@/components/PasswordInput';
 
 export default function DriverLoginPage() {
   const router       = useRouter();
@@ -58,11 +59,11 @@ export default function DriverLoginPage() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center', marginBottom: 28 }}>
           {(Object.values(LANG_META) as typeof LANG_META[DriverLang][]).map(lm => (
             <button key={lm.code} onClick={() => setLang(lm.code)} style={{
-              padding: '4px 12px', borderRadius: 0, fontSize: 12, fontWeight: 700,
+              padding: '12px 16px', borderRadius: 0, fontSize: 12, fontWeight: 700, minHeight: 48,
               border: lang === lm.code ? '2px solid var(--cat-yellow)' : '1px solid var(--cat-mid)',
               background: lang === lm.code ? 'var(--cat-yellow)' : 'transparent',
               color: lang === lm.code ? 'var(--cat-black)' : 'var(--cat-muted)',
-              cursor: 'pointer', fontFamily: lm.fontFamily, transition: 'all 0.15s',
+              cursor: 'pointer', fontFamily: lm.fontFamily, transition: 'all 0.15s', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               {lm.label}
             </button>
@@ -86,7 +87,7 @@ export default function DriverLoginPage() {
             </div>
             <div>
               <label className="cat-label">{m.login.password}</label>
-              <input type="password" required value={password} onChange={e => setPassword(e.target.value)}
+              <PasswordInput required value={password} onChange={e => setPassword(e.target.value)}
                 placeholder={m.login.passwordPlaceholder} dir="ltr" className="cat-input" />
             </div>
             <button type="submit" disabled={loading || !partnerId}

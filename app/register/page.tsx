@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PasswordInput from "@/components/PasswordInput";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -88,8 +89,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-2">كلمة المرور *</label>
-            <input
-              type="password"
+            <PasswordInput
               required
               minLength={8}
               value={password}
@@ -97,13 +97,22 @@ export default function RegisterPage() {
               placeholder="8 أحرف على الأقل"
               dir="ltr"
               className={inputClass}
+              style={{
+                width: '100%',
+                border: '1px solid rgb(209, 213, 219)',
+                borderRadius: '0.5rem',
+                padding: '12px 12px',
+                fontSize: '0.875rem',
+                color: 'rgb(17, 24, 39)',
+                boxSizing: 'border-box',
+              }}
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+            className="w-full bg-blue-600 text-white font-bold py-4 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 min-h-[52px] flex items-center justify-center"
           >
             {loading ? "جاري الإنشاء..." : "إنشاء الحساب"}
           </button>

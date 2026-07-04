@@ -176,8 +176,8 @@ function InvoicePDF({ data }: { data: InvoiceData }) {
 
 // ─── 7. توليد PDF Buffer ─────────────────────────────────
 export async function generateInvoiceBuffer(data: InvoiceData): Promise<Buffer> {
-  const doc    = createElement(InvoicePDF, { data });
-  const stream = await pdf(doc).toBuffer();
+  const doc    = createElement(InvoicePDF, { data }) as any;
+  const stream = await pdf(doc).toBuffer() as any;
   return stream;
 }
 

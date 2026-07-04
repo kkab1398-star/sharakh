@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 import { createAdminClient } from '@/lib/supabase-admin';
 import { z } from 'zod';
 
@@ -21,14 +22,17 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, password, company_name } = parsed.data;
+
+    // ننشئ clients
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
     const admin = createAdminClient();
 
-    // ننشئ المستخدم عبر العميل الإداري ونؤكد بريده تلقائياً،
-    // حتى لا تتعطل العملية بانتظار تأكيد بريد لن يصل أو لن يُفتح فوراً
-    const { data: authData, error: authError } = await admin.auth.admin.createUser({
+    const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
-      email_confirm: true,
     });
 
     if (authError || !authData.user) {
@@ -54,8 +58,6 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (partnerError) {
-      // لا نترك مستخدم Auth يتيماً بلا partner — نحذفه فوراً عند فشل الإدراج
-      await admin.auth.admin.deleteUser(authData.user.id);
       console.error('[POST /api/auth/partner/register] partner insert failed:', partnerError);
       return NextResponse.json(
         { error: 'فشل إنشاء حساب الشريك' },

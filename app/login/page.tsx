@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import PasswordInput from "@/components/PasswordInput";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -50,7 +51,7 @@ export default function LoginPage() {
             </div>
             <div>
               <label className="cat-label">كلمة المرور</label>
-              <input type="password" required value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" dir="ltr" className="cat-input" />
+              <PasswordInput value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" dir="ltr" className="cat-input" required />
             </div>
             <button type="submit" disabled={loading} className="cat-btn cat-btn-primary" style={{ marginTop: 8, width: '100%' }}>
               {loading ? "جاري التحقق..." : "دخول ←"}

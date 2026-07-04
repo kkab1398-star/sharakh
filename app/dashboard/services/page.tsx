@@ -194,7 +194,7 @@ export default function ServicesPage() {
               <div key={et.id} style={{
                 display: 'flex', alignItems: 'center', gap: 12,
                 padding: '12px 14px', background: '#1A1A1A',
-                borderRight: `3px solid ${et.is_active ? (et.is_default ? '#3D3D3D' : '#3b82f6') : '#1A1A1A'}`,
+                borderRight: `3px solid ${et.is_active ? (et.is_default ? '#3D3D3D' : '#FFCD11') : '#1A1A1A'}`,
                 opacity: et.is_active ? 1 : 0.5,
               }}>
                 <div style={{ flex: 1 }}>

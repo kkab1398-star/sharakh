@@ -95,61 +95,61 @@ export default function DriverDetailPage() {
   return (
     <div className="p-6 md:p-8 max-w-2xl mx-auto space-y-6" dir="rtl">
 
-      <button onClick={() => router.back()} className="text-sm text-slate-400 hover:text-slate-600 flex items-center gap-1">
+      <button onClick={() => router.back()} className="text-sm text-[#A0A0A0] hover:text-[#FFFFFF] flex items-center gap-1">
         ← رجوع
       </button>
 
       {/* بطاقة السائق */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+      <div className="bg-[#2A2A2A] rounded-2xl shadow-sm border border-[#3D3D3D] p-6">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-xl font-black">
+          <div className="w-14 h-14 bg-[#3D3D3D] text-[#FFCD11] rounded-2xl flex items-center justify-center text-xl font-black">
             {worker.full_name[0]}
           </div>
           <div>
-            <h1 className="text-xl font-black text-slate-800">{worker.full_name}</h1>
-            <p className="text-sm text-slate-400 font-mono">@{worker.username}</p>
+            <h1 className="text-xl font-black text-[#FFFFFF]">{worker.full_name}</h1>
+            <p className="text-sm text-[#A0A0A0] font-mono">@{worker.username}</p>
           </div>
           <span className={`mr-auto px-3 py-1 rounded-full text-xs font-bold ${
             !worker.is_active ? 'bg-red-100 text-red-600' :
-            worker.is_frozen  ? 'bg-blue-100 text-blue-700' :
+            worker.is_frozen  ? 'bg-[#3D3D3D] text-[#FFCD11]' :
                                  'bg-emerald-100 text-emerald-700'
           }`}>
             {!worker.is_active ? 'معطّل' : worker.is_frozen ? 'مجمّد' : 'نشط'}
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-slate-100">
+        <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-[#3D3D3D]">
           <div>
-            <p className="text-xs text-slate-400 mb-1">رقم الجوال</p>
-            <p className="font-bold text-slate-700 font-mono" dir="ltr">{worker.phone ?? '—'}</p>
+            <p className="text-xs text-[#A0A0A0] mb-1">رقم الجوال</p>
+            <p className="font-bold text-[#FFFFFF] font-mono" dir="ltr">{worker.phone ?? '—'}</p>
           </div>
           <div>
-            <p className="text-xs text-slate-400 mb-1">نسبة السائق من الأرباح</p>
-            <p className="font-bold text-blue-600">{contract ? `${contract.profit_percentage}%` : '—'}</p>
+            <p className="text-xs text-[#A0A0A0] mb-1">نسبة السائق من الأرباح</p>
+            <p className="font-bold text-[#FFCD11]">{contract ? `${contract.profit_percentage}%` : '—'}</p>
           </div>
         </div>
       </div>
 
       {/* المعدة الحالية */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+      <div className="bg-[#2A2A2A] rounded-2xl shadow-sm border border-[#3D3D3D] p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-black text-slate-700 text-sm">المعدة في العهدة</h2>
+          <h2 className="font-black text-[#FFFFFF] text-sm">المعدة في العهدة</h2>
           <button
             onClick={() => { setPicking(true); setSelectedEqId(''); }}
-            className="px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-xs font-bold hover:bg-blue-100 transition"
+            className="px-4 py-2 bg-[#1A1A1A] text-[#FFCD11] rounded-xl text-xs font-bold hover:bg-[#2A2A2A] transition"
           >
             🔄 {currentEq ? 'تبديل المعدة' : 'تعيين معدة'}
           </button>
         </div>
 
         {currentEq ? (
-          <div className="flex items-center gap-3 bg-slate-50 rounded-xl p-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-xl">
+          <div className="flex items-center gap-3 bg-[#1A1A1A] rounded-xl p-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#FFCD11] to-[#FFD700] rounded-xl flex items-center justify-center text-xl">
               🚜
             </div>
             <div className="flex-1">
-              <p className="font-bold text-slate-800">{currentEq.model ?? 'معدة'}</p>
-              <p className="text-xs text-slate-400">
+              <p className="font-bold text-[#FFFFFF]">{currentEq.model ?? 'معدة'}</p>
+              <p className="text-xs text-[#A0A0A0]">
                 {(currentEq.equipment_type as any)?.name}
                 {currentEq.plate_number && ` · ${currentEq.plate_number}`}
               </p>
@@ -163,7 +163,7 @@ export default function DriverDetailPage() {
             </button>
           </div>
         ) : (
-          <p className="text-sm text-slate-400 bg-slate-50 rounded-xl p-4 text-center">
+          <p className="text-sm text-[#A0A0A0] bg-[#1A1A1A] rounded-xl p-4 text-center">
             لا توجد معدة في عهدة هذا السائق حالياً
           </p>
         )}
@@ -172,16 +172,16 @@ export default function DriverDetailPage() {
       {/* نافذة اختيار/تبديل المعدة */}
       {picking && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={() => setPicking(false)}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={e => e.stopPropagation()}>
-            <h3 className="font-black text-slate-800 mb-1">
+          <div className="bg-[#2A2A2A] rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={e => e.stopPropagation()}>
+            <h3 className="font-black text-[#FFFFFF] mb-1">
               {currentEq ? 'تبديل المعدة' : 'تعيين معدة'}
             </h3>
-            <p className="text-xs text-slate-400 mb-4">اختر معدة متاحة لإسنادها لـ {worker.full_name}</p>
+            <p className="text-xs text-[#A0A0A0] mb-4">اختر معدة متاحة لإسنادها لـ {worker.full_name}</p>
 
             {availableEq.length === 0 ? (
-              <p className="text-sm text-slate-400 bg-slate-50 rounded-xl p-4 text-center">
+              <p className="text-sm text-[#A0A0A0] bg-[#1A1A1A] rounded-xl p-4 text-center">
                 لا توجد معدات متاحة حالياً (كل المعدات إما بعهدة سائقين آخرين أو لا توجد معدات مضافة).{' '}
-                <a href="/dashboard/equipment/new" className="text-blue-600 underline">أضف معدة جديدة</a>
+                <a href="/dashboard/equipment/new" className="text-[#FFCD11] underline">أضف معدة جديدة</a>
               </p>
             ) : (
               <div className="space-y-2 max-h-72 overflow-y-auto">
@@ -190,8 +190,8 @@ export default function DriverDetailPage() {
                     onClick={() => setSelectedEqId(eq.id)}
                     className={`w-full px-4 py-3 rounded-xl text-sm text-right border-2 transition flex items-center gap-3 ${
                       selectedEqId === eq.id
-                        ? 'border-blue-500 bg-blue-50 text-blue-700 font-bold'
-                        : 'border-slate-100 text-slate-700 hover:border-slate-200'
+                        ? 'border-[#FFCD11] bg-[#2A2A2A] text-[#FFCD11] font-bold'
+                        : 'border-[#3D3D3D] text-[#FFFFFF] hover:border-[#3D3D3D]'
                     }`}>
                     <span className="text-lg">🚜</span>
                     <div>
@@ -201,7 +201,7 @@ export default function DriverDetailPage() {
                         {eq.plate_number && ` · ${eq.plate_number}`}
                       </p>
                     </div>
-                    {selectedEqId === eq.id && <span className="mr-auto text-blue-500">✓</span>}
+                    {selectedEqId === eq.id && <span className="mr-auto text-[#FFCD11]">✓</span>}
                   </button>
                 ))}
               </div>
@@ -209,7 +209,7 @@ export default function DriverDetailPage() {
 
             <div className="flex gap-2 mt-5">
               <button onClick={() => setPicking(false)}
-                className="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 transition">
+                className="flex-1 py-2.5 rounded-xl text-sm font-bold text-[#A0A0A0] bg-[#1A1A1A] hover:bg-[#2A2A2A] transition">
                 إلغاء
               </button>
               <ConfirmAndSwitchButton
@@ -249,7 +249,7 @@ function ConfirmAndSwitchButton({
       type="button"
       disabled={disabled}
       onClick={handleClick}
-      className="flex-1 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 transition disabled:opacity-50"
+      className="flex-1 py-2.5 rounded-xl text-sm font-bold text-[#1A1A1A] bg-[#FFCD11] hover:bg-[#FFD700] transition disabled:opacity-50"
     >
       تأكيد
     </button>

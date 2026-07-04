@@ -49,10 +49,9 @@ export default function CustomerAutocomplete({ label, field, value, onChange, on
     <div ref={wrapRef} style={{ position: 'relative' }}>
       <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'var(--cat-yellow)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>{label}</label>
       <input type="text" value={value} onChange={e => onChange(e.target.value)}
-        onFocus={() => results.length > 0 && setOpen(true)}
+        onFocus={e => { (e.target as HTMLInputElement).style.border = '2px solid var(--cat-yellow)'; results.length > 0 && setOpen(true); }}
         placeholder={placeholder} inputMode={inputMode} dir={dir} autoComplete="off"
         style={{ height: 48, borderRadius: 2, border: '1px solid var(--cat-mid)', background: 'var(--cat-black)', color: 'var(--cat-white)', padding: '0 12px', fontSize: 14, width: '100%', outline: 'none', boxSizing: 'border-box' }}
-        onFocus={e => { (e.target as HTMLInputElement).style.border = '2px solid var(--cat-yellow)'; results.length > 0 && setOpen(true); }}
         onBlur={e => { (e.target as HTMLInputElement).style.border = '1px solid var(--cat-mid)'; }}
       />
       {open && (

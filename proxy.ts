@@ -1,12 +1,25 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
+const ADMIN_FOLDER = 'x7k9-panel-2024';
+
+const SUPER_ADMIN_EMAILS = (process.env.SUPER_ADMIN_EMAILS ?? '')
+  .split(',')
+  .map(e => e.trim().toLowerCase())
+  .filter(Boolean);
+
 export async function proxy(request: NextRequest) {
+  // إذا لم تُضبط بيانات اعتماد Supabase، اسمح بمرور الطلب
+  // (سيتعطل في route handlers والتطبيق لاحقاً بطريقة واضحة)
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {
@@ -25,20 +38,22 @@ export async function proxy(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  const ADMIN_EMAILS = (process.env.SUPER_ADMIN_EMAILS ?? '')
-    .split(',')
-    .map(e => e.trim())
-    .filter(Boolean);
+  const adminPath = process.env.SUPER_ADMIN_SECRET_PATH || ADMIN_FOLDER;
+  const email = user?.email?.toLowerCase();
+  const isSuperAdmin = !!email && SUPER_ADMIN_EMAILS.includes(email);
+  const secretPathMatchesFolder = adminPath === ADMIN_FOLDER;
 
-  if (!user?.email || !ADMIN_EMAILS.includes(user.email)) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('from', 'admin');
-    return NextResponse.redirect(loginUrl);
+  if (!isSuperAdmin || !secretPathMatchesFolder) {
+    // 404 صامت وليس 403 أو redirect لتسجيل الدخول — لا نكشف حتى بوجود اللوحة
+    if (request.nextUrl.pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Not Found' }, { status: 404 });
+    }
+    return NextResponse.rewrite(new URL('/404', request.url));
   }
 
   return supabaseResponse;
 }
 
 export const config = {
-  matcher: ['/x7k9-panel-2024/:path*'],
+  matcher: ['/x7k9-panel-2024/:path*', '/api/admin/:path*'],
 };

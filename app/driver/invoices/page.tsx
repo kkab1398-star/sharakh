@@ -51,7 +51,7 @@ export default function DriverInvoices() {
           companyName:   worker?.company_name ?? 'SHARAKH',
           customerName:  inv.customer_name,
           customerPhone: inv.customer_phone,
-          amount:        inv.amount,
+          subtotal:      inv.amount,
           currency:      inv.currency,
           description:   inv.description ?? 'خدمة',
           workerName:    worker?.full_name ?? '',
@@ -82,8 +82,26 @@ export default function DriverInvoices() {
 
   return (
     <div style={{ fontFamily: meta.fontFamily, background: 'var(--cat-black)', minHeight: '100%' }}>
-      <header style={{ background: 'var(--cat-dark)', borderBottom: '3px solid var(--cat-yellow)', padding: '14px 16px', position: 'sticky', top: 0, zIndex: 10 }}>
+      <header style={{ background: 'var(--cat-dark)', borderBottom: '3px solid var(--cat-yellow)', padding: '14px 16px', position: 'sticky', top: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <h1 style={{ fontSize: 16, fontWeight: 900, color: 'var(--cat-white)', margin: 0, textTransform: 'uppercase', letterSpacing: '-0.3px' }}>{m.invoices.title}</h1>
+        <button
+          onClick={() => router.push('/driver/invoices/new')}
+          style={{
+            background: 'var(--cat-yellow)',
+            color: 'var(--cat-black)',
+            border: 'none',
+            borderRadius: 0,
+            padding: '8px 14px',
+            fontSize: 12,
+            fontWeight: 900,
+            cursor: 'pointer',
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            fontFamily: meta.fontFamily,
+          }}
+        >
+          + جديدة
+        </button>
       </header>
 
       <div style={{ padding: 16, maxWidth: 430, margin: '0 auto' }}>
