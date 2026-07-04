@@ -2,13 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Equipment } from '@/types';
+import type { Equipment, Partner } from '@/types';
+import ShareDriverModal from '@/components/ShareDriverModal';
 
 export default function NewDriverPage() {
   const router = useRouter();
   const [loading,   setLoading]   = useState(false);
   const [error,     setError]     = useState('');
   const [equipment, setEquipment] = useState<Equipment[]>([]);
+  const [partner, setPartner] = useState<Partner | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [savedDriver, setSavedDriver] = useState<any>(null);
+
   const [form, setForm] = useState({
     full_name:          '',
     username:           '',
@@ -19,9 +24,13 @@ export default function NewDriverPage() {
   });
 
   useEffect(() => {
-    fetch('/api/equipment')
-      .then(r => r.json())
-      .then(d => setEquipment((d.equipment ?? []).filter((e: Equipment) => e.is_active && !e.assigned_worker_id)));
+    Promise.all([
+      fetch('/api/equipment').then(r => r.json()),
+      fetch('/api/partners/me').then(r => r.json()),
+    ]).then(([eData, pData]) => {
+      setEquipment((eData.equipment ?? []).filter((e: Equipment) => e.is_active && !e.assigned_worker_id));
+      setPartner(pData.partner ?? null);
+    });
   }, []);
 
   const set = (k: string, v: string | number) => setForm(p => ({ ...p, [k]: v }));
@@ -60,13 +69,32 @@ export default function NewDriverPage() {
       });
     }
 
-    router.push('/dashboard/drivers');
+    // 3. عرض الـ modal بدل التوجيه المباشر
+    setSavedDriver({
+      full_name: form.full_name,
+      username: form.username,
+      password: form.password,
+      phone: form.phone,
+    });
+    setShowModal(true);
+    setLoading(false);
   };
 
   const inp = "w-full border border-[#3D3D3D] rounded-xl px-4 py-3 text-[#FFFFFF] text-sm focus:outline-none focus:ring-2 focus:ring-[#FFCD11] placeholder-[#A0A0A0] bg-[#1A1A1A]";
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+    router.push('/dashboard/drivers');
+  };
+
   return (
     <div className="p-6 md:p-8 max-w-xl mx-auto" dir="rtl">
+      <ShareDriverModal
+        isOpen={showModal}
+        driver={savedDriver}
+        partnerSlug={partner?.slug}
+        onClose={handleCloseModal}
+      />
       <div className="mb-6">
         <button onClick={() => router.back()} className="text-sm text-[#A0A0A0] hover:text-[#FFFFFF] mb-4 flex items-center gap-1">
           ← رجوع

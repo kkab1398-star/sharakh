@@ -13,6 +13,8 @@ export interface Partner {
   currency: 'SAR' | 'USD' | 'AED' | 'KWD';
   locale: 'ar' | 'en';
   theme: 'light' | 'dark';
+  slug?: string | null;
+  is_first_login?: boolean;
   created_at: string;
 }
 
