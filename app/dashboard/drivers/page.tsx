@@ -227,6 +227,32 @@ export default function DriversPage() {
                       {isBusy ? '...' : '↩ تفعيل'}
                     </button>
                   )}
+
+                  <button disabled={isBusy} onClick={async () => {
+                    const msg = `هل أنت متأكد من حذف ${worker.full_name}؟\n\nسيتم حذف:\n✕ السجل الشخصي\n✕ العقود والاتفاقيات\n✕ جميع المعاملات (soft delete)\n\nلا يمكن التراجع عن هذه العملية.`;
+                    if (!confirm(msg)) return;
+
+                    setBusy(worker.id);
+                    try {
+                      const res = await fetch(`/api/drivers/${worker.id}/delete`, { method: 'POST' });
+                      const data = await res.json();
+                      if (!res.ok) {
+                        alert(data.error || 'فشل الحذف');
+                      } else {
+                        load();
+                      }
+                    } catch (err) {
+                      alert('خطأ في الاتصال');
+                    } finally {
+                      setBusy(null);
+                    }
+                  }} style={{
+                    height: 32, padding: '0 12px', fontSize: 11, fontWeight: 700,
+                    background: 'transparent', color: '#ef4444',
+                    border: '1px solid #ef4444', cursor: 'pointer', opacity: worker.is_active ? 0.5 : 1,
+                  }}>
+                    {isBusy ? '...' : '🗑 حذف'}
+                  </button>
                 </div>
               </div>
             );
