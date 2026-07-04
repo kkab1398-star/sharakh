@@ -20,18 +20,27 @@ export default function DashboardPage() {
   const [cycles, setCycles]   = useState<FinancialCycle[]>([]);
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [partner, setPartner] = useState<Partner | null>(null);
+  const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const loadData = () => {
     Promise.all([
       fetch('/api/cycles').then(r => r.json()),
       fetch('/api/drivers').then(r => r.json()),
       fetch('/api/partners/me').then(r => r.json()),
-    ]).then(([c, d, p]) => {
+      fetch('/api/transactions?limit=10').then(r => r.json()),
+    ]).then(([c, d, p, t]) => {
       setCycles(c.cycles ?? []);
       setWorkers(d.workers ?? []);
       setPartner(p.partner ?? null);
+      setTransactions(t.transactions ?? []);
     }).finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadData();
+    const interval = setInterval(loadData, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const openCycles    = cycles.filter(c => c.status === 'open');
@@ -184,6 +193,58 @@ export default function DashboardPage() {
             </table>
           )}
         </div>
+
+        {/* آخر العمليات */}
+        {transactions.length > 0 && (
+          <div style={{ background: 'var(--cat-gray)', borderRadius: 2, padding: '20px 24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--cat-yellow)', textShadow: 'var(--yellow-shadow)', WebkitTextStroke: 'var(--yellow-stroke)' as any, textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0 }}>
+                آخر العمليات
+              </p>
+              <Link href="/dashboard/daily-operations" style={{ fontSize: 12, color: 'var(--cat-yellow)', textDecoration: 'none', fontWeight: 700 }}>
+                عرض الكل ←
+              </Link>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {transactions.slice(0, 5).map((tx: any) => {
+                const typeCfg: Record<string, { icon: string; color: string }> = {
+                  income: { icon: '↑', color: '#FFCD11' },
+                  expense: { icon: '↓', color: '#ef4444' },
+                  transfer_to_worker: { icon: '⟳', color: '#3b82f6' },
+                  transfer_to_partner: { icon: '→', color: '#8b5cf6' },
+                  driver_to_partner_transfer: { icon: '↩', color: '#10b981' },
+                };
+                const cfg = typeCfg[tx.type] || { icon: '•', color: '#A0A0A0' };
+                const worker = workers.find(w => w.id === tx.worker_id);
+                const timeAgo = Math.floor((Date.now() - new Date(tx.created_at).getTime()) / 1000);
+                const timeStr = timeAgo < 60 ? 'للتو' :
+                               timeAgo < 3600 ? `قبل ${Math.floor(timeAgo / 60)}د` :
+                               timeAgo < 86400 ? `قبل ${Math.floor(timeAgo / 3600)}س` :
+                               `قبل ${Math.floor(timeAgo / 86400)}ي`;
+
+                return (
+                  <div key={tx.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px', background: '#1A1A1A', borderRadius: 2 }}>
+                    <span style={{ fontSize: 18, color: cfg.color }}>{cfg.icon}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--cat-white)', margin: '0 0 2px' }}>
+                        {worker?.full_name || 'السائق'}
+                      </p>
+                      <p style={{ fontSize: 11, color: 'var(--cat-muted)', margin: 0 }}>
+                        {tx.description || 'بدون وصف'}
+                      </p>
+                    </div>
+                    <div style={{ textAlign: 'end', flexShrink: 0 }}>
+                      <p style={{ fontSize: 14, fontWeight: 900, color: cfg.color, margin: '0 0 2px', fontFamily: "'Barlow Condensed', sans-serif" }} dir="ltr">
+                        {fmt(Number(tx.amount))} <span style={{ fontSize: 11 }}>{sym}</span>
+                      </p>
+                      <p style={{ fontSize: 10, color: 'var(--cat-muted)', margin: 0 }}>{timeStr}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* إجراءات سريعة */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
