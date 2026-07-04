@@ -16,9 +16,28 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) { setError("بريد إلكتروني أو كلمة مرور غير صحيحة."); setLoading(false); }
-    else router.push("/dashboard");
+
+    if (error) {
+      setError("بريد إلكتروني أو كلمة مرور غير صحيحة.");
+      setLoading(false);
+      return;
+    }
+
+    // تحقق من is_first_login
+    try {
+      const res = await fetch("/api/partners/me");
+      const data = await res.json();
+
+      if (data.partner?.is_first_login === true) {
+        router.push("/change-password");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch {
+      router.push("/dashboard");
+    }
   };
 
   return (
