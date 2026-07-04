@@ -89,11 +89,11 @@ export async function POST(req: NextRequest) {
     let finalSlug = slug;
     let counter = 2;
     while (true) {
-      const { data: existing } = await admin
+      const { data: existing, error } = await admin
         .from('partners')
         .select('id')
         .eq('slug', finalSlug)
-        .single();
+        .maybeSingle();
 
       if (!existing) break;
       finalSlug = `${slug}${counter}`;
