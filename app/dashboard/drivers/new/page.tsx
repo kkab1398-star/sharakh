@@ -1,0 +1,208 @@
+"use client";
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import type { Equipment } from '@/types';
+
+export default function NewDriverPage() {
+  const router = useRouter();
+  const [loading,   setLoading]   = useState(false);
+  const [error,     setError]     = useState('');
+  const [equipment, setEquipment] = useState<Equipment[]>([]);
+  const [form, setForm] = useState({
+    full_name:          '',
+    username:           '',
+    password:           '',
+    profit_percentage:  50,
+    phone:              '',
+    assigned_equipment: '',
+  });
+
+  useEffect(() => {
+    fetch('/api/equipment')
+      .then(r => r.json())
+      .then(d => setEquipment((d.equipment ?? []).filter((e: Equipment) => e.is_active && !e.assigned_worker_id)));
+  }, []);
+
+  const set = (k: string, v: string | number) => setForm(p => ({ ...p, [k]: v }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    // 1. Create driver
+    const res = await fetch('/api/drivers', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        full_name:         form.full_name,
+        username:          form.username,
+        password:          form.password,
+        profit_percentage: Number(form.profit_percentage),
+        phone:             form.phone || undefined,
+      }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.error ?? 'حدث خطأ');
+      setLoading(false);
+      return;
+    }
+
+    // 2. If equipment selected, assign it
+    if (form.assigned_equipment && data.worker?.id) {
+      await fetch(`/api/equipment/${form.assigned_equipment}`, {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ assigned_worker_id: data.worker.id }),
+      });
+    }
+
+    router.push('/dashboard/drivers');
+  };
+
+  const inp = "w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-400 bg-white";
+
+  return (
+    <div className="p-6 md:p-8 max-w-xl mx-auto" dir="rtl">
+      <div className="mb-6">
+        <button onClick={() => router.back()} className="text-sm text-slate-400 hover:text-slate-600 mb-4 flex items-center gap-1">
+          ← رجوع
+        </button>
+        <h1 className="text-2xl font-black text-slate-800">إضافة سائق جديد</h1>
+        <p className="text-sm text-slate-400 mt-1">أنشئ حساباً للسائق وحدّد نسبته من الأرباح</p>
+      </div>
+
+      {error && (
+        <div className="mb-5 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl font-bold">
+          ⚠️ {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-5">
+
+        {/* بيانات الحساب */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 space-y-4">
+          <h2 className="font-black text-slate-700 text-sm">بيانات الحساب</h2>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-500 mb-2">الاسم الكامل *</label>
+            <input required value={form.full_name}
+              onChange={e => set('full_name', e.target.value)}
+              placeholder="محمد أحمد العمري" className={inp} />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-slate-500 mb-2">اسم المستخدم *</label>
+              <input required value={form.username} dir="ltr"
+                onChange={e => set('username', e.target.value.toLowerCase())}
+                placeholder="ahmed123" pattern="[a-zA-Z0-9_]+"
+                className={inp + " font-mono"} />
+              <p className="text-xs text-slate-400 mt-1">أحرف + أرقام + _ فقط</p>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-slate-500 mb-2">رقم الجوال *</label>
+              <input required value={form.phone} dir="ltr"
+                onChange={e => set('phone', e.target.value)}
+                placeholder="05xxxxxxxx" pattern="[0-9+\s-]{9,}"
+                title="أدخل رقم جوال صحيح"
+                className={inp} />
+              <p className="text-xs text-slate-400 mt-1">يُستخدم لإرسال الفواتير والإشعارات للسائق</p>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-500 mb-2">كلمة المرور *</label>
+            <input required type="password" minLength={6} dir="ltr"
+              value={form.password}
+              onChange={e => set('password', e.target.value)}
+              placeholder="6 أحرف على الأقل"
+              className={inp} />
+          </div>
+        </div>
+
+        {/* نسبة الأرباح */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+          <h2 className="font-black text-slate-700 text-sm mb-4">نسبة الأرباح</h2>
+
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-center">
+              <p className="text-3xl font-black text-blue-600">{form.profit_percentage}%</p>
+              <p className="text-xs text-slate-400">السائق</p>
+            </div>
+            <div className="text-slate-300 text-2xl">↔</div>
+            <div className="text-center">
+              <p className="text-3xl font-black text-slate-700">{100 - form.profit_percentage}%</p>
+              <p className="text-xs text-slate-400">المالك</p>
+            </div>
+          </div>
+
+          <input type="range" min={1} max={99}
+            value={form.profit_percentage}
+            onChange={e => set('profit_percentage', Number(e.target.value))}
+            className="w-full accent-blue-600 h-2" />
+          <div className="flex justify-between text-xs text-slate-400 mt-2">
+            <span>1%</span>
+            <span>50%</span>
+            <span>99%</span>
+          </div>
+        </div>
+
+        {/* ربط معدة */}
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+          <h2 className="font-black text-slate-700 text-sm mb-4">المعدة المرتبطة (اختياري)</h2>
+
+          {equipment.length === 0 ? (
+            <p className="text-xs text-slate-400 bg-slate-50 rounded-xl p-3">
+              لا توجد معدات مضافة بعد — يمكنك إضافة سائق بدون معدة الآن وتعيينها لاحقاً.{' '}
+              <a href="/dashboard/equipment/new" className="text-blue-600 underline">أو أضف معدة أولاً</a>
+            </p>
+          ) : (
+            <div className="space-y-2">
+              <button type="button"
+                onClick={() => set('assigned_equipment', '')}
+                className={`w-full px-4 py-3 rounded-xl text-sm text-right border-2 transition flex items-center gap-3 ${
+                  !form.assigned_equipment
+                    ? 'border-slate-300 bg-slate-50 text-slate-600 font-bold'
+                    : 'border-slate-100 text-slate-400 hover:border-slate-200'
+                }`}>
+                <span className="w-8 h-8 bg-slate-200 rounded-lg flex items-center justify-center text-xs">—</span>
+                بدون معدة محددة
+              </button>
+
+              {equipment.map(eq => (
+                <button type="button" key={eq.id}
+                  onClick={() => set('assigned_equipment', eq.id)}
+                  className={`w-full px-4 py-3 rounded-xl text-sm text-right border-2 transition flex items-center gap-3 ${
+                    form.assigned_equipment === eq.id
+                      ? 'border-blue-500 bg-blue-50 text-blue-700 font-bold'
+                      : 'border-slate-100 text-slate-700 hover:border-slate-200'
+                  }`}>
+                  <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-base ${
+                    form.assigned_equipment === eq.id ? 'bg-blue-100' : 'bg-slate-100'
+                  }`}>🚜</span>
+                  <div className="text-right">
+                    <p className="font-bold">{eq.model ?? 'معدة'}</p>
+                    <p className="font-normal text-xs opacity-60">
+                      {(eq.equipment_type as any)?.name}
+                      {eq.plate_number && ` · ${eq.plate_number}`}
+                    </p>
+                  </div>
+                  {form.assigned_equipment === eq.id && <span className="mr-auto text-blue-500">✓</span>}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <button type="submit" disabled={loading}
+          className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-black text-sm hover:bg-blue-700 transition disabled:opacity-50 shadow-lg shadow-blue-200">
+          {loading ? 'جاري الحفظ...' : '+ إضافة السائق'}
+        </button>
+      </form>
+    </div>
+  );
+}

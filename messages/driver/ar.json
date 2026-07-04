@@ -1,0 +1,84 @@
+{
+  "login": {
+    "title": "بوابة السائقين",
+    "subtitle": "سجّل دخولك لتسجيل عمليات اليوم",
+    "username": "اسم المستخدم",
+    "usernamePlaceholder": "أدخل اسم المستخدم",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "••••••••",
+    "submit": "تسجيل الدخول",
+    "submitting": "جاري التحقق...",
+    "noLink": "رابط الدخول غير صحيح. اطلب الرابط الصحيح من مالك المعدة.",
+    "forgotPassword": "إذا نسيت بيانات الدخول، تواصل مع مالك المعدة.",
+    "errors": {
+      "invalidCredentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+      "deactivated": "الحساب موقوف — تواصل مع المالك",
+      "frozen": "الحساب مجمّد مؤقتاً — تواصل مع المالك",
+      "serverError": "تعذّر الاتصال بالخادم"
+    }
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "transactions": "المعاملات",
+    "invoices": "الفواتير",
+    "logout": "خروج"
+  },
+  "home": {
+    "currentCycle": "الدورة المفتوحة",
+    "income": "الدخل",
+    "expenses": "المصاريف",
+    "advances": "السلف",
+    "net": "الصافي",
+    "noCycles": "لا توجد دورات مفتوحة",
+    "noCyclesHint": "تواصل مع مالك المعدة لفتح دورة",
+    "addTransaction": "إضافة معاملة",
+    "recentTx": "آخر المعاملات",
+    "viewAll": "عرض الكل",
+    "noTx": "لا توجد معاملات بعد",
+    "defaultCycleTitle": "دورة جارية"
+  },
+  "form": {
+    "addTransaction": "إضافة معاملة",
+    "types": {
+      "income": "دخل / إيراد",
+      "expense": "مصروف",
+      "transfer_to_worker": "طلب سلفة"
+    },
+    "amount": "المبلغ",
+    "note": "ملاحظة (اختياري)",
+    "notePlaceholder": "أي ملاحظة...",
+    "customerSection": "معلومات الزبون",
+    "customerName": "اسم الزبون",
+    "customerNamePlaceholder": "ابدأ بكتابة اسم الزبون...",
+    "customerPhone": "رقم الجوال",
+    "issueInvoice": "إصدار فاتورة",
+    "serviceDesc": "وصف الخدمة",
+    "serviceDescPlaceholder": "وصف الخدمة المقدّمة...",
+    "save": "حفظ المعاملة",
+    "saveWithInvoice": "حفظ وإصدار فاتورة",
+    "saving": "⏳ جاري الحفظ...",
+    "cancel": "إلغاء",
+    "success": "✅ تم حفظ المعاملة بنجاح",
+    "phoneHintSAR": "يجب أن يبدأ بـ 05 ويكون 10 أرقام",
+    "phoneHintIntl": "صيغة دولية مطلوبة (+كود الدولة...)",
+    "customerRequired": "اسم الزبون مطلوب لإصدار الفاتورة",
+    "phoneRequired": "رقم الجوال مطلوب لإصدار الفاتورة"
+  },
+  "transactions": {
+    "title": "معاملات الدورة الحالية",
+    "empty": "لا توجد معاملات بعد",
+    "types": {
+      "income": "دخل",
+      "expense": "مصروف",
+      "transfer_to_worker": "سلفة",
+      "transfer_to_partner": "تحويل للمالك"
+    }
+  },
+  "invoices": {
+    "title": "فواتير الدورة الحالية",
+    "empty": "لا توجد فواتير بعد",
+    "emptyHint": "فعّل «إصدار فاتورة» عند تسجيل أي دخل",
+    "share": "مشاركة الفاتورة",
+    "copied": "تم النسخ ✅"
+  }
+}

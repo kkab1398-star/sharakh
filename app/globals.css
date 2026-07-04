@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════
+   CAT Design System — inspired by cat.com
+══════════════════════════════════════════ */
+:root {
+  /* ── Fixed CAT identity colors (never change) ── */
+  --cat-yellow:  #FFCD11;
+  --cat-black:   #1A1A1A;
+  --cat-dark:    #111111;
+  --cat-red:     #ef4444;
+  --cat-green:   #22c55e;
+  --cat-font:    'Cairo', 'Barlow Condensed', sans-serif;
+
+  /* ── Semantic theme variables — DARK (default) ── */
+  --bg:          #1A1A1A;
+  --bg-card:     #2A2A2A;
+  --bg-inner:    #111111;
+  --bg-input:    #111111;
+  --text:        #FFFFFF;
+  --text-2:      #A0A0A0;
+  --text-3:      #555555;
+  --border:      #3D3D3D;
+  --shadow:      0 2px 8px rgba(0,0,0,0.4);
+
+  /* Legacy aliases (kept for backward compat) */
+  --cat-gray:    #2A2A2A;
+  --cat-mid:     #3D3D3D;
+  --cat-light:   #F0F0F0;
+  --cat-white:   #FFFFFF;
+  --cat-muted:   #A0A0A0;
+  --font-primary: 'Cairo', 'Barlow Condensed', sans-serif;
+
+  /* Yellow text outline — off in dark mode */
+  --yellow-shadow: none;
+  --yellow-stroke: 0;
+}
+
+/* ── Light mode overrides ── */
+[data-theme="light"] {
+  --bg:          #F5F5F0;
+  --bg-card:     #FFFFFF;
+  --bg-inner:    #F0F0EB;
+  --bg-input:    #FAFAFA;
+  --text:        #1A1A1A;
+  --text-2:      #4A4A4A;
+  --text-3:      #6B6B6B;
+  --border:      #E0E0D8;
+  --shadow:      0 2px 8px rgba(0,0,0,0.12);
+
+  /* ── Legacy vars — these drive most pages ── */
+  --cat-black:   #F5F5F0;   /* page backgrounds */
+  --cat-dark:    #EAEAE5;   /* deeper bg / headers */
+  --cat-gray:    #FFFFFF;   /* card backgrounds   */
+  --cat-mid:     #E0E0D8;   /* borders            */
+  --cat-white:   #1A1A1A;   /* primary text       */
+  --cat-muted:   #4A4A4A;   /* secondary text     */
+  --cat-light:   #F0F0EB;
+  /* Yellow stays bright but gets black outline for readability */
+  --cat-yellow:  #FFCD11;
+  --yellow-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  --yellow-stroke: 0.5px #000000;
+}
+
+/* Dark mode: no shadow needed on dark bg */
+[data-theme="dark"] {
+  --yellow-shadow: none;
+  --yellow-stroke: 0;
+}
+
+/* ── Apply outline to ALL yellow text in light mode ── */
+[data-theme="light"] .cat-stat-num,
+[data-theme="light"] .cat-label,
+[data-theme="light"] .cat-section-title,
+[data-theme="light"] .cat-badge-yellow {
+  text-shadow: var(--yellow-shadow);
+  -webkit-text-stroke: var(--yellow-stroke);
+}
+
+/* Global yellow text rule — catches inline color via CSS var usage */
+[data-theme="light"] [class*="yellow"],
+[data-theme="light"] [class*="cat-yellow"] {
+  text-shadow: var(--yellow-shadow);
+}
+
+/* ── Smooth theme transitions ── */
+*, *::before, *::after {
+  transition: background-color 0.25s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* ══════════════════════════════════════════
+   Base Reset
+══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { height: 100%; }
+body {
+  height: 100%;
+  font-family: var(--font-primary);
+  background: var(--cat-black);
+  color: var(--cat-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ══════════════════════════════════════════
+   Typography
+══════════════════════════════════════════ */
+.cat-title {
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: var(--cat-white);
+}
+
+.cat-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cat-yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.cat-muted { color: var(--cat-muted); font-size: 13px; }
+
+/* ══════════════════════════════════════════
+   Inputs
+══════════════════════════════════════════ */
+.cat-input {
+  height: 52px;
+  border-radius: 2px;
+  border: 1px solid var(--cat-mid);
+  background: var(--cat-gray);
+  color: var(--cat-white);
+  padding: 0 14px;
+  font-size: 15px;
+  font-family: var(--font-primary);
+  font-weight: 500;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+}
+.cat-input:focus         { border: 2px solid var(--cat-yellow); }
+.cat-input::placeholder  { color: var(--cat-muted); }
+.cat-input option        { background: var(--cat-gray); color: var(--cat-white); }
+
+textarea.cat-input       { height: auto; padding: 12px 14px; resize: vertical; }
+select.cat-input         { cursor: pointer; }
+
+/* ══════════════════════════════════════════
+   Buttons
+══════════════════════════════════════════ */
+.cat-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 24px;
+  border-radius: 0;
+  font-weight: 900;
+  font-size: 15px;
+  font-family: var(--font-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+.cat-btn:active   { transform: scale(0.98); }
+.cat-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.cat-btn-primary {
+  background: var(--cat-yellow);
+  color: #1A1A1A; /* always dark — never changes with theme */
+}
+.cat-btn-primary:hover:not(:disabled) { background: #e6b800; }
+
+.cat-btn-outline {
+  background: transparent;
+  border: 2px solid var(--cat-yellow);
+  color: var(--cat-yellow);
+}
+.cat-btn-outline:hover:not(:disabled) { background: rgba(255,205,17,0.06); }
+
+.cat-btn-danger {
+  background: transparent;
+  border: 2px solid var(--cat-red);
+  color: var(--cat-red);
+}
+.cat-btn-danger:hover:not(:disabled) { background: rgba(239,68,68,0.06); }
+
+.cat-btn-sm  { height: 36px; padding: 0 14px; font-size: 12px; }
+.cat-btn-full { width: 100%; }
+
+/* ══════════════════════════════════════════
+   Cards
+══════════════════════════════════════════ */
+.cat-card {
+  background: var(--cat-gray);
+  border-radius: 2px;
+  border: 1px solid var(--cat-mid);
+}
+
+.cat-card-accent {
+  border-top: 3px solid var(--cat-yellow);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 0;
+  background: var(--cat-gray);
+}
+
+/* ══════════════════════════════════════════
+   Stats
+══════════════════════════════════════════ */
+.cat-stat-num {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--cat-yellow);
+  font-family: 'Barlow Condensed', var(--font-primary);
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.cat-stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cat-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ══════════════════════════════════════════
+   Table
+══════════════════════════════════════════ */
+.cat-table          { width: 100%; border-collapse: collapse; }
+.cat-table thead th {
+  background: var(--cat-dark);
+  color: var(--cat-yellow);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 12px 16px;
+  text-align: right;
+  border-bottom: 2px solid var(--cat-yellow);
+}
+.cat-table tbody tr:nth-child(odd)  { background: var(--cat-black); }
+.cat-table tbody tr:nth-child(even) { background: var(--cat-gray);  }
+.cat-table tbody tr { border-right: 3px solid transparent; transition: border-color 0.12s; }
+.cat-table tbody tr:hover { border-right: 3px solid var(--cat-yellow); }
+.cat-table tbody td {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--cat-white);
+  border-bottom: 1px solid var(--cat-mid);
+}
+
+/* ══════════════════════════════════════════
+   Section divider
+══════════════════════════════════════════ */
+.cat-divider {
+  height: 3px;
+  background: var(--cat-yellow);
+  border: none;
+  margin: 0;
+}
+
+/* Section header */
+.cat-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cat-yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--cat-mid);
+  margin-bottom: 20px;
+}
+
+/* ══════════════════════════════════════════
+   Badges
+══════════════════════════════════════════ */
+.cat-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.cat-badge-yellow { background: rgba(255,205,17,0.12); color: var(--cat-yellow); }
+.cat-badge-green  { background: rgba(34,197,94,0.12);  color: var(--cat-green);  }
+.cat-badge-red    { background: rgba(239,68,68,0.12);   color: var(--cat-red);    }
+.cat-badge-gray   { background: var(--cat-mid);          color: var(--cat-muted);  }
+
+/* ══════════════════════════════════════════
+   Driver App
+══════════════════════════════════════════ */
+.driver-app { font-family: var(--font-primary); }
+.driver-app * { font-family: inherit; }
+
+/* ══════════════════════════════════════════
+   Scrollbar
+══════════════════════════════════════════ */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--cat-black); }
+::-webkit-scrollbar-thumb { background: var(--cat-mid); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--cat-yellow); }
+
+/* ══════════════════════════════════════════
+   Alert / Message boxes
+══════════════════════════════════════════ */
+.cat-alert-error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid var(--cat-red);
+  border-radius: 2px;
+  color: var(--cat-red);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+.cat-alert-success {
+  background: rgba(34,197,94,0.1);
+  border: 1px solid var(--cat-green);
+  border-radius: 2px;
+  color: var(--cat-green);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* RTL */
+[dir="rtl"] { direction: rtl; }

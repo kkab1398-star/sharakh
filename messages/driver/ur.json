@@ -1,0 +1,84 @@
+{
+  "login": {
+    "title": "ڈرائیور پورٹل",
+    "subtitle": "آج کی کارروائیاں ریکارڈ کرنے کے لیے لاگ ان کریں",
+    "username": "صارف نام",
+    "usernamePlaceholder": "اپنا صارف نام درج کریں",
+    "password": "پاس ورڈ",
+    "passwordPlaceholder": "••••••••",
+    "submit": "لاگ ان کریں",
+    "submitting": "تصدیق ہو رہی ہے...",
+    "noLink": "لنک غلط ہے۔ مالک سے صحیح لنک لیں۔",
+    "forgotPassword": "اگر پاس ورڈ بھول گئے ہیں تو مالک سے رابطہ کریں۔",
+    "errors": {
+      "invalidCredentials": "صارف نام یا پاس ورڈ غلط ہے",
+      "deactivated": "اکاؤنٹ غیر فعال ہے — مالک سے رابطہ کریں",
+      "frozen": "اکاؤنٹ عارضی طور پر بند ہے — مالک سے رابطہ کریں",
+      "serverError": "سرور سے رابطہ نہیں ہو سکا"
+    }
+  },
+  "nav": {
+    "home": "ہوم",
+    "transactions": "لین دین",
+    "invoices": "بل",
+    "logout": "لاگ آؤٹ"
+  },
+  "home": {
+    "currentCycle": "موجودہ سائیکل",
+    "income": "آمدنی",
+    "expenses": "اخراجات",
+    "advances": "پیشگی",
+    "net": "خالص",
+    "noCycles": "کوئی فعال سائیکل نہیں",
+    "noCyclesHint": "نئی سائیکل کھولنے کے لیے مالک سے رابطہ کریں",
+    "addTransaction": "لین دین شامل کریں",
+    "recentTx": "آخری لین دین",
+    "viewAll": "سب دیکھیں",
+    "noTx": "ابھی کوئی لین دین نہیں",
+    "defaultCycleTitle": "جاری سائیکل"
+  },
+  "form": {
+    "addTransaction": "لین دین شامل کریں",
+    "types": {
+      "income": "آمدنی",
+      "expense": "اخراجات",
+      "transfer_to_worker": "پیشگی درخواست"
+    },
+    "amount": "رقم",
+    "note": "نوٹ (اختیاری)",
+    "notePlaceholder": "کوئی نوٹ...",
+    "customerSection": "گاہک کی معلومات",
+    "customerName": "گاہک کا نام",
+    "customerNamePlaceholder": "گاہک کا نام لکھیں...",
+    "customerPhone": "فون نمبر",
+    "issueInvoice": "بل جاری کریں",
+    "serviceDesc": "خدمت کی تفصیل",
+    "serviceDescPlaceholder": "فراہم کردہ خدمت بیان کریں...",
+    "save": "محفوظ کریں",
+    "saveWithInvoice": "محفوظ کریں اور بل جاری کریں",
+    "saving": "⏳ محفوظ ہو رہا ہے...",
+    "cancel": "منسوخ",
+    "success": "✅ لین دین کامیابی سے محفوظ ہوگیا",
+    "phoneHintSAR": "05 سے شروع ہو اور 10 ہندسے ہوں",
+    "phoneHintIntl": "بین الاقوامی فارمیٹ (+ملکی کوڈ...)",
+    "customerRequired": "بل جاری کرنے کے لیے گاہک کا نام ضروری ہے",
+    "phoneRequired": "بل جاری کرنے کے لیے فون نمبر ضروری ہے"
+  },
+  "transactions": {
+    "title": "موجودہ سائیکل کے لین دین",
+    "empty": "ابھی کوئی لین دین نہیں",
+    "types": {
+      "income": "آمدنی",
+      "expense": "اخراجات",
+      "transfer_to_worker": "پیشگی",
+      "transfer_to_partner": "مالک کو منتقلی"
+    }
+  },
+  "invoices": {
+    "title": "موجودہ سائیکل کے بل",
+    "empty": "ابھی کوئی بل نہیں",
+    "emptyHint": "کوئی آمدنی ریکارڈ کرتے وقت «بل جاری کریں» فعال کریں",
+    "share": "بل شیئر کریں",
+    "copied": "کاپی ہو گیا ✅"
+  }
+}

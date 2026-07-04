@@ -1,0 +1,84 @@
+{
+  "login": {
+    "title": "ড্রাইভার পোর্টাল",
+    "subtitle": "আজকের কার্যক্রম রেকর্ড করতে লগইন করুন",
+    "username": "ব্যবহারকারীর নাম",
+    "usernamePlaceholder": "আপনার ব্যবহারকারীর নাম লিখুন",
+    "password": "পাসওয়ার্ড",
+    "passwordPlaceholder": "••••••••",
+    "submit": "লগইন করুন",
+    "submitting": "যাচাই করা হচ্ছে...",
+    "noLink": "লিংক সঠিক নয়। মালিকের কাছ থেকে সঠিক লিংক নিন।",
+    "forgotPassword": "পাসওয়ার্ড ভুলে গেলে মালিকের সাথে যোগাযোগ করুন।",
+    "errors": {
+      "invalidCredentials": "ব্যবহারকারীর নাম বা পাসওয়ার্ড ভুল",
+      "deactivated": "অ্যাকাউন্ট নিষ্ক্রিয় — মালিকের সাথে যোগাযোগ করুন",
+      "frozen": "অ্যাকাউন্ট সাময়িকভাবে বন্ধ — মালিকের সাথে যোগাযোগ করুন",
+      "serverError": "সার্ভারে সংযোগ করা যায়নি"
+    }
+  },
+  "nav": {
+    "home": "হোম",
+    "transactions": "লেনদেন",
+    "invoices": "চালান",
+    "logout": "লগআউট"
+  },
+  "home": {
+    "currentCycle": "বর্তমান চক্র",
+    "income": "আয়",
+    "expenses": "ব্যয়",
+    "advances": "অগ্রিম",
+    "net": "নেট",
+    "noCycles": "কোনো সক্রিয় চক্র নেই",
+    "noCyclesHint": "নতুন চক্র খুলতে মালিকের সাথে যোগাযোগ করুন",
+    "addTransaction": "লেনদেন যোগ করুন",
+    "recentTx": "সাম্প্রতিক লেনদেন",
+    "viewAll": "সব দেখুন",
+    "noTx": "এখনো কোনো লেনদেন নেই",
+    "defaultCycleTitle": "চলমান চক্র"
+  },
+  "form": {
+    "addTransaction": "লেনদেন যোগ করুন",
+    "types": {
+      "income": "আয়",
+      "expense": "ব্যয়",
+      "transfer_to_worker": "অগ্রিম অনুরোধ"
+    },
+    "amount": "পরিমাণ",
+    "note": "নোট (ঐচ্ছিক)",
+    "notePlaceholder": "যেকোনো নোট...",
+    "customerSection": "গ্রাহকের তথ্য",
+    "customerName": "গ্রাহকের নাম",
+    "customerNamePlaceholder": "গ্রাহকের নাম লিখুন...",
+    "customerPhone": "ফোন নম্বর",
+    "issueInvoice": "চালান ইস্যু করুন",
+    "serviceDesc": "সেবার বিবরণ",
+    "serviceDescPlaceholder": "প্রদত্ত সেবা বর্ণনা করুন...",
+    "save": "সংরক্ষণ করুন",
+    "saveWithInvoice": "সংরক্ষণ করুন ও চালান ইস্যু করুন",
+    "saving": "⏳ সংরক্ষণ হচ্ছে...",
+    "cancel": "বাতিল",
+    "success": "✅ লেনদেন সফলভাবে সংরক্ষিত হয়েছে",
+    "phoneHintSAR": "05 দিয়ে শুরু হতে হবে এবং ১০ সংখ্যার হতে হবে",
+    "phoneHintIntl": "আন্তর্জাতিক ফরম্যাট প্রয়োজন (+দেশ কোড...)",
+    "customerRequired": "চালান ইস্যু করতে গ্রাহকের নাম আবশ্যক",
+    "phoneRequired": "চালান ইস্যু করতে ফোন নম্বর আবশ্যক"
+  },
+  "transactions": {
+    "title": "বর্তমান চক্রের লেনদেন",
+    "empty": "এখনও কোনো লেনদেন নেই",
+    "types": {
+      "income": "আয়",
+      "expense": "ব্যয়",
+      "transfer_to_worker": "অগ্রিম",
+      "transfer_to_partner": "মালিককে ট্রান্সফার"
+    }
+  },
+  "invoices": {
+    "title": "বর্তমান চক্রের চালান",
+    "empty": "এখনও কোনো চালান নেই",
+    "emptyHint": "যেকোনো আয় রেকর্ড করার সময় «চালান ইস্যু করুন» চালু করুন",
+    "share": "চালান শেয়ার করুন",
+    "copied": "কপি হয়েছে ✅"
+  }
+}

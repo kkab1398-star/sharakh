@@ -1,0 +1,84 @@
+{
+  "login": {
+    "title": "Portal ng Driver",
+    "subtitle": "Mag-login para i-record ang operasyon ngayon",
+    "username": "Username",
+    "usernamePlaceholder": "Ilagay ang iyong username",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Mag-login",
+    "submitting": "Bine-verify...",
+    "noLink": "Mali ang link. Humingi ng tamang link sa may-ari.",
+    "forgotPassword": "Kung nakalimutan ang password, makipag-ugnayan sa may-ari.",
+    "errors": {
+      "invalidCredentials": "Mali ang username o password",
+      "deactivated": "Naka-deactivate ang account — makipag-ugnayan sa may-ari",
+      "frozen": "Pansamantalang naka-freeze ang account — makipag-ugnayan sa may-ari",
+      "serverError": "Hindi makakonekta sa server"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "transactions": "Transaksyon",
+    "invoices": "Invoice",
+    "logout": "Mag-logout"
+  },
+  "home": {
+    "currentCycle": "Kasalukuyang Siklo",
+    "income": "Kita",
+    "expenses": "Gastos",
+    "advances": "Advance",
+    "net": "Neto",
+    "noCycles": "Walang aktibong siklo",
+    "noCyclesHint": "Makipag-ugnayan sa may-ari para buksan ang siklo",
+    "addTransaction": "Magdagdag ng Transaksyon",
+    "recentTx": "Mga Kamakailang Transaksyon",
+    "viewAll": "Tingnan Lahat",
+    "noTx": "Wala pang transaksyon",
+    "defaultCycleTitle": "Aktibong Siklo"
+  },
+  "form": {
+    "addTransaction": "Magdagdag ng Transaksyon",
+    "types": {
+      "income": "Kita",
+      "expense": "Gastos",
+      "transfer_to_worker": "Humiling ng Advance"
+    },
+    "amount": "Halaga",
+    "note": "Tala (opsyonal)",
+    "notePlaceholder": "Anumang tala...",
+    "customerSection": "Impormasyon ng Customer",
+    "customerName": "Pangalan ng Customer",
+    "customerNamePlaceholder": "I-type ang pangalan ng customer...",
+    "customerPhone": "Numero ng Telepono",
+    "issueInvoice": "Mag-issue ng Invoice",
+    "serviceDesc": "Paglalarawan ng Serbisyo",
+    "serviceDescPlaceholder": "Ilarawan ang serbisyong ibinigay...",
+    "save": "I-save",
+    "saveWithInvoice": "I-save at Mag-issue ng Invoice",
+    "saving": "⏳ Sine-save...",
+    "cancel": "Kanselahin",
+    "success": "✅ Matagumpay na na-save ang transaksyon",
+    "phoneHintSAR": "Dapat magsimula sa 05 at may 10 digit",
+    "phoneHintIntl": "Kailangan ng internasyonal na format (+country code...)",
+    "customerRequired": "Kailangan ang pangalan ng customer para mag-issue ng invoice",
+    "phoneRequired": "Kailangan ang numero ng telepono para mag-issue ng invoice"
+  },
+  "transactions": {
+    "title": "Mga Transaksyon ng Kasalukuyang Siklo",
+    "empty": "Wala pang transaksyon",
+    "types": {
+      "income": "Kita",
+      "expense": "Gastos",
+      "transfer_to_worker": "Advance",
+      "transfer_to_partner": "Transfer sa May-ari"
+    }
+  },
+  "invoices": {
+    "title": "Mga Invoice ng Kasalukuyang Siklo",
+    "empty": "Wala pang invoice",
+    "emptyHint": "I-enable ang «Mag-issue ng Invoice» kapag nag-record ng kita",
+    "share": "I-share ang Invoice",
+    "copied": "Nakopya ✅"
+  }
+}

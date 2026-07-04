@@ -1,0 +1,84 @@
+{
+  "login": {
+    "title": "Driver Portal",
+    "subtitle": "Sign in to record today's operations",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "••••••••",
+    "submit": "Sign In",
+    "submitting": "Verifying...",
+    "noLink": "Invalid login link. Ask your fleet owner for the correct link.",
+    "forgotPassword": "If you forgot your login details, contact your fleet owner.",
+    "errors": {
+      "invalidCredentials": "Incorrect username or password",
+      "deactivated": "Account is deactivated — contact the owner",
+      "frozen": "Account is temporarily frozen — contact the owner",
+      "serverError": "Could not connect to the server"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "transactions": "Transactions",
+    "invoices": "Invoices",
+    "logout": "Sign Out"
+  },
+  "home": {
+    "currentCycle": "Active Cycle",
+    "income": "Income",
+    "expenses": "Expenses",
+    "advances": "Advances",
+    "net": "Net",
+    "noCycles": "No active cycles",
+    "noCyclesHint": "Contact your fleet owner to open a cycle",
+    "addTransaction": "Add Transaction",
+    "recentTx": "Recent Transactions",
+    "viewAll": "View All",
+    "noTx": "No transactions yet",
+    "defaultCycleTitle": "Active Cycle"
+  },
+  "form": {
+    "addTransaction": "Add Transaction",
+    "types": {
+      "income": "Income",
+      "expense": "Expense",
+      "transfer_to_worker": "Request Advance"
+    },
+    "amount": "Amount",
+    "note": "Note (optional)",
+    "notePlaceholder": "Any notes...",
+    "customerSection": "Customer Info",
+    "customerName": "Customer Name",
+    "customerNamePlaceholder": "Start typing customer name...",
+    "customerPhone": "Phone Number",
+    "issueInvoice": "Issue Invoice",
+    "serviceDesc": "Service Description",
+    "serviceDescPlaceholder": "Describe the service provided...",
+    "save": "Save Transaction",
+    "saveWithInvoice": "Save & Issue Invoice",
+    "saving": "⏳ Saving...",
+    "cancel": "Cancel",
+    "success": "✅ Transaction saved successfully",
+    "phoneHintSAR": "Must start with 05 and be 10 digits",
+    "phoneHintIntl": "International format required (+country code...)",
+    "customerRequired": "Customer name is required to issue an invoice",
+    "phoneRequired": "Phone number is required to issue an invoice"
+  },
+  "transactions": {
+    "title": "Current Cycle Transactions",
+    "empty": "No transactions yet",
+    "types": {
+      "income": "Income",
+      "expense": "Expense",
+      "transfer_to_worker": "Advance",
+      "transfer_to_partner": "Transfer to Owner"
+    }
+  },
+  "invoices": {
+    "title": "Current Cycle Invoices",
+    "empty": "No invoices yet",
+    "emptyHint": "Enable \"Issue Invoice\" when recording any income",
+    "share": "Share Invoice",
+    "copied": "Copied ✅"
+  }
+}
