@@ -36,20 +36,24 @@ export default function NewTenantPage() {
         return;
       }
 
-      const { partner } = await res.json();
+      const { loginLink, slug } = await res.json();
+
+      const trial_end_date = new Date();
+      trial_end_date.setDate(trial_end_date.getDate() + 14);
+      const dateStr = trial_end_date.toLocaleDateString('ar-SA');
 
       const msg = `🚀 *مرحباً بك في نظام شراكة* 🚀\n\n` +
         `بيانات دخولك:\n` +
         `📧 البريد: ${formData.email}\n` +
         `🔑 كلمة المرور: ${formData.password}\n` +
-        `🔗 الرابط: https://your-domain.vercel.app\n\n` +
+        `🔗 الرابط: ${loginLink}\n\n` +
         `📋 الخطوات الأولى:\n` +
         `1️⃣ الإعدادات ← أضف بيانات شركتك\n` +
         `2️⃣ المعدات ← سجل معداتك\n` +
         `3️⃣ السائقون ← أضف فريقك\n` +
         `4️⃣ الدورات ← ابدأ العمل\n` +
         `5️⃣ تيليجرام ← استقبل التنبيهات\n\n` +
-        `⏱️ فترة التجربة: ${formData.subscription_type === 'trial' ? '14 يوم' : 'سنة كاملة'}\n` +
+        `⏱️ فترة التجربة: ${formData.subscription_type === 'trial' ? `14 يوم (ينتهي في ${dateStr})` : 'سنة كاملة'}\n` +
         `✅ بيانات الحساب محفوظة تلقائياً\n\n` +
         `📞 للدعم: wa.me/966500000000`;
 

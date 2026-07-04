@@ -82,6 +82,24 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: authError.message }, { status: 400 });
     }
 
+    // استخرج slug من البريد الإلكتروني
+    let slug = email.split('@')[0].toLowerCase().replace(/[^a-z]/g, '');
+
+    // تحقق من تكرار slug وأضف رقم إذا لزم الأمر
+    let finalSlug = slug;
+    let counter = 2;
+    while (true) {
+      const { data: existing } = await admin
+        .from('partners')
+        .select('id')
+        .eq('slug', finalSlug)
+        .single();
+
+      if (!existing) break;
+      finalSlug = `${slug}${counter}`;
+      counter++;
+    }
+
     const trial_ends_at = new Date();
     trial_ends_at.setDate(trial_ends_at.getDate() + 14);
 
@@ -94,6 +112,7 @@ export async function POST(req: NextRequest) {
         currency: 'SAR',
         locale: 'ar',
         theme: 'light',
+        slug: finalSlug,
         subscription_status: subscription_type === 'paid' ? 'active' : 'trial',
         plan: 'basic',
         trial_ends_at: subscription_type === 'paid' ? null : trial_ends_at.toISOString(),
@@ -107,15 +126,46 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: partnerError.message }, { status: 500 });
     }
 
+    // أضف أنواع المصاريف الافتراضية الثمانية
+    const defaultExpenseTypes = [
+      { name: 'وقود', icon: '⛽', color: '#FF6B6B' },
+      { name: 'صيانة', icon: '🔧', color: '#4ECDC4' },
+      { name: 'رسوم جمركية', icon: '📋', color: '#45B7D1' },
+      { name: 'توصيل', icon: '📦', color: '#FFA502' },
+      { name: 'مخالفات', icon: '⚠️', color: '#EF4444' },
+      { name: 'تأمين', icon: '🛡️', color: '#1DA1F2' },
+      { name: 'أخرى', icon: '📝', color: '#95E1D3' },
+      { name: 'رسوم إدارية', icon: '💼', color: '#AA96DA' },
+    ];
+
+    await admin
+      .from('expense_types')
+      .insert(
+        defaultExpenseTypes.map(type => ({
+          partner_id: partner.id,
+          name: type.name,
+          icon: type.icon,
+          color: type.color,
+          display_order: defaultExpenseTypes.indexOf(type),
+        }))
+      );
+
     await logAdminAction({
       actor_email: auth.email,
       action: 'tenant_created',
       target_type: 'partner',
       target_id: partner.id,
-      details: { company_name, subscription_type },
+      details: { company_name, subscription_type, slug: finalSlug },
     });
 
-    return NextResponse.json({ partner }, { status: 201 });
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sharakh.vercel.app';
+    const loginLink = `${appUrl}/login/${finalSlug}`;
+
+    return NextResponse.json({
+      partner: { ...partner, slug: finalSlug },
+      loginLink,
+      slug: finalSlug,
+    }, { status: 201 });
   } catch (err) {
     console.error('[POST /api/admin/tenants]', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
