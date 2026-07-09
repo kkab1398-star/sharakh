@@ -12,11 +12,16 @@ export async function GET(req: NextRequest) {
   const status = searchParams.get('status');
   const search = searchParams.get('search')?.toLowerCase() ?? '';
 
-  const { data: partners } = await admin
+  const { data: partners, error: partnersError } = await admin
     .from('partners')
-    .select('id, company_name, created_at, subscription_status, plan, trial_ends_at, subscription_ends_at, phone_primary, is_frozen, telegram_chat_id');
+    .select('id, company_name, created_at, subscription_status, plan, trial_ends_at, subscription_ends_at, phone_primary, telegram_chat_id, user_id');
 
-  if (!partners) return NextResponse.json({ partners: [] });
+  if (partnersError) {
+    console.error('[GET /api/admin/tenants] Partners query error:', partnersError);
+    return NextResponse.json({ error: 'Failed to fetch partners', details: partnersError.message }, { status: 500 });
+  }
+
+  if (!partners || partners.length === 0) return NextResponse.json({ partners: [] });
 
   const { data: workerCounts } = await admin
     .from('workers')
@@ -43,7 +48,6 @@ export async function GET(req: NextRequest) {
       trial:      p => p.status_badge === 'trial',
       expiring:   p => p.days_remaining !== null && p.days_remaining >= 0 && p.days_remaining <= 3,
       expired:    p => p.status_badge === 'expired',
-      frozen:     p => p.is_frozen,
     };
     if (statusMap[status]) filtered = filtered.filter(statusMap[status]);
   }

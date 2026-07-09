@@ -14,29 +14,57 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      setError("بريد إلكتروني أو كلمة مرور غير صحيحة.");
-      setLoading(false);
+    if (!email.trim() || !password.trim()) {
+      setError("يرجى ملء جميع الحقول");
       return;
     }
 
-    // تحقق من is_first_login
-    try {
-      const res = await fetch("/api/partners/me");
-      const data = await res.json();
+    setLoading(true);
+    setError("");
 
-      if (data.partner?.is_first_login === true) {
-        router.push("/change-password");
-      } else {
+    try {
+      const { error: authError, data } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password
+      });
+
+      if (authError) {
+        console.error('Auth error:', authError);
+        setError(authError.message || "فشل تسجيل الدخول. تحقق من بيانات الدخول.");
+        setLoading(false);
+        return;
+      }
+
+      if (!data.user) {
+        setError("فشل تسجيل الدخول");
+        setLoading(false);
+        return;
+      }
+
+      // تحقق من is_first_login
+      try {
+        const res = await fetch("/api/partners/me");
+        if (!res.ok) throw new Error('Failed to fetch partner data');
+
+        const partnerData = await res.json();
+
+        if (partnerData.partner?.is_first_login === true) {
+          await new Promise(r => setTimeout(r, 300));
+          router.push("/change-password");
+        } else {
+          await new Promise(r => setTimeout(r, 300));
+          router.push("/dashboard");
+        }
+      } catch (err) {
+        console.error('Partner fetch error:', err);
+        await new Promise(r => setTimeout(r, 300));
         router.push("/dashboard");
       }
-    } catch {
-      router.push("/dashboard");
+    } catch (err: any) {
+      console.error('Login error:', err);
+      setError(err.message || "حدث خطأ في الخادم");
+      setLoading(false);
     }
   };
 

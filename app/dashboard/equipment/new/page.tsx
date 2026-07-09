@@ -57,6 +57,13 @@ export default function NewEquipmentPage() {
     setError('');
     setSaving(true);
 
+    // تحقق من الحد الأدنى من البيانات
+    if (!form.model.trim()) {
+      setError('يجب إدخال اسم أو موديل المعدة');
+      setSaving(false);
+      return;
+    }
+
     const body: Record<string, any> = {
       model:        form.model.trim()        || undefined,
       plate_number: form.plate_number.trim() || undefined,
@@ -73,7 +80,14 @@ export default function NewEquipmentPage() {
     const data = await res.json();
     setSaving(false);
 
-    if (!res.ok) { setError(data.error ?? 'حدث خطأ'); return; }
+    if (!res.ok) {
+      const errorMsg = data.error || data.details || 'فشل حفظ المعدة - حاول مرة أخرى';
+      setError(errorMsg);
+      return;
+    }
+
+    // انتظر قليلاً لتأكيد الحفظ
+    await new Promise(r => setTimeout(r, 500));
     router.push('/dashboard/equipment');
   };
 

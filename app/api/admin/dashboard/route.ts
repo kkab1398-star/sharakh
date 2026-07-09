@@ -8,10 +8,10 @@ export async function GET() {
 
   const admin = createSuperAdminClient();
 
-  const [{ data: partners }, { data: payments }, { data: cycles }] = await Promise.all([
+  const [{ data: partners, error: partnersError }, { data: payments }, { data: cycles }] = await Promise.all([
     admin
       .from('partners')
-      .select('id, company_name, subscription_status, plan, trial_ends_at, subscription_ends_at, is_frozen, created_at'),
+      .select('id, company_name, subscription_status, plan, trial_ends_at, subscription_ends_at, created_at, user_id'),
     admin
       .from('payments')
       .select('amount, status, payment_date')
@@ -21,6 +21,11 @@ export async function GET() {
       .select('id, partner_id, worker_id, status, started_at, total_income')
       .eq('status', 'open'),
   ]);
+
+  if (partnersError) {
+    console.error('[GET /api/admin/dashboard] Partners query error:', partnersError);
+    return NextResponse.json({ error: 'Failed to fetch dashboard data' }, { status: 500 });
+  }
 
   const partnerRows  = partners ?? [];
   const paymentRows  = payments ?? [];
@@ -53,8 +58,13 @@ export async function GET() {
     }
   }
 
+  // ── جلب بيانات المستخدمين (if available) ──
+  // Note: Supabase auth.users table may not be directly queryable via Supabase JS SDK
+  // For now, we'll use user_id and let frontend handle display
+  const userMap = new Map<string, string>();
+
   // ── الدورات المفتوحة الآن — مجمّعة حسب الشريك ──
-  const partnerNameMap = new Map(partnerRows.map(p => [p.id, p.company_name]));
+  const partnerMap = new Map(partnerRows.map(p => [p.id, p]));
   const grouped = new Map<string, { worker_ids: Set<string>; last_activity: string; revenue: number }>();
 
   for (const c of openCycles) {
@@ -65,13 +75,20 @@ export async function GET() {
     grouped.set(c.partner_id, g);
   }
 
-  const open_cycles = Array.from(grouped.entries()).map(([partner_id, g]) => ({
-    partner_id,
-    company_name:  partnerNameMap.get(partner_id) ?? '—',
-    worker_count:  g.worker_ids.size,
-    last_activity: g.last_activity,
-    revenue:       g.revenue,
-  })).sort((a, b) => new Date(b.last_activity).getTime() - new Date(a.last_activity).getTime());
+  const open_cycles = Array.from(grouped.entries()).map(([partner_id, g]) => {
+    const partner = partnerMap.get(partner_id);
+    const state = partner ? getSubscriptionState(partner) : { status: 'unknown', days_remaining: null };
+    return {
+      partner_id,
+      company_name:  partner?.company_name ?? '—',
+      email: userMap.get(partner?.user_id) ?? '—',
+      subscription_status: partner?.subscription_status ?? 'unknown',
+      status_badge: state.status,
+      worker_count:  g.worker_ids.size,
+      last_activity: g.last_activity,
+      revenue:       g.revenue,
+    };
+  }).sort((a, b) => new Date(b.last_activity).getTime() - new Date(a.last_activity).getTime());
 
   // ── الإيرادات الشهرية — آخر 6 أشهر ──
   const monthly: Record<string, { month: string; total: number }> = {};
