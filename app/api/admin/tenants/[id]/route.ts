@@ -26,6 +26,16 @@ export async function GET(
     .select('id, full_name, username, phone, is_active, is_frozen, created_at')
     .eq('partner_id', id);
 
+  const { data: equipment } = await admin
+    .from('equipment')
+    .select('id')
+    .eq('partner_id', id);
+
+  const { data: cycles } = await admin
+    .from('financial_cycles')
+    .select('id')
+    .eq('partner_id', id);
+
   const { data: auditLogs } = await admin
     .from('audit_log')
     .select('action, target_type, details, created_at')
@@ -33,8 +43,16 @@ export async function GET(
     .order('created_at', { ascending: false })
     .limit(10);
 
+  const { data: auth } = await admin.auth.admin.getUserById(partner.user_id);
+
   return NextResponse.json({
-    partner,
+    partner: {
+      ...partner,
+      user_email: auth?.email,
+      worker_count: workers?.length ?? 0,
+      equipment_count: equipment?.length ?? 0,
+      cycle_count: cycles?.length ?? 0,
+    },
     workers: workers ?? [],
     recent_actions: auditLogs ?? [],
   });

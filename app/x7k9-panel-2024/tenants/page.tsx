@@ -19,6 +19,10 @@ interface Partner {
 interface DetailedPartner extends Partner {
   workers: any[];
   recent_actions: any[];
+  user_email?: string;
+  worker_count?: number;
+  equipment_count?: number;
+  cycle_count?: number;
 }
 
 const STATUS_COLOR: Record<string, { bg: string; text: string }> = {
@@ -34,6 +38,12 @@ export default function TenantsPage() {
   const [loading, setLoading]         = useState(true);
   const [selectedId, setSelectedId]   = useState<string | null>(null);
   const [selectedPartner, setSelectedPartner] = useState<DetailedPartner | null>(null);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -69,6 +79,66 @@ export default function TenantsPage() {
         p.id === selectedId ? { ...p, is_frozen: action === 'freeze' } : p
       );
       setPartners(updated);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (!newPassword || !confirmPassword) {
+      alert('يرجى ملء جميع الحقول');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      alert('كلمات المرور غير متطابقة');
+      return;
+    }
+    if (newPassword.length < 8) {
+      alert('يجب أن تكون كلمة المرور 8 أحرف على الأقل');
+      return;
+    }
+
+    setPasswordLoading(true);
+    try {
+      const res = await fetch(`/api/admin/tenants/${selectedId}/actions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'change_password', new_password: newPassword }),
+      });
+
+      if (res.ok) {
+        setShowPasswordModal(false);
+        setNewPassword('');
+        setConfirmPassword('');
+        await loadPartnerDetails(selectedId!);
+        alert('تم تحديث كلمة المرور بنجاح');
+      } else {
+        const data = await res.json();
+        alert('خطأ: ' + (data.error || 'فشل تحديث كلمة المرور'));
+      }
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setDeleteLoading(true);
+    try {
+      const res = await fetch(`/api/admin/tenants/${selectedId}/actions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete' }),
+      });
+
+      if (res.ok) {
+        setShowDeleteConfirm(false);
+        setSelectedId(null);
+        setPartners(partners.filter(p => p.id !== selectedId));
+        alert('تم حذف المشترك والبيانات المرتبطة به');
+      } else {
+        const data = await res.json();
+        alert('خطأ: ' + (data.error || 'فشل الحذف'));
+      }
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -175,11 +245,36 @@ export default function TenantsPage() {
           <div style={{ padding: 16, flex: 1 }}>
             {/* البيانات الأساسية */}
             <div style={{ marginBottom: 20 }}>
-              <p style={{ fontSize: 10, color: '#FFCD11', textTransform: 'uppercase', fontWeight: 900, marginBottom: 8 }}>البيانات</p>
+              <p style={{ fontSize: 10, color: '#FFCD11', textTransform: 'uppercase', fontWeight: 900, marginBottom: 8 }}>البيانات الأساسية</p>
               <div style={{ fontSize: 12, color: '#A0A0A0', lineHeight: 1.8 }}>
+                <p>البريد: <span dir="ltr" style={{ fontSize: 11 }}>{selectedPartner.user_email ?? '—'}</span></p>
                 <p>الهاتف: {selectedPartner.phone_primary ?? '—'}</p>
                 <p>الحالة: <span style={{ color: STATUS_COLOR[selectedPartner.status_badge]?.text }}>{selectedPartner.status_badge}</span></p>
                 <p>الخطة: {selectedPartner.plan ?? '—'}</p>
+                <p dir="ltr" style={{ fontSize: 11 }}>منذ: {new Date(selectedPartner.created_at).toLocaleDateString('ar-SA')}</p>
+              </div>
+            </div>
+
+            {/* الإحصائيات */}
+            <div style={{ marginBottom: 20 }}>
+              <p style={{ fontSize: 10, color: '#FFCD11', textTransform: 'uppercase', fontWeight: 900, marginBottom: 8 }}>الإحصائيات</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                <div style={{ background: '#1A1A1A', padding: 10, borderRadius: 3, textAlign: 'center' }}>
+                  <p style={{ fontSize: 14, fontWeight: 900, color: '#FFCD11' }}>{selectedPartner.worker_count}</p>
+                  <p style={{ fontSize: 10, color: '#A0A0A0' }}>سائق</p>
+                </div>
+                <div style={{ background: '#1A1A1A', padding: 10, borderRadius: 3, textAlign: 'center' }}>
+                  <p style={{ fontSize: 14, fontWeight: 900, color: '#FFCD11' }}>{selectedPartner.equipment_count}</p>
+                  <p style={{ fontSize: 10, color: '#A0A0A0' }}>معدة</p>
+                </div>
+                <div style={{ background: '#1A1A1A', padding: 10, borderRadius: 3, textAlign: 'center' }}>
+                  <p style={{ fontSize: 14, fontWeight: 900, color: '#FFCD11' }}>{selectedPartner.cycle_count}</p>
+                  <p style={{ fontSize: 10, color: '#A0A0A0' }}>دورة</p>
+                </div>
+                <div style={{ background: '#1A1A1A', padding: 10, borderRadius: 3, textAlign: 'center' }}>
+                  <p style={{ fontSize: 14, fontWeight: 900, color: selectedPartner.days_remaining !== null && selectedPartner.days_remaining <= 3 ? '#ef4444' : '#22c55e' }}>{selectedPartner.days_remaining ?? '∞'}</p>
+                  <p style={{ fontSize: 10, color: '#A0A0A0' }}>أيام متبقية</p>
+                </div>
               </div>
             </div>
 
@@ -203,6 +298,24 @@ export default function TenantsPage() {
                 }}
               >
                 📅 تمديد 30 يوم
+              </button>
+              <button
+                onClick={() => setShowPasswordModal(true)}
+                style={{
+                  padding: '8px 12px', background: '#45B7D1', color: '#fff', border: 'none',
+                  cursor: 'pointer', fontSize: 11, fontWeight: 700, borderRadius: 2,
+                }}
+              >
+                🔐 غيّر كلمة المرور
+              </button>
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                style={{
+                  padding: '8px 12px', background: '#ef4444', color: '#fff', border: 'none',
+                  cursor: 'pointer', fontSize: 11, fontWeight: 700, borderRadius: 2,
+                }}
+              >
+                🗑️ حذف المشترك
               </button>
             </div>
 
@@ -247,6 +360,123 @@ export default function TenantsPage() {
             zIndex: 999, cursor: 'pointer',
           }}
         />
+      )}
+
+      {/* Password Change Modal */}
+      {showPasswordModal && (
+        <div style={{
+          position: 'fixed', left: 0, top: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000,
+        }}>
+          <div style={{
+            background: '#2A2A2A', padding: 24, borderRadius: 8, border: '1px solid #3D3D3D',
+            maxWidth: 400, width: '90%',
+          }}>
+            <h3 style={{ fontSize: 16, fontWeight: 900, color: '#FFCD11', marginBottom: 16 }}>
+              تغيير كلمة المرور
+            </h3>
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ fontSize: 12, color: '#A0A0A0', display: 'block', marginBottom: 6 }}>
+                كلمة المرور الجديدة
+              </label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={e => setNewPassword(e.target.value)}
+                placeholder="أدخل كلمة المرور الجديدة"
+                style={{
+                  width: '100%', padding: '10px 12px', background: '#1A1A1A', border: '1px solid #3D3D3D',
+                  color: '#fff', fontSize: 13, borderRadius: 4,
+                }}
+              />
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ fontSize: 12, color: '#A0A0A0', display: 'block', marginBottom: 6 }}>
+                تأكيد كلمة المرور
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                placeholder="أدخل كلمة المرور مرة أخرى"
+                style={{
+                  width: '100%', padding: '10px 12px', background: '#1A1A1A', border: '1px solid #3D3D3D',
+                  color: '#fff', fontSize: 13, borderRadius: 4,
+                }}
+              />
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <button
+                onClick={() => setShowPasswordModal(false)}
+                disabled={passwordLoading}
+                style={{
+                  padding: '10px 14px', background: '#3D3D3D', color: '#fff', border: 'none',
+                  cursor: passwordLoading ? 'not-allowed' : 'pointer', fontSize: 12, fontWeight: 700,
+                  borderRadius: 4, opacity: passwordLoading ? 0.6 : 1,
+                }}
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={handleChangePassword}
+                disabled={passwordLoading}
+                style={{
+                  padding: '10px 14px', background: '#FFCD11', color: '#1A1A1A', border: 'none',
+                  cursor: passwordLoading ? 'not-allowed' : 'pointer', fontSize: 12, fontWeight: 700,
+                  borderRadius: 4, opacity: passwordLoading ? 0.6 : 1,
+                }}
+              >
+                {passwordLoading ? '⏳ جاري...' : '✓ حفظ'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div style={{
+          position: 'fixed', left: 0, top: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000,
+        }}>
+          <div style={{
+            background: '#2A2A2A', padding: 24, borderRadius: 8, border: '1px solid #3D3D3D',
+            maxWidth: 400, width: '90%',
+          }}>
+            <h3 style={{ fontSize: 16, fontWeight: 900, color: '#ef4444', marginBottom: 12 }}>
+              تأكيد الحذف
+            </h3>
+            <p style={{ fontSize: 13, color: '#A0A0A0', marginBottom: 20, lineHeight: 1.6 }}>
+              سيتم حذف المشترك <strong>{selectedPartner?.company_name}</strong> وجميع بيانات السائقين والمعدات والمعاملات المرتبطة به.<br/>
+              <br/>
+              هذه العملية لا يمكن التراجع عنها. هل أنت متأكد؟
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={deleteLoading}
+                style={{
+                  padding: '10px 14px', background: '#3D3D3D', color: '#fff', border: 'none',
+                  cursor: deleteLoading ? 'not-allowed' : 'pointer', fontSize: 12, fontWeight: 700,
+                  borderRadius: 4, opacity: deleteLoading ? 0.6 : 1,
+                }}
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleteLoading}
+                style={{
+                  padding: '10px 14px', background: '#ef4444', color: '#fff', border: 'none',
+                  cursor: deleteLoading ? 'not-allowed' : 'pointer', fontSize: 12, fontWeight: 700,
+                  borderRadius: 4, opacity: deleteLoading ? 0.6 : 1,
+                }}
+              >
+                {deleteLoading ? '⏳ جاري...' : '🗑️ احذف نهائياً'}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
