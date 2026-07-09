@@ -30,7 +30,7 @@ export default function PasswordInput({
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
       <input
         type={showPassword ? 'text' : 'password'}
         required={required}
@@ -43,27 +43,24 @@ export default function PasswordInput({
         className={className}
         style={{
           ...style,
-          paddingInlineEnd: '40px',
+          flex: 1,
         }}
       />
       <button
         type="button"
         onClick={togglePasswordVisibility}
         style={{
-          position: 'absolute',
-          insetInlineEnd: '12px',
-          top: '50%',
-          transform: 'translateY(-50%)',
           background: 'none',
           border: 'none',
           cursor: 'pointer',
-          padding: 0,
+          padding: '4px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '20px',
-          color: 'var(--cat-yellow, #FFCD11)',
-          zIndex: 10,
+          fontSize: '22px',
+          color: showPassword ? '#FFCD11' : '#A0A0A0',
+          flexShrink: 0,
+          transition: 'color 0.2s',
         }}
         title={showPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'}
       >

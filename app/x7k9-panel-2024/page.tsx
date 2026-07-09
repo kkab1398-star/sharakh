@@ -20,6 +20,9 @@ interface DashboardData {
   open_cycles: {
     partner_id: string;
     company_name: string;
+    email: string;
+    subscription_status: string;
+    status_badge: string;
     worker_count: number;
     last_activity: string;
     revenue: number;
@@ -120,23 +123,43 @@ export default function SuperAdminCommandCenter() {
           {open_cycles.length === 0 ? (
             <p style={{ padding: 30, textAlign: 'center', color: '#A0A0A0', fontSize: 13 }}>لا توجد دورات مفتوحة حالياً</p>
           ) : (
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12.5 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
               <thead>
                 <tr style={{ background: '#1A1A1A' }}>
-                  {['المشترك', 'السائقون', 'آخر نشاط', 'الإيراد'].map(h => (
-                    <th key={h} style={{ padding: '8px 14px', textAlign: 'right', fontSize: 10, color: '#FFCD11', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</th>
+                  {['الشركة / البريد', 'الحالة', 'السائقون', 'آخر نشاط', 'الإيراد', ''].map(h => (
+                    <th key={h} style={{ padding: '8px 10px', textAlign: h === '' ? 'center' : 'right', fontSize: 9.5, color: '#FFCD11', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {open_cycles.map((c, i) => (
-                  <tr key={c.partner_id} style={{ background: i % 2 === 0 ? '#1A1A1A' : '#111111', borderBottom: '1px solid #3D3D3D' }}>
-                    <td style={{ padding: '9px 14px', color: '#FFFFFF', fontWeight: 700 }}>{c.company_name}</td>
-                    <td style={{ padding: '9px 14px', color: '#A0A0A0', textAlign: 'center' }}>{c.worker_count}</td>
-                    <td style={{ padding: '9px 14px', color: '#A0A0A0' }} dir="ltr">{new Date(c.last_activity).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
-                    <td style={{ padding: '9px 14px', color: '#FFCD11', fontWeight: 900 }}>{fmt(c.revenue)}</td>
-                  </tr>
-                ))}
+                {open_cycles.map((c, i) => {
+                  const statusColors: Record<string, { bg: string; text: string }> = {
+                    trial:   { bg: 'rgba(255,205,17,0.1)', text: '#FFCD11' },
+                    active:  { bg: 'rgba(34,197,94,0.1)', text: '#22c55e' },
+                    expired: { bg: 'rgba(239,68,68,0.1)', text: '#ef4444' },
+                    frozen:  { bg: 'rgba(107,114,128,0.1)', text: '#6b7280' },
+                  };
+                  const sc = statusColors[c.status_badge] || { bg: '#3D3D3D', text: '#A0A0A0' };
+                  return (
+                    <tr key={c.partner_id} style={{ background: i % 2 === 0 ? '#1A1A1A' : '#111111', borderBottom: '1px solid #3D3D3D' }}>
+                      <td style={{ padding: '8px 10px', color: '#FFFFFF', fontWeight: 700 }}>
+                        <div style={{ fontSize: 12 }}>{c.company_name}</div>
+                        <div style={{ fontSize: 10, color: '#888', marginTop: 2 }} dir="ltr">{c.email}</div>
+                      </td>
+                      <td style={{ padding: '6px 10px' }}>
+                        <span style={{ background: sc.bg, color: sc.text, padding: '3px 7px', fontSize: 9, fontWeight: 700, borderRadius: 2, whiteSpace: 'nowrap' }}>
+                          {c.status_badge === 'trial' ? '🟡 تجريبي' : c.status_badge === 'active' ? '🟢 نشط' : c.status_badge === 'expired' ? '🔴 منتهي' : c.status_badge === 'frozen' ? '⚫ مجمد' : c.status_badge}
+                        </span>
+                      </td>
+                      <td style={{ padding: '8px 10px', color: '#A0A0A0', textAlign: 'center' }}>{c.worker_count}</td>
+                      <td style={{ padding: '8px 10px', color: '#A0A0A0', fontSize: 11 }} dir="ltr">{new Date(c.last_activity).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
+                      <td style={{ padding: '8px 10px', color: '#FFCD11', fontWeight: 900, textAlign: 'center' }}>{fmt(c.revenue)}</td>
+                      <td style={{ padding: '8px 10px', textAlign: 'center' }}>
+                        <Link href={`/x7k9-panel-2024/tenants?id=${c.partner_id}`} style={{ fontSize: 11, color: '#FFCD11', textDecoration: 'none', fontWeight: 700, cursor: 'pointer', padding: '4px 8px', background: 'rgba(255,205,17,0.1)', borderRadius: 2, display: 'inline-block' }}>→</Link>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           )}

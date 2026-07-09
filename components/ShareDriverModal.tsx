@@ -7,10 +7,11 @@ interface ShareDriverModalProps {
   driver: {
     full_name: string;
     username: string;
-    password: string;
+    password?: string;
     phone?: string;
   } | null;
   partnerSlug?: string | null;
+  showPassword?: boolean;
   onClose: () => void;
 }
 
@@ -18,6 +19,7 @@ export default function ShareDriverModal({
   isOpen,
   driver,
   partnerSlug,
+  showPassword = true,
   onClose,
 }: ShareDriverModalProps) {
   const [copied, setCopied] = useState(false);
@@ -31,7 +33,7 @@ export default function ShareDriverModal({
     : `${appUrl}/driver/login`;
 
   // بناء رسالة الواتساب
-  const whatsappMessage = `مرحباً ${driver.full_name} 👋
+  let whatsappMessage = `مرحباً ${driver.full_name} 👋
 
 تم تسجيلك في نظام شراكة لإدارة المعدات
 
@@ -39,12 +41,20 @@ export default function ShareDriverModal({
 ${loginLink}
 
 👤 اسم المستخدم:
-${driver.username}
+${driver.username}`;
+
+  if (showPassword && driver.password) {
+    whatsappMessage += `
 
 🔑 كلمة المرور:
 ${driver.password}
 
 ⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد`;
+  } else if (!showPassword) {
+    whatsappMessage += `
+
+⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد`;
+  }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(whatsappMessage);
@@ -121,7 +131,7 @@ ${driver.password}
         <div style={{ textAlign: "center", marginBottom: "24px" }}>
           <div style={{ fontSize: "40px", marginBottom: "12px" }}>✅</div>
           <h2 style={{ fontSize: "18px", fontWeight: 900, color: "#22c55e", margin: 0 }}>
-            تم إضافة السائق بنجاح
+            {showPassword ? "تم إضافة السائق بنجاح" : "إعادة إرسال بيانات الدخول"}
           </h2>
           <p style={{ fontSize: "13px", color: "#A0A0A0", margin: "6px 0 0" }}>
             {driver.full_name}

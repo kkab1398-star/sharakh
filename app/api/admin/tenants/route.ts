@@ -121,6 +121,7 @@ export async function POST(req: NextRequest) {
         plan: 'basic',
         trial_ends_at: subscription_type === 'paid' ? null : trial_ends_at.toISOString(),
         subscription_ends_at: subscription_type === 'paid' ? new Date(Date.now() + 365 * 86400000).toISOString() : null,
+        is_first_login: true,
       })
       .select()
       .single();

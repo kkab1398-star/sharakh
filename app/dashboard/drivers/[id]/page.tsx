@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import type { Worker, Equipment } from '@/types';
+import type { Worker, Equipment, Partner } from '@/types';
+import ShareDriverModal from '@/components/ShareDriverModal';
+import ResetPasswordModal from '@/components/ResetPasswordModal';
 
 type WorkerDetail = Worker & {
   worker_contracts?: { id: string; profit_percentage: number; effective_from: string; effective_to: string | null }[];
@@ -12,21 +14,27 @@ export default function DriverDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
-  const [worker,        setWorker]        = useState<WorkerDetail | null>(null);
-  const [currentEq,     setCurrentEq]     = useState<Equipment | null>(null);
-  const [availableEq,   setAvailableEq]   = useState<Equipment[]>([]);
-  const [loading,       setLoading]       = useState(true);
-  const [picking,       setPicking]       = useState(false);
-  const [selectedEqId,  setSelectedEqId]  = useState('');
-  const [busy,          setBusy]          = useState(false);
+  const [worker,              setWorker]              = useState<WorkerDetail | null>(null);
+  const [partner,             setPartner]             = useState<Partner | null>(null);
+  const [currentEq,           setCurrentEq]           = useState<Equipment | null>(null);
+  const [availableEq,         setAvailableEq]         = useState<Equipment[]>([]);
+  const [loading,             setLoading]             = useState(true);
+  const [picking,             setPicking]             = useState(false);
+  const [selectedEqId,        setSelectedEqId]        = useState('');
+  const [busy,                setBusy]                = useState(false);
+  const [showShareModal,      setShowShareModal]      = useState(false);
+  const [showResetModal,      setShowResetModal]      = useState(false);
+  const [newPassword,         setNewPassword]         = useState('');
 
   const load = () => {
     setLoading(true);
     Promise.all([
       fetch(`/api/drivers/${id}`).then(r => r.json()),
       fetch('/api/equipment').then(r => r.json()),
-    ]).then(([dData, eData]) => {
+      fetch('/api/partners/me').then(r => r.json()),
+    ]).then(([dData, eData, pData]) => {
       setWorker(dData.worker ?? null);
+      setPartner(pData.partner ?? null);
       const allEq: Equipment[] = eData.equipment ?? [];
       setCurrentEq(allEq.find(e => e.assigned_worker_id === id) ?? null);
       setAvailableEq(allEq.filter(e => e.is_active && !e.assigned_worker_id));
@@ -74,6 +82,12 @@ export default function DriverDetailPage() {
     load();
   };
 
+  const handleResetPasswordSuccess = (password: string) => {
+    setNewPassword(password);
+    setShowResetModal(false);
+    alert('تم تحديث كلمة المرور بنجاح');
+  };
+
   if (loading) {
     return (
       <div className="p-12 text-center">
@@ -94,6 +108,27 @@ export default function DriverDetailPage() {
 
   return (
     <div className="p-6 md:p-8 max-w-2xl mx-auto space-y-6" dir="rtl">
+      {/* Modals */}
+      <ShareDriverModal
+        isOpen={showShareModal}
+        driver={worker ? {
+          full_name: worker.full_name,
+          username: worker.username,
+          password: newPassword || '',
+          phone: worker.phone ?? undefined,
+        } : null}
+        partnerSlug={partner?.slug}
+        showPassword={!!newPassword}
+        onClose={() => setShowShareModal(false)}
+      />
+
+      <ResetPasswordModal
+        isOpen={showResetModal}
+        driverId={id}
+        driverName={worker?.full_name ?? ''}
+        onClose={() => setShowResetModal(false)}
+        onSuccess={handleResetPasswordSuccess}
+      />
 
       <button onClick={() => router.back()} className="text-sm text-[#A0A0A0] hover:text-[#FFFFFF] flex items-center gap-1">
         ← رجوع
@@ -127,6 +162,22 @@ export default function DriverDetailPage() {
             <p className="text-xs text-[#A0A0A0] mb-1">نسبة السائق من الأرباح</p>
             <p className="font-bold text-[#FFCD11]">{contract ? `${contract.profit_percentage}%` : '—'}</p>
           </div>
+        </div>
+
+        {/* أزرار إعادة الإرسال وتغيير كلمة المرور */}
+        <div className="flex gap-2 mt-6 pt-6 border-t border-[#3D3D3D]">
+          <button
+            onClick={() => setShowShareModal(true)}
+            className="flex-1 px-4 py-2.5 bg-[#1A1A1A] text-[#FFCD11] rounded-xl text-xs font-bold hover:bg-[#2A2A2A] transition border border-[#FFCD11]"
+          >
+            📱 إعادة إرسال بيانات الدخول
+          </button>
+          <button
+            onClick={() => setShowResetModal(true)}
+            className="flex-1 px-4 py-2.5 bg-[#1A1A1A] text-[#3b82f6] rounded-xl text-xs font-bold hover:bg-[#2A2A2A] transition border border-[#3b82f6]"
+          >
+            🔑 إعادة تعيين كلمة المرور
+          </button>
         </div>
       </div>
 

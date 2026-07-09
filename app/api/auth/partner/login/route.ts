@@ -27,11 +27,22 @@ export async function POST(req: NextRequest) {
 
     const { data: partner } = await supabase
       .from('partners')
-      .select('*')
+      .select('id, company_name, is_first_login, user_id, slug')
       .eq('user_id', data.user.id)
       .single();
 
-    return NextResponse.json({ partner, session: data.session });
+    if (!partner) {
+      return NextResponse.json({ error: 'Partner not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      partner: {
+        ...partner,
+        user_email: data.user.email,
+      },
+      session: data.session,
+      is_first_login: partner.is_first_login,
+    });
 
   } catch (err) {
     console.error('[POST /api/auth/partner/login]', err);
