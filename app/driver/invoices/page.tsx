@@ -81,16 +81,18 @@ export default function DriverInvoices() {
   };
 
   return (
-    <div style={{ fontFamily: meta.fontFamily, background: 'var(--cat-black)', minHeight: '100%' }}>
-      <header style={{ background: 'var(--cat-dark)', borderBottom: '3px solid var(--cat-yellow)', padding: '14px 16px', position: 'sticky', top: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h1 style={{ fontSize: 16, fontWeight: 900, color: 'var(--cat-white)', margin: 0, textTransform: 'uppercase', letterSpacing: '-0.3px' }}>{m.invoices.title}</h1>
+    <div style={{ fontFamily: meta.fontFamily, background: '#1A1A1A', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <header style={{ background: '#111111', borderBottom: '3px solid #FFCD11', padding: '12px 16px', position: 'sticky', top: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '60px' }}>
+        <h1 style={{ fontSize: 16, fontWeight: 900, color: '#FFFFFF', margin: 0, textTransform: 'uppercase', letterSpacing: '-0.3px' }}>
+          🧾 {m.invoices.title}
+        </h1>
         <button
           onClick={() => router.push('/driver/invoices/new')}
           style={{
-            background: 'var(--cat-yellow)',
-            color: 'var(--cat-black)',
+            background: '#FFCD11',
+            color: '#1A1A1A',
             border: 'none',
-            borderRadius: 0,
+            borderRadius: 8,
             padding: '8px 14px',
             fontSize: 12,
             fontWeight: 900,
@@ -98,68 +100,128 @@ export default function DriverInvoices() {
             textTransform: 'uppercase',
             letterSpacing: '0.06em',
             fontFamily: meta.fontFamily,
+            transition: 'all 0.2s ease',
           }}
+          onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.95)')}
+          onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
         >
           + جديدة
         </button>
       </header>
 
-      <div style={{ padding: 16, maxWidth: 430, margin: '0 auto' }}>
+      <div style={{ flex: 1, padding: '16px', maxWidth: 430, margin: '0 auto', width: '100%', overflowY: 'auto' }}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: 60, color: 'var(--cat-muted)' }}>...</div>
+          <div style={{ textAlign: 'center', padding: 60, color: '#A0A0A0' }}>
+            <div style={{ display: 'inline-block', width: 40, height: 40, border: '3px solid #FFCD11', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+            <p style={{ marginTop: 12 }}>{m.invoices.loading ?? 'جاري التحميل...'}</p>
+          </div>
         ) : invoices.length === 0 ? (
-          <div style={{ background: 'var(--cat-gray)', border: '1px solid var(--cat-mid)', borderRadius: 2, padding: 40, textAlign: 'center', marginTop: 20 }}>
+          <div style={{ background: '#2A2A2A', border: '2px solid #3D3D3D', borderRadius: 12, padding: 40, textAlign: 'center', marginTop: 20 }}>
             <p style={{ fontSize: 36, margin: '0 0 12px' }}>🧾</p>
-            <p style={{ fontWeight: 700, color: 'var(--cat-white)', fontSize: 15, margin: '0 0 6px' }}>{m.invoices.empty}</p>
-            <p style={{ fontSize: 12, color: 'var(--cat-muted)', margin: 0 }}>{m.invoices.emptyHint}</p>
+            <p style={{ fontWeight: 700, color: '#FFFFFF', fontSize: 15, margin: '0 0 6px' }}>{m.invoices.empty}</p>
+            <p style={{ fontSize: 12, color: '#A0A0A0', margin: 0 }}>{m.invoices.emptyHint}</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {invoices.map(inv => {
+            {invoices.map((inv, idx) => {
               const sym = currencySymbol(inv.currency);
               const ok  = copied === inv.id;
               return (
-                <div key={inv.id} dir={dir} style={{ background: 'var(--cat-gray)', borderRadius: 2, borderTop: '3px solid var(--cat-yellow)', padding: 16 }}>
+                <div
+                  key={inv.id}
+                  dir={dir}
+                  style={{
+                    background: '#2A2A2A',
+                    borderRadius: 8,
+                    borderTop: '4px solid #FFCD11',
+                    padding: 16,
+                    animation: `slideUp 0.4s ease-out ${idx * 0.05}s backwards`,
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+                    (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                    (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+                  }}
+                >
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
                     <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 14, fontWeight: 900, color: 'var(--cat-white)', margin: '0 0 2px' }}>{inv.customer_name}</p>
-                      <p style={{ fontSize: 12, color: 'var(--cat-muted)', margin: 0 }} dir="ltr">{inv.customer_phone}</p>
+                      <p style={{ fontSize: 14, fontWeight: 900, color: '#FFFFFF', margin: '0 0 2px' }}>{inv.customer_name}</p>
+                      <p style={{ fontSize: 12, color: '#A0A0A0', margin: 0 }} dir="ltr">{inv.customer_phone}</p>
                     </div>
                     <div style={{ textAlign: 'end' }}>
-                      <p style={{ fontSize: 20, fontWeight: 900, color: 'var(--cat-yellow)', textShadow: 'var(--yellow-shadow)', WebkitTextStroke: 'var(--yellow-stroke)' as any, margin: '0 0 2px', fontFamily: "'Barlow Condensed', inherit" }} dir="ltr">
+                      <p style={{ fontSize: 20, fontWeight: 900, color: '#FFCD11', margin: '0 0 2px', fontFamily: "'Barlow Condensed', inherit" }} dir="ltr">
                         {Number(inv.amount).toLocaleString('en-US')} {sym}
                       </p>
-                      <p style={{ fontSize: 10, color: 'var(--cat-muted)', margin: 0 }} dir="ltr">{new Date(inv.created_at).toLocaleDateString('en-US')}</p>
+                      <p style={{ fontSize: 10, color: '#A0A0A0', margin: 0 }} dir="ltr">
+                        {new Date(inv.created_at).toLocaleDateString('en-US')}
+                      </p>
                     </div>
                   </div>
 
                   {inv.description && (
-                    <div style={{ background: 'var(--cat-black)', borderRight: '2px solid var(--cat-mid)', padding: '8px 12px', marginBottom: 12 }}>
-                      <p style={{ fontSize: 12, color: 'var(--cat-muted)', margin: 0 }}>{inv.description}</p>
+                    <div style={{ background: '#1A1A1A', borderRight: '3px solid #FFCD11', padding: '8px 12px', marginBottom: 12, borderRadius: 4 }}>
+                      <p style={{ fontSize: 12, color: '#A0A0A0', margin: 0 }}>{inv.description}</p>
                     </div>
                   )}
 
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <button onClick={() => shareInvoice(inv)} style={{
-                      flex: 1, height: 40, borderRadius: 0,
-                      background: ok ? 'rgba(34,197,94,0.1)' : 'transparent',
-                      border: ok ? '1px solid var(--cat-green)' : '1px solid var(--cat-mid)',
-                      color: ok ? 'var(--cat-green)' : 'var(--cat-yellow)',
-                      fontWeight: 700, fontSize: 12, cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                      textTransform: 'uppercase', letterSpacing: '0.06em', fontFamily: meta.fontFamily,
-                    }}>
+                    <button
+                      onClick={() => shareInvoice(inv)}
+                      style={{
+                        flex: 1,
+                        height: 40,
+                        borderRadius: 4,
+                        background: ok ? 'rgba(34, 197, 94, 0.15)' : 'transparent',
+                        border: ok ? '2px solid #22c55e' : '2px solid #3D3D3D',
+                        color: ok ? '#22c55e' : '#FFCD11',
+                        fontWeight: 700,
+                        fontSize: 12,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 6,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.06em',
+                        fontFamily: meta.fontFamily,
+                        transition: 'all 0.2s ease',
+                      }}
+                      onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.95)')}
+                      onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+                    >
                       {ok ? `✓ ${m.invoices.copied}` : `↑ ${m.invoices.share}`}
                     </button>
-                    <button onClick={() => downloadPDF(inv)} disabled={pdfLoading === inv.id} style={{
-                      width: 40, height: 40, borderRadius: 0,
-                      background: 'transparent',
-                      border: '1px solid var(--cat-mid)',
-                      color: pdfLoading === inv.id ? 'var(--cat-muted)' : 'var(--cat-white)',
-                      fontWeight: 700, fontSize: 14, cursor: 'pointer',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }} title="تحميل PDF">
-                      {pdfLoading === inv.id ? '…' : '⬇'}
+                    <button
+                      onClick={() => downloadPDF(inv)}
+                      disabled={pdfLoading === inv.id}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 4,
+                        background: 'transparent',
+                        border: '2px solid #3D3D3D',
+                        color: pdfLoading === inv.id ? '#A0A0A0' : '#FFFFFF',
+                        fontWeight: 700,
+                        fontSize: 14,
+                        cursor: pdfLoading === inv.id ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'all 0.2s ease',
+                      }}
+                      title="تحميل PDF"
+                      onMouseDown={(e) => {
+                        if (!pdfLoading) (e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.95)';
+                      }}
+                      onMouseUp={(e) => {
+                        (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
+                      }}
+                    >
+                      {pdfLoading === inv.id ? '⏳' : '⬇'}
                     </button>
                   </div>
                 </div>
@@ -168,6 +230,23 @@ export default function DriverInvoices() {
           </div>
         )}
       </div>
+
+      <style>{`
+        @keyframes slideUp {
+          from {
+            transform: translateY(20px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }

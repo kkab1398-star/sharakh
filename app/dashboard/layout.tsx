@@ -12,7 +12,7 @@ async function getPartnerWithSubscription() {
 
     const { data: partner } = await supabase
       .from('partners')
-      .select('id, company_name, logo_url, currency, locale, phone_primary, phone_wa, subscription_status, plan, trial_ends_at, subscription_ends_at, is_first_login')
+      .select('id, company_name, logo_url, currency, locale, phone_primary, phone_wa, subscription_status, plan, trial_ends_at, subscription_ends_at')
       .eq('user_id', user.id)
       .single();
 
@@ -26,11 +26,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const partner = await getPartnerWithSubscription();
 
   if (!partner) redirect('/login');
-
-  // فرض تغيير كلمة المرور عند أول دخول
-  if (partner.is_first_login) {
-    redirect('/change-password');
-  }
 
   // تحقق من الاشتراك — إذا انتهى أعد التوجيه
   if (!canAccessSystem(partner)) {

@@ -20,7 +20,6 @@ interface DetailedPartner extends Partner {
   workers: any[];
   recent_actions: any[];
   user_email?: string;
-  worker_count?: number;
   equipment_count?: number;
   cycle_count?: number;
 }

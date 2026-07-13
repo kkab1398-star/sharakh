@@ -1,115 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import PasswordInput from "@/components/PasswordInput";
 
-interface PartnerData {
-  id: string;
-  company_name: string;
-  logo_url?: string;
-  email?: string; // البريد من الـ API
-}
-
-export default function PartnerLoginBySlugPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
-  const router = useRouter();
-  const params = React.use(paramsPromise);
-
+export default function TestLoginDesign() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [partnerData, setPartnerData] = useState<PartnerData | null>(null);
-  const [mounted, setMounted] = useState(false);
 
-  React.useEffect(() => {
-    setMounted(true);
-    const fetchPartner = async () => {
-      try {
-        const res = await fetch(`/api/partners/by-slug?slug=${params.slug}`);
-        if (res.ok) {
-          const data = await res.json();
-          const partner = data.partner;
-
-          // تحقق من وجود البريد الإلكتروني
-          if (!partner.email) {
-            console.warn('⚠️ لم يتم جلب البريد من الـ API');
-          }
-
-          setPartnerData(partner);
-        } else {
-          console.error("❌ Slug not found");
-          setTimeout(() => router.push("/login"), 2000);
-        }
-      } catch (err) {
-        console.error("Error fetching partner:", err);
-        setTimeout(() => router.push("/login"), 2000);
-      }
-    };
-
-    fetchPartner();
-  }, [params.slug, router]);
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!partnerData?.email) {
-      setError("خطأ: البريد الإلكتروني غير متاح");
-      return;
-    }
-
-    if (!password.trim()) {
-      setError("يرجى إدخال كلمة المرور");
-      return;
-    }
-
     setLoading(true);
-    setError("");
-
-    try {
-      console.log('🔐 محاولة الدخول:', {
-        email: partnerData.email,
-        passwordLength: password.length
-      });
-
-      const res = await fetch("/api/auth/partner/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: partnerData.email, // استخدم البريد من الـ API
-          password: password,
-        }),
-      });
-
-      const responseData = await res.json();
-
-      if (!res.ok) {
-        console.error('❌ Login failed:', responseData);
-        setError(responseData.error || "فشل تسجيل الدخول");
-        setLoading(false);
-        return;
-      }
-
-      console.log('✅ Login successful');
-      router.push("/dashboard");
-    } catch (err) {
-      console.error('❌ Error:', err);
-      setError("خطأ في الخادم");
-      setLoading(false);
-    }
+    setError("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+    setTimeout(() => setLoading(false), 1000);
   };
-
-  if (!mounted || !partnerData) {
-    return (
-      <main
-        className="flex min-h-screen items-center justify-center bg-gray-50 p-4"
-        dir="rtl"
-      >
-        <div className="text-center">
-          <p className="text-gray-600">جاري التحميل...</p>
-        </div>
-      </main>
-    );
-  }
 
   return (
     <main
@@ -128,19 +32,22 @@ export default function PartnerLoginBySlugPage({ params: paramsPromise }: { para
       <div style={{ width: "100%", maxWidth: "400px" }}>
         {/* لوغو الشركة */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          {partnerData.logo_url && (
-            <img
-              src={partnerData.logo_url}
-              alt={partnerData.company_name}
-              style={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "50%",
-                marginBottom: "16px",
-                objectFit: "cover",
-              }}
-            />
-          )}
+          <div
+            style={{
+              width: "80px",
+              height: "80px",
+              borderRadius: "50%",
+              marginBottom: "16px",
+              background: "#FFCD11",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "40px",
+              margin: "0 auto 16px",
+            }}
+          >
+            🚜
+          </div>
 
           {/* اسم الشركة */}
           <h1
@@ -153,7 +60,7 @@ export default function PartnerLoginBySlugPage({ params: paramsPromise }: { para
               fontFamily: "'Cairo', sans-serif",
             }}
           >
-            {partnerData.company_name}
+            شارك للمعدات
           </h1>
           <p style={{ fontSize: "13px", color: "#A0A0A0", margin: 0 }}>
             تسجيل دخول الشركاء
@@ -188,38 +95,47 @@ export default function PartnerLoginBySlugPage({ params: paramsPromise }: { para
           )}
 
           <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {/* عرض البريد الإلكتروني فقط (مقروء) */}
-            {partnerData.email && (
-              <div>
-                <label
-                  style={{
-                    display: "block",
-                    fontSize: "13px",
-                    fontWeight: 700,
-                    color: "#A0A0A0",
-                    marginBottom: "8px",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  البريد الإلكتروني
-                </label>
-                <div
-                  style={{
-                    width: "100%",
-                    border: "2px solid #3D3D3D",
-                    borderRadius: "8px",
-                    padding: "14px 16px",
-                    backgroundColor: "#1A1A1A",
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                  }}
-                >
-                  {partnerData.email}
-                </div>
-              </div>
-            )}
+            {/* البريد الإلكتروني */}
+            <div>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  color: "#A0A0A0",
+                  marginBottom: "8px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                البريد الإلكتروني
+              </label>
+              <input
+                type="email"
+                placeholder="name@example.com"
+                dir="ltr"
+                style={{
+                  width: "100%",
+                  height: "52px",
+                  border: "2px solid #3D3D3D",
+                  borderRadius: "8px",
+                  padding: "14px 16px",
+                  backgroundColor: "#1A1A1A",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  fontFamily: "inherit",
+                  boxSizing: "border-box",
+                  outline: "none",
+                  transition: "border-color 0.2s ease",
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = "#FFCD11";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = "#3D3D3D";
+                }}
+              />
+            </div>
 
             {/* حقل كلمة المرور */}
             <div>

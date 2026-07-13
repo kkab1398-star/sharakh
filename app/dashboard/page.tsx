@@ -75,7 +75,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div dir="rtl" style={{ padding: '32px', background: 'var(--bg)', minHeight: '100vh', color: 'var(--cat-white)' }}>
+    <div dir="rtl" style={{ padding: '24px', background: 'var(--bg)', minHeight: '100vh', color: 'var(--cat-white)', maxWidth: '1400px', margin: '0 auto' }}>
 
       {/* ── Page Header ── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
@@ -91,11 +91,11 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Stats ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, marginBottom: 32 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 32 }}>
         {stats.map((s, i) => (
-          <div key={i} style={{ background: 'var(--cat-gray)', borderTop: '3px solid var(--cat-yellow)', borderRadius: 2, padding: '20px 20px 16px' }}>
+          <div key={i} style={{ background: 'var(--cat-gray)', borderTop: '3px solid var(--cat-yellow)', borderRadius: 8, padding: '20px', }}>
             <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--cat-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 10 }}>{s.label}</p>
-            <p style={{ fontSize: typeof s.value === 'number' ? 40 : 26, fontWeight: 900, color: 'var(--cat-yellow)', textShadow: 'var(--yellow-shadow)', WebkitTextStroke: 'var(--yellow-stroke)', lineHeight: 1, marginBottom: 6, fontFamily: "'Barlow Condensed', var(--font-primary)" } as React.CSSProperties}>{s.value}</p>
+            <p style={{ fontSize: typeof s.value === 'number' ? 36 : 24, fontWeight: 900, color: 'var(--cat-yellow)', textShadow: 'var(--yellow-shadow)', WebkitTextStroke: 'var(--yellow-stroke)', lineHeight: 1, marginBottom: 6, fontFamily: "'Barlow Condensed', var(--font-primary)" } as React.CSSProperties}>{s.value}</p>
             <p style={{ fontSize: 11, color: 'var(--cat-muted)' }}>{s.sub}</p>
           </div>
         ))}

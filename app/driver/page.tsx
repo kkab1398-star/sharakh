@@ -153,7 +153,7 @@ export default function DriverHome() {
   const firstLetter = worker?.full_name?.charAt(0)?.toUpperCase() ?? '?';
 
   return (
-    <div style={{ fontFamily: meta.fontFamily, background: 'var(--cat-black)', minHeight: '100svh' }}>
+    <div style={{ fontFamily: meta.fontFamily, background: 'var(--cat-black)', minHeight: '100svh', display: 'flex', flexDirection: 'column' }}>
 
       {/* ═══════════════════════════════════════
           SECTION 1 — HEADER
@@ -161,12 +161,13 @@ export default function DriverHome() {
       <header style={{
         background: '#111111',
         borderBottom: '3px solid #FFCD11',
-        padding: '10px 16px',
+        padding: '12px 16px',
         position: 'sticky', top: 0, zIndex: 20,
         display: 'grid',
         gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center',
         gap: 8,
+        height: '60px',
       }}>
         {/* LEFT: avatar + name */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -222,7 +223,7 @@ export default function DriverHome() {
         </div>
       </header>
 
-      <div style={{ maxWidth: 430, margin: '0 auto', paddingBottom: 120 }}>
+      <div style={{ flex: 1, maxWidth: 430, margin: '0 auto', paddingBottom: 90, width: '100%', overflowY: 'auto', scrollBehavior: 'smooth' }}>
 
         {success && (
           <div style={{ margin: '12px 16px 0', background: 'rgba(34,197,94,0.1)', border: '1px solid #22c55e', borderRight: '4px solid #22c55e', padding: '10px 14px', fontSize: 13, fontWeight: 700, color: '#22c55e' }}>
@@ -373,24 +374,101 @@ export default function DriverHome() {
       </div>
 
       {/* ═══════════════════════════════════════
-          SECTION 5 — FAB
+          SECTION 5 — BOTTOM NAVIGATION
       ═══════════════════════════════════════ */}
       {cycles.length > 0 && !showForm && (
-        <button
-          onClick={() => setShowForm(true)}
-          style={{
-            position: 'fixed', bottom: 76, left: '50%', transform: 'translateX(-50%)',
-            width: 200, height: 52, borderRadius: 0,
-            background: '#FFCD11', color: '#1A1A1A',
-            border: 'none', cursor: 'pointer',
-            fontWeight: 900, fontSize: 16, fontFamily: meta.fontFamily,
-            textTransform: 'uppercase', letterSpacing: '0.04em',
-            boxShadow: '0 4px 20px rgba(255,205,17,0.4)',
-            zIndex: 40, whiteSpace: 'nowrap',
-          }}
-        >
-          + {m.home.addTransaction}
-        </button>
+        <nav style={{
+          position: 'fixed', bottom: 0, left: 0, right: 0,
+          height: '70px',
+          background: '#111111',
+          borderTop: '3px solid #FFCD11',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-around',
+          zIndex: 40,
+          paddingBottom: 'max(8px, env(safe-area-inset-bottom))',
+        }}>
+          {/* الرئيسية */}
+          <button
+            onClick={() => window.location.href = '/driver'}
+            style={{
+              flex: 1, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              color: '#A0A0A0', fontFamily: meta.fontFamily, fontSize: 12, fontWeight: 700,
+              transition: 'color 0.2s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#FFCD11')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#A0A0A0')}
+          >
+            <span style={{ fontSize: 20, marginBottom: 4 }}>🏠</span>
+            {m.nav?.home ?? 'الرئيسية'}
+          </button>
+
+          {/* المعاملات */}
+          <button
+            onClick={() => window.location.href = '/driver/transactions'}
+            style={{
+              flex: 1, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              color: '#A0A0A0', fontFamily: meta.fontFamily, fontSize: 12, fontWeight: 700,
+              transition: 'color 0.2s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#FFCD11')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#A0A0A0')}
+          >
+            <span style={{ fontSize: 20, marginBottom: 4 }}>📝</span>
+            {m.nav?.transactions ?? 'المعاملات'}
+          </button>
+
+          {/* زر إضافة (وسطي مرتفع) */}
+          <button
+            onClick={() => setShowForm(true)}
+            style={{
+              width: '56px', height: '56px', borderRadius: '50%',
+              background: '#FFCD11', color: '#1A1A1A',
+              border: 'none', cursor: 'pointer',
+              fontWeight: 900, fontSize: 28, fontFamily: meta.fontFamily,
+              position: 'absolute', bottom: 14,
+              boxShadow: '0 4px 12px rgba(255, 205, 17, 0.4)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'transform 0.2s ease',
+            }}
+            onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.95)')}
+            onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+          >
+            +
+          </button>
+
+          {/* الفواتير */}
+          <button
+            onClick={() => window.location.href = '/driver/invoices'}
+            style={{
+              flex: 1, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              color: '#A0A0A0', fontFamily: meta.fontFamily, fontSize: 12, fontWeight: 700,
+              transition: 'color 0.2s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#FFCD11')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#A0A0A0')}
+          >
+            <span style={{ fontSize: 20, marginBottom: 4 }}>🧾</span>
+            {m.nav?.invoices ?? 'الفواتير'}
+          </button>
+
+          {/* اللغة */}
+          <button
+            onClick={() => setLang(nextLang[lang])}
+            style={{
+              flex: 1, height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              color: '#A0A0A0', fontFamily: meta.fontFamily, fontSize: 12, fontWeight: 700,
+              transition: 'color 0.2s ease',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#FFCD11')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = '#A0A0A0')}
+          >
+            <span style={{ fontSize: 20, marginBottom: 4 }}>🌐</span>
+            {LANG_META[nextLang[lang]].label.split(' ')[0]}
+          </button>
+        </nav>
       )}
 
       {/* ═══════════════════════════════════════

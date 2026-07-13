@@ -43,12 +43,12 @@ export async function GET(
     .order('created_at', { ascending: false })
     .limit(10);
 
-  const { data: auth } = await admin.auth.admin.getUserById(partner.user_id);
+  const { data: userData } = await admin.auth.admin.getUserById(partner.user_id);
 
   return NextResponse.json({
     partner: {
       ...partner,
-      user_email: auth?.email,
+      user_email: userData?.user?.email,
       worker_count: workers?.length ?? 0,
       equipment_count: equipment?.length ?? 0,
       cycle_count: cycles?.length ?? 0,
