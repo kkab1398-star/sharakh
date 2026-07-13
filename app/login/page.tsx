@@ -69,106 +69,46 @@ export default function LoginPage() {
   };
 
   return (
-    <main dir="rtl" style={{
-      minHeight: '100svh',
-      background: '#F4F5F7',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 16,
-      fontFamily: "'Cairo','Barlow Condensed',sans-serif",
-    }}>
-      <div style={{ width: '90%', maxWidth: 400 }}>
-
+    <main
+      dir="rtl"
+      className="min-h-screen bg-[#F4F5F7] flex flex-col items-center justify-center p-4 font-cairo"
+    >
+      <div className="w-full max-w-[400px]">
         {/* WHITE CARD - LIGHT THEME */}
-        <div style={{
-          background: '#FFFFFF',
-          borderRadius: 24,
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-          padding: 32,
-          border: 'none',
-        }}>
+        <div className="bg-white rounded-3xl shadow-xl p-8 border-0">
 
-          {/* Logo INSIDE Card */}
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-              <div style={{
-                width: 48,
-                height: 48,
-                background: '#FFCD11',
-                borderRadius: 8,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 24,
-              }}>
+          {/* LOGO INSIDE CARD */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-[#FFCD11] rounded-lg flex items-center justify-center text-2xl">
                 🚜
               </div>
-              <span style={{
-                fontSize: 32,
-                fontWeight: 900,
-                color: '#1A1A1A',
-                fontFamily: "'Barlow Condensed',sans-serif",
-                letterSpacing: '-0.5px',
-              }}>
+              <span className="text-3xl font-black text-[#1A1A1A] -tracking-[0.5px] font-barlow">
                 SHARAKH
               </span>
             </div>
-            <p style={{
-              color: '#6B7280',
-              fontSize: 13,
-              margin: 0,
-            }}>
+            <p className="text-gray-500 text-sm">
               منصة إدارة المعدات الثقيلة
             </p>
           </div>
 
-          {/* Title */}
-          <h2 style={{
-            color: '#1A1A1A',
-            fontWeight: 900,
-            fontSize: 18,
-            margin: '24px 0 20px',
-            textAlign: 'right',
-          }}>
+          {/* TITLE */}
+          <h2 className="text-[#1A1A1A] font-black text-lg mb-6 text-right">
             تسجيل دخول المالك
           </h2>
 
-          {/* Error Alert */}
+          {/* ERROR ALERT */}
           {error && (
-            <div style={{
-              background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid #EF4444',
-              borderRadius: 12,
-              padding: '10px 14px',
-              marginBottom: 20,
-              color: '#EF4444',
-              fontWeight: 700,
-              fontSize: 13,
-              textAlign: 'center',
-            }}>
+            <div className="mb-6 p-3 bg-red-50 border border-red-300 rounded-xl text-red-600 font-bold text-sm text-center">
               ⚠️ {error}
             </div>
           )}
 
-          {/* Form */}
-          <form onSubmit={handleLogin} style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-          }}>
-            {/* Email Field */}
+          {/* FORM */}
+          <form onSubmit={handleLogin} className="space-y-4">
+            {/* EMAIL */}
             <div>
-              <label style={{
-                display: 'block',
-                fontSize: 12,
-                fontWeight: 700,
-                color: '#1A1A1A',
-                marginBottom: 6,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-              }}>
+              <label className="block text-xs font-bold text-[#1A1A1A] uppercase tracking-widest mb-2">
                 البريد الإلكتروني
               </label>
               <input
@@ -178,44 +118,13 @@ export default function LoginPage() {
                 onChange={e => setEmail(e.target.value)}
                 placeholder="name@example.com"
                 dir="ltr"
-                style={{
-                  width: '100%',
-                  height: 56,
-                  border: '1px solid #E5E7EB',
-                  borderRadius: 12,
-                  padding: '0 16px',
-                  backgroundColor: '#F9FAFB',
-                  color: '#1A1A1A',
-                  fontSize: 14,
-                  fontFamily: 'inherit',
-                  boxSizing: 'border-box',
-                  outline: 'none',
-                  transition: 'all 200ms ease',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#FFCD11';
-                  e.currentTarget.style.backgroundColor = '#FFFFFF';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 205, 17, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#E5E7EB';
-                  e.currentTarget.style.backgroundColor = '#F9FAFB';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                className="w-full h-14 px-4 bg-gray-50 border border-gray-300 rounded-xl text-[#1A1A1A] placeholder-gray-400 focus:bg-white focus:border-[#FFCD11] focus:ring-2 focus:ring-[#FFCD11]/20 outline-none transition-all"
               />
             </div>
 
-            {/* Password Field */}
+            {/* PASSWORD */}
             <div>
-              <label style={{
-                display: 'block',
-                fontSize: 12,
-                fontWeight: 700,
-                color: '#1A1A1A',
-                marginBottom: 6,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-              }}>
+              <label className="block text-xs font-bold text-[#1A1A1A] uppercase tracking-widest mb-2">
                 كلمة المرور
               </label>
               <PasswordInput
@@ -224,90 +133,28 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 dir="ltr"
                 required
-                style={{
-                  width: '100%',
-                  height: 56,
-                  border: '1px solid #E5E7EB',
-                  borderRadius: 12,
-                  padding: '0 16px',
-                  backgroundColor: '#F9FAFB',
-                  color: '#1A1A1A',
-                  fontSize: 14,
-                  fontFamily: 'inherit',
-                  boxSizing: 'border-box',
-                  outline: 'none',
-                  transition: 'all 200ms ease',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#FFCD11';
-                  e.currentTarget.style.backgroundColor = '#FFFFFF';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 205, 17, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#E5E7EB';
-                  e.currentTarget.style.backgroundColor = '#F9FAFB';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                className="w-full h-14 px-4 bg-gray-50 border border-gray-300 rounded-xl text-[#1A1A1A] placeholder-gray-400 focus:bg-white focus:border-[#FFCD11] focus:ring-2 focus:ring-[#FFCD11]/20 outline-none transition-all"
               />
             </div>
 
-            {/* Submit Button */}
+            {/* SUBMIT BUTTON */}
             <button
               type="submit"
               disabled={loading}
-              style={{
-                height: 56,
-                backgroundColor: '#FFCD11',
-                color: '#1A1A1A',
-                border: 'none',
-                borderRadius: 12,
-                fontSize: 16,
-                fontWeight: 900,
-                fontFamily: 'inherit',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                marginTop: 8,
-                transition: 'all 200ms ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                opacity: loading ? 0.6 : 1,
-                boxShadow: '0 2px 8px rgba(255, 205, 17, 0.2)',
-              }}
-              onMouseDown={(e) => {
-                if (!loading) {
-                  (e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.98)';
-                }
-              }}
-              onMouseUp={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
-              }}
+              className="w-full h-14 bg-[#FFCD11] text-[#1A1A1A] font-black rounded-xl uppercase tracking-wider hover:bg-yellow-500 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed transition-all mt-2"
             >
               {loading ? "جاري التحقق..." : "دخول ←"}
             </button>
           </form>
 
-          {/* Sign Up Link */}
-          <p style={{
-            textAlign: 'center',
-            fontSize: 12,
-            color: '#6B7280',
-            marginTop: 16,
-            margin: 0,
-          }}>
+          {/* SIGN UP LINK */}
+          <p className="text-center text-xs text-gray-500 mt-6">
             ليس لديك حساب؟{" "}
-            <a href="/register" style={{
-              color: '#FFCD11',
-              fontWeight: 700,
-              textDecoration: 'none',
-              transition: 'opacity 200ms ease',
-            }}>
+            <a href="/register" className="text-[#FFCD11] font-bold hover:opacity-80 transition-opacity">
               سجّل الآن
             </a>
           </p>
         </div>
-
       </div>
     </main>
   );

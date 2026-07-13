@@ -38,130 +38,58 @@ export default function DriverLoginPage() {
   };
 
   return (
-    <main dir={dir} style={{
-      minHeight: '100svh',
-      background: '#F4F5F7',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 16,
-      fontFamily: meta.fontFamily,
-    }}>
-      <div style={{ width: '90%', maxWidth: 400 }}>
-
+    <main
+      dir={dir}
+      className="min-h-screen bg-[#F4F5F7] flex flex-col items-center justify-center p-4"
+      style={{ fontFamily: meta.fontFamily }}
+    >
+      <div className="w-full max-w-[400px]">
         {/* WHITE CARD - LIGHT THEME */}
-        <div style={{
-          background: '#FFFFFF',
-          borderRadius: 24,
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-          padding: 32,
-          border: 'none',
-        }}>
+        <div className="bg-white rounded-3xl shadow-xl p-8 border-0">
 
-          {/* Logo INSIDE Card */}
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <div style={{
-              width: 80,
-              height: 80,
-              borderRadius: '50%',
-              marginBottom: 16,
-              background: '#FFCD11',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 40,
-              margin: '0 auto 16px',
-            }}>
+          {/* LOGO INSIDE CARD */}
+          <div className="text-center mb-6">
+            <div className="w-20 h-20 bg-[#FFCD11] rounded-full flex items-center justify-center text-4xl mx-auto mb-4">
               🚜
             </div>
-            <h1 style={{
-              fontSize: 22,
-              fontWeight: 900,
-              color: '#1A1A1A',
-              letterSpacing: '-0.5px',
-              margin: '0 0 8px',
-              fontFamily: meta.fontFamily,
-            }}>
+            <h1 className="text-2xl font-black text-[#1A1A1A] -tracking-[0.5px]">
               SHARAKH OPS
             </h1>
-            <p style={{
-              color: '#A0A0A0',
-              fontSize: 13,
-              margin: 0,
-            }}>
+            <p className="text-gray-500 text-sm mt-2">
               {m.login.subtitle}
             </p>
           </div>
 
-          {/* Language Selector */}
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 6,
-            justifyContent: 'center',
-            marginBottom: 24,
-          }}>
+          {/* LANGUAGE SELECTOR */}
+          <div className="flex flex-wrap gap-1 justify-center mb-6">
             {(Object.values(LANG_META) as typeof LANG_META[DriverLang][]).map(lm => (
               <button
                 key={lm.code}
                 onClick={() => setLang(lm.code)}
-                style={{
-                  padding: '8px 12px',
-                  borderRadius: 4,
-                  fontSize: 11,
-                  fontWeight: 700,
-                  minHeight: 40,
-                  border: lang === lm.code ? '2px solid #FFCD11' : '1px solid #E5E7EB',
-                  background: lang === lm.code ? '#FFCD11' : '#F9FAFB',
-                  color: lang === lm.code ? '#1A1A1A' : '#6B7280',
-                  cursor: 'pointer',
-                  fontFamily: lm.fontFamily,
-                  transition: 'all 0.2s',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                className={`px-3 py-2 rounded-md text-xs font-bold transition-all ${
+                  lang === lm.code
+                    ? 'bg-[#FFCD11] text-[#1A1A1A] border-2 border-[#FFCD11]'
+                    : 'bg-gray-100 text-gray-600 border border-gray-300'
+                }`}
+                style={{ fontFamily: lm.fontFamily }}
               >
                 {lm.label}
               </button>
             ))}
           </div>
 
-          {/* Error Alert */}
+          {/* ERROR ALERT */}
           {(!partnerId || error) && (
-            <div style={{
-              marginBottom: 20,
-              padding: '10px 14px',
-              background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid #EF4444',
-              borderRadius: 12,
-              color: '#EF4444',
-              fontWeight: 700,
-              fontSize: 13,
-              textAlign: 'center',
-            }}>
+            <div className="mb-6 p-3 bg-red-50 border border-red-300 rounded-xl text-red-600 font-bold text-sm text-center">
               ⚠️ {error || m.login.noLink}
             </div>
           )}
 
-          {/* Form */}
-          <form onSubmit={handleLogin} style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 16,
-          }}>
-            {/* Username Field */}
+          {/* FORM */}
+          <form onSubmit={handleLogin} className="space-y-4">
+            {/* USERNAME */}
             <div>
-              <label style={{
-                display: 'block',
-                fontSize: 12,
-                fontWeight: 700,
-                color: '#1A1A1A',
-                marginBottom: 6,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-              }}>
+              <label className="block text-xs font-bold text-[#1A1A1A] uppercase tracking-widest mb-2">
                 {m.login.username}
               </label>
               <input
@@ -171,44 +99,13 @@ export default function DriverLoginPage() {
                 onChange={e => setUsername(e.target.value)}
                 placeholder={m.login.usernamePlaceholder}
                 dir="ltr"
-                style={{
-                  width: '100%',
-                  height: 56,
-                  border: '1px solid #E5E7EB',
-                  borderRadius: 12,
-                  padding: '0 16px',
-                  backgroundColor: '#F9FAFB',
-                  color: '#1A1A1A',
-                  fontSize: 14,
-                  fontFamily: 'inherit',
-                  boxSizing: 'border-box',
-                  outline: 'none',
-                  transition: 'all 200ms ease',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#FFCD11';
-                  e.currentTarget.style.backgroundColor = '#FFFFFF';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 205, 17, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#E5E7EB';
-                  e.currentTarget.style.backgroundColor = '#F9FAFB';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                className="w-full h-14 px-4 bg-gray-50 border border-gray-300 rounded-xl text-[#1A1A1A] placeholder-gray-400 focus:bg-white focus:border-[#FFCD11] focus:ring-2 focus:ring-[#FFCD11]/20 outline-none transition-all"
               />
             </div>
 
-            {/* Password Field */}
+            {/* PASSWORD */}
             <div>
-              <label style={{
-                display: 'block',
-                fontSize: 12,
-                fontWeight: 700,
-                color: '#1A1A1A',
-                marginBottom: 6,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-              }}>
+              <label className="block text-xs font-bold text-[#1A1A1A] uppercase tracking-widest mb-2">
                 {m.login.password}
               </label>
               <PasswordInput
@@ -217,82 +114,25 @@ export default function DriverLoginPage() {
                 onChange={e => setPassword(e.target.value)}
                 placeholder={m.login.passwordPlaceholder}
                 dir="ltr"
-                style={{
-                  width: '100%',
-                  height: 56,
-                  border: '1px solid #E5E7EB',
-                  borderRadius: 12,
-                  padding: '0 16px',
-                  backgroundColor: '#F9FAFB',
-                  color: '#1A1A1A',
-                  fontSize: 14,
-                  fontFamily: 'inherit',
-                  boxSizing: 'border-box',
-                  outline: 'none',
-                  transition: 'all 200ms ease',
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#FFCD11';
-                  e.currentTarget.style.backgroundColor = '#FFFFFF';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(255, 205, 17, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#E5E7EB';
-                  e.currentTarget.style.backgroundColor = '#F9FAFB';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                className="w-full h-14 px-4 bg-gray-50 border border-gray-300 rounded-xl text-[#1A1A1A] placeholder-gray-400 focus:bg-white focus:border-[#FFCD11] focus:ring-2 focus:ring-[#FFCD11]/20 outline-none transition-all"
               />
             </div>
 
-            {/* Submit Button */}
+            {/* SUBMIT BUTTON */}
             <button
               type="submit"
               disabled={loading || !partnerId}
-              style={{
-                height: 56,
-                backgroundColor: loading || !partnerId ? '#FFCD11' : '#FFCD11',
-                color: '#1A1A1A',
-                border: 'none',
-                borderRadius: 12,
-                fontSize: 16,
-                fontWeight: 900,
-                fontFamily: 'inherit',
-                cursor: loading || !partnerId ? 'not-allowed' : 'pointer',
-                marginTop: 8,
-                transition: 'all 200ms ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-                opacity: loading || !partnerId ? 0.6 : 1,
-                boxShadow: '0 2px 8px rgba(255, 205, 17, 0.2)',
-              }}
-              onMouseDown={(e) => {
-                if (!loading && partnerId) {
-                  (e.currentTarget as HTMLButtonElement).style.transform = 'scale(0.98)';
-                }
-              }}
-              onMouseUp={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
-              }}
+              className="w-full h-14 bg-[#FFCD11] text-[#1A1A1A] font-black rounded-xl uppercase tracking-wider hover:bg-yellow-500 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed transition-all mt-2"
             >
-              {loading ? '🔄 ' + m.login.submitting : m.login.submit}
+              {loading ? `🔄 ${m.login.submitting}` : m.login.submit}
             </button>
           </form>
 
-          {/* Forgot Password Link */}
-          <p style={{
-            textAlign: 'center',
-            fontSize: 12,
-            color: '#6B7280',
-            marginTop: 16,
-            margin: 0,
-          }}>
+          {/* FORGOT PASSWORD */}
+          <p className="text-center text-xs text-gray-500 mt-4">
             {m.login.forgotPassword}
           </p>
         </div>
-
       </div>
     </main>
   );
