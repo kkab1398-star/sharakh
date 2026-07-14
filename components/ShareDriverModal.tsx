@@ -26,35 +26,30 @@ export default function ShareDriverModal({
 
   if (!isOpen || !driver) return null;
 
-  // بناء رابط الدخول للسائق مع partner_id
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://sharakh.vercel.app";
-  const loginLink = partnerId
+
+  // بناء رابط الدخول للسائق
+  // يجب استخدام /driver/login مع partner_id في query parameter
+  const driverLoginUrl = partnerId
     ? `${appUrl}/driver/login?p=${partnerId}`
     : `${appUrl}/driver/login`;
 
-  // بناء رسالة الواتساب
-  let whatsappMessage = `مرحباً ${driver.full_name} 👋
+  const whatsappMessage = `مرحباً ${driver.full_name} 👋
 
 تم تسجيلك في نظام شراكة لإدارة المعدات
 
 🔗 رابط دخولك:
-${loginLink}
+${driverLoginUrl}
 
 👤 اسم المستخدم:
-${driver.username}`;
-
-  if (showPassword && driver.password) {
-    whatsappMessage += `
+${driver.username}${showPassword && driver.password ? `
 
 🔑 كلمة المرور:
 ${driver.password}
 
-⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد`;
-  } else if (!showPassword) {
-    whatsappMessage += `
+⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد` : `
 
-⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد`;
-  }
+⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد`}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(whatsappMessage);
@@ -110,7 +105,6 @@ ${driver.password}
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* زر الإغلاق */}
         <button
           onClick={onClose}
           style={{
@@ -127,7 +121,6 @@ ${driver.password}
           ✕
         </button>
 
-        {/* رسالة النجاح */}
         <div style={{ textAlign: "center", marginBottom: "24px" }}>
           <div style={{ fontSize: "40px", marginBottom: "12px" }}>✅</div>
           <h2 style={{ fontSize: "18px", fontWeight: 900, color: "#22c55e", margin: 0 }}>
@@ -138,7 +131,6 @@ ${driver.password}
           </p>
         </div>
 
-        {/* بطاقة الرسالة */}
         <div
           style={{
             background: "#2A2A2A",
@@ -157,7 +149,6 @@ ${driver.password}
           {whatsappMessage}
         </div>
 
-        {/* الأزرار */}
         <div style={{ display: "flex", gap: "8px", flexDirection: "column" }}>
           {driver.phone && (
             <button
