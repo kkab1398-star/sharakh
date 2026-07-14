@@ -26,7 +26,7 @@ export default function ShareDriverModal({
 
   if (!isOpen || !driver) return null;
 
-  // بناء رابط الدخول
+  // بناء رابط الدخول - دائماً رابط السائق، تجاهل partnerSlug
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://sharakh.vercel.app";
   const loginLink = `${appUrl}/driver/login`;
 
