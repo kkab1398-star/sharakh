@@ -41,9 +41,7 @@ export function buildDriverWhatsAppMessage(params: {
     hasPassword: !!params.password,
   });
 
-  const driverLoginUrl = params.partnerId
-    ? ROUTES.driver.loginWithPartner(params.partnerId)
-    : ROUTES.driver.login;
+  const driverLoginUrl = 'https://sharakh.vercel.app/driver/login';
 
   console.log('[lib/routes.ts] Generated driverLoginUrl:', driverLoginUrl);
 
