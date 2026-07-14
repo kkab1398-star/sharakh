@@ -33,24 +33,16 @@ export function buildDriverWhatsAppMessage(params: {
   password?: string;
   partnerId?: string;
 }): string {
-  console.log('[lib/routes.ts] buildDriverWhatsAppMessage params:', {
-    driverName: params.driverName,
-    companyName: params.companyName,
-    username: params.username,
-    partnerId: params.partnerId,
-    hasPassword: !!params.password,
-  });
-
-  const driverLoginUrl = 'https://sharakh.vercel.app/driver/login';
-
-  console.log('[lib/routes.ts] Generated driverLoginUrl:', driverLoginUrl);
+  const loginUrl = `${APP_URL}/login`;
 
   let message = `مرحباً ${params.driverName} 👋
 
 تم تسجيلك في نظام شراكة لإدارة المعدات
 
-🔗 رابط دخولك:
-${driverLoginUrl}
+🔗 رابط الدخول:
+${loginUrl}
+
+⚠️ عند فتح الرابط، اختر 🚜 "سائق" ثم أدخل بيانات الدخول
 
 👤 اسم المستخدم:
 ${params.username}`;
@@ -95,21 +87,22 @@ export function buildPartnerWhatsAppMessage(params: {
   email: string;
   password: string;
   slug: string;
-  loginLink?: string;
   trialDays?: number;
 }): string {
   const trialEndDate = new Date();
   trialEndDate.setDate(trialEndDate.getDate() + (params.trialDays || 14));
   const dateStr = trialEndDate.toLocaleDateString('ar-SA');
 
-  const link = params.loginLink || ROUTES.partner.login(params.slug);
-
   const message = `🚀 مرحباً بك في نظام شراكة 🚀
 
 بيانات دخولك:
 📧 البريد: ${params.email}
 🔑 كلمة المرور: ${params.password}
-🔗 الرابط: ${link}
+
+🔗 رابط الدخول:
+${APP_URL}/login
+
+⚠️ عند فتح الرابط، اختر 👔 "مالك / شريك" ثم أدخل البريد وكلمة المرور
 
 📋 الخطوات الأولى:
 1️⃣ الإعدادات ← أضف بيانات شركتك
@@ -133,7 +126,6 @@ export function buildPartnerWhatsAppURL(params: {
   password: string;
   slug: string;
   phone: string;
-  loginLink?: string;
   trialDays?: number;
 }): string {
   const message = buildPartnerWhatsAppMessage({
@@ -141,7 +133,6 @@ export function buildPartnerWhatsAppURL(params: {
     email: params.email,
     password: params.password,
     slug: params.slug,
-    loginLink: params.loginLink,
     trialDays: params.trialDays,
   });
 

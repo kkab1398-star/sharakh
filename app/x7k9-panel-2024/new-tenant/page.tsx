@@ -37,14 +37,13 @@ export default function NewTenantPage() {
         return;
       }
 
-      const { slug, partnerLoginLink } = await res.json();
+      const { slug } = await res.json();
 
       const msg = buildPartnerWhatsAppMessage({
         companyName: formData.company_name,
         email: formData.email,
         password: formData.password,
         slug,
-        loginLink: partnerLoginLink,
         trialDays: formData.subscription_type === 'trial' ? 14 : undefined,
       });
 

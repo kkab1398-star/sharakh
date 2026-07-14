@@ -169,8 +169,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       partner: { ...partner, slug: finalSlug },
-      partnerLoginLink: `${appUrl}/login/${finalSlug}`,
-      driverLoginLink: `${appUrl}/driver/login`,
       slug: finalSlug,
     }, { status: 201 });
   } catch (err) {

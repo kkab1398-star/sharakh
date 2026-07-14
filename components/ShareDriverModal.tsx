@@ -28,14 +28,16 @@ export default function ShareDriverModal({
 
   if (!isOpen || !driver) return null;
 
-  const driverLoginUrl = `https://sharakh.vercel.app/driver/login`;
+  const loginUrl = `https://sharakh.vercel.app/login`;
 
   const whatsappMessage = `مرحباً ${driver.full_name} 👋
 
 تم تسجيلك في نظام شراكة لإدارة المعدات
 
-🔗 رابط دخولك:
-${driverLoginUrl}
+🔗 رابط الدخول:
+${loginUrl}
+
+⚠️ عند فتح الرابط، اختر 🚜 "سائق" ثم أدخل بيانات الدخول
 
 👤 اسم المستخدم:
 ${driver.username}${showPassword && driver.password ? `
