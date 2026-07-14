@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner Dashboard - SHARAKH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;900&family=Barlow+Condensed:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Cairo', sans-serif; background: #F4F5F7; }
+
+    .header {
+      background: linear-gradient(135deg, #FFCD11 0%, #FFD700 100%);
+      padding: 20px 16px 60px;
+      border-bottom-left-radius: 32px;
+      border-bottom-right-radius: 32px;
+      box-shadow: 0 8px 24px rgba(255, 205, 17, 0.15);
+      position: relative;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .header-logo { font-size: 24px; }
+    .header-menu { background: none; border: none; font-size: 24px; cursor: pointer; }
+
+    .header-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #1A1A1A;
+      margin: 0 0 4px;
+      line-height: 1.1;
+    }
+
+    .header-date {
+      font-size: 12px;
+      color: #1A1A1A;
+      opacity: 0.7;
+      margin: 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: -40px 16px 24px;
+      position: relative;
+      z-index: 10;
+      padding: 0 16px;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .stat-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border: 1px solid #E5E7EB;
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1A1A1A;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0;
+    }
+
+    .stat-icon { font-size: 20px; }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: #1A1A1A;
+      margin: 8px 0;
+      font-family: 'Barlow Condensed', sans-serif;
+      line-height: 1;
+    }
+
+    .stat-sub {
+      font-size: 10px;
+      color: #A0A0A0;
+      margin: 0;
+    }
+
+    .section {
+      padding: 0 16px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #1A1A1A;
+      margin-bottom: 12px;
+      margin-top: 0;
+    }
+
+    .tx-item {
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #E5E7EB;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      margin-bottom: 8px;
+    }
+
+    .tx-info p { margin: 0; }
+    .tx-name { font-size: 13px; font-weight: 700; color: #1A1A1A; margin-bottom: 2px; }
+    .tx-desc { font-size: 11px; color: #A0A0A0; }
+
+    .tx-amount { text-align: end; flex-shrink: 0; margin-left: 12px; }
+    .tx-value { font-size: 14px; font-weight: 900; margin-bottom: 2px; font-family: 'Barlow Condensed', sans-serif; direction: ltr; }
+    .tx-income { color: #10B981; }
+    .tx-expense { color: #EF4444; }
+    .tx-curr { font-size: 10px; color: #A0A0A0; margin: 0; }
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .action-btn {
+      padding: 12px 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 12px;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+      display: block;
+    }
+
+    .action-primary { background: #FFCD11; color: #1A1A1A; }
+    .action-secondary { background: #FFFFFF; color: #1A1A1A; border: 1px solid #E5E7EB; }
+  </style>
+</head>
+<body>
+  <div style="min-height: 100vh; background: #F4F5F7;">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-top">
+        <div class="header-logo">🚜</div>
+        <button class="header-menu">☰</button>
+      </div>
+      <h1 class="header-title">أهلاً، شريك</h1>
+      <p class="header-date">الأحد، 13 يوليو 2026</p>
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <p class="stat-label">إجمالي الدخل</p>
+          <span class="stat-icon">💰</span>
+        </div>
+        <p class="stat-value">125,450</p>
+        <p class="stat-sub">3 دورات</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <p class="stat-label">صافي الأرباح</p>
+          <span class="stat-icon">📈</span>
+        </div>
+        <p class="stat-value">98,200</p>
+        <p class="stat-sub">بعد المصاريف</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <p class="stat-label">الدورات المفتوحة</p>
+          <span class="stat-icon">⏱️</span>
+        </div>
+        <p class="stat-value">2</p>
+        <p class="stat-sub">قيد التشغيل</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <p class="stat-label">السائقون النشطون</p>
+          <span class="stat-icon">👥</span>
+        </div>
+        <p class="stat-value">8</p>
+        <p class="stat-sub">من 12</p>
+      </div>
+    </div>
+
+    <!-- RECENT OPERATIONS -->
+    <div class="section">
+      <h2 class="section-title">آخر العمليات</h2>
+
+      <div class="tx-item">
+        <div class="tx-info">
+          <p class="tx-name">أحمد الراشد</p>
+          <p class="tx-desc">دخل من عملية</p>
+        </div>
+        <div class="tx-amount">
+          <p class="tx-value tx-income" dir="ltr">+5,250</p>
+          <p class="tx-curr">ر.س</p>
+        </div>
+      </div>
+
+      <div class="tx-item">
+        <div class="tx-info">
+          <p class="tx-name">محمد العتيبي</p>
+          <p class="tx-desc">مصروف صيانة</p>
+        </div>
+        <div class="tx-amount">
+          <p class="tx-value tx-expense" dir="ltr">-850</p>
+          <p class="tx-curr">ر.س</p>
+        </div>
+      </div>
+
+      <div class="tx-item">
+        <div class="tx-info">
+          <p class="tx-name">علي الدعيع</p>
+          <p class="tx-desc">تقدم راتب</p>
+        </div>
+        <div class="tx-amount">
+          <p class="tx-value tx-expense" dir="ltr">-2,000</p>
+          <p class="tx-curr">ر.س</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="section">
+      <h3 class="section-title">إجراءات سريعة</h3>
+      <div class="actions-grid">
+        <button class="action-btn action-primary">+ دورة جديدة</button>
+        <button class="action-btn action-secondary">+ إضافة سائق</button>
+        <button class="action-btn action-secondary">عرض الدورات</button>
+        <button class="action-btn action-secondary">الإعدادات</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

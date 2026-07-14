@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { buildDriverWhatsAppMessage, buildDriverWhatsAppURL } from "@/lib/routes";
 
 interface ShareDriverModalProps {
   isOpen: boolean;
@@ -29,25 +28,24 @@ export default function ShareDriverModal({
 
   if (!isOpen || !driver) return null;
 
-  console.log('=== DEBUG: ShareDriverModal ===');
-  console.log('partnerId value:', partnerId);
-  console.log('partnerId type:', typeof partnerId);
-  console.log('partnerId is null:', partnerId === null);
-  console.log('partnerId is undefined:', partnerId === undefined);
-  console.log('companyName:', companyName);
-  console.log('driver.full_name:', driver.full_name);
+  const driverLoginUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://sharakh.vercel.app'}/driver/login`;
 
-  const whatsappMessage = buildDriverWhatsAppMessage({
-    driverName: driver.full_name,
-    companyName,
-    username: driver.username,
-    password: showPassword ? driver.password : undefined,
-    partnerId: partnerId || undefined,
-  });
+  const whatsappMessage = `مرحباً ${driver.full_name} 👋
 
-  console.log('=== DEBUG: Generated Message ===');
-  console.log('whatsappMessage:', whatsappMessage);
-  console.log('=== END DEBUG ===')
+تم تسجيلك في نظام شراكة لإدارة المعدات
+
+🔗 رابط دخولك:
+${driverLoginUrl}
+
+👤 اسم المستخدم:
+${driver.username}${showPassword && driver.password ? `
+
+🔑 كلمة المرور:
+${driver.password}
+
+⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد` : `
+
+⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد`}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(whatsappMessage);
@@ -61,16 +59,16 @@ export default function ShareDriverModal({
       return;
     }
 
-    const whatsappUrl = buildDriverWhatsAppURL({
-      driverName: driver.full_name,
-      companyName,
-      username: driver.username,
-      password: showPassword ? driver.password : undefined,
-      phone: driver.phone,
-      partnerId: partnerId || undefined,
-    });
+    let phoneNumber = driver.phone.replace(/\D/g, "");
+    if (!phoneNumber.startsWith("966") && phoneNumber.startsWith("5")) {
+      phoneNumber = "966" + phoneNumber.substring(1);
+    }
+    if (!phoneNumber.startsWith("966")) {
+      phoneNumber = "966" + phoneNumber;
+    }
 
-    window.open(whatsappUrl, "_blank");
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
   };
 
   return (

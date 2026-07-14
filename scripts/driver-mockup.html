@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Dashboard - SHARAKH OPS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;900&family=Barlow+Condensed:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Cairo', sans-serif; background: #F4F5F7; padding-bottom: 100px; }
+
+    .header {
+      background: linear-gradient(135deg, #FFCD11 0%, #FFD700 100%);
+      padding: 12px 16px;
+      box-shadow: 0 4px 12px rgba(255, 205, 17, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left { display: flex; align-items: center; gap: 8px; }
+    .header-logo { font-size: 24px; }
+    .header-name { font-size: 14px; font-weight: 700; color: #1A1A1A; }
+    .header-menu { background: none; border: none; font-size: 24px; cursor: pointer; }
+
+    .balance-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 20px 16px;
+      margin: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      border: 1px solid #E5E7EB;
+      text-align: center;
+    }
+
+    .balance-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #A0A0A0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .balance-value {
+      font-size: 48px;
+      font-weight: 900;
+      color: #1A1A1A;
+      font-family: 'Barlow Condensed', sans-serif;
+      line-height: 1;
+      margin-bottom: 4px;
+      direction: ltr;
+    }
+
+    .balance-currency {
+      font-size: 12px;
+      color: #A0A0A0;
+      font-family: 'Barlow Condensed', sans-serif;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      border: 1px solid #E5E7EB;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #A0A0A0;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 900;
+      font-family: 'Barlow Condensed', sans-serif;
+      line-height: 1;
+      margin-bottom: 4px;
+      direction: ltr;
+    }
+
+    .stat-income { color: #10B981; }
+    .stat-expense { color: #EF4444; }
+    .stat-advance { color: #F59E0B; }
+    .stat-net { color: #1A1A1A; }
+
+    .stat-sub {
+      font-size: 9px;
+      color: #A0A0A0;
+    }
+
+    .section {
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: #1A1A1A;
+      margin-bottom: 12px;
+    }
+
+    .tx-item {
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #E5E7EB;
+      margin-bottom: 8px;
+    }
+
+    .tx-info p { margin: 0; }
+    .tx-date { font-size: 11px; font-weight: 700; color: #1A1A1A; margin-bottom: 2px; }
+    .tx-desc { font-size: 10px; color: #A0A0A0; }
+
+    .tx-amount { text-align: end; margin-left: 12px; }
+    .tx-value { font-size: 13px; font-weight: 900; font-family: 'Barlow Condensed', sans-serif; direction: ltr; }
+    .tx-income { color: #10B981; }
+    .tx-expense { color: #EF4444; }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      background: #FFFFFF;
+      border-top: 1px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 40;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      text-align: center;
+      cursor: pointer;
+      flex: 1;
+      background: none;
+      border: none;
+      color: #A0A0A0;
+      font-weight: 700;
+    }
+
+    .nav-item.active { color: #FFCD11; }
+    .nav-icon { font-size: 20px; }
+
+    .fab {
+      position: fixed;
+      bottom: 64px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 56px;
+      background: #FFCD11;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 16px rgba(255, 205, 17, 0.4);
+      cursor: pointer;
+      z-index: 45;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="header-logo">🚜</div>
+        <div class="header-name">أحمد الراشد</div>
+      </div>
+      <button class="header-menu">☰</button>
+    </div>
+  </div>
+
+  <!-- BALANCE CARD -->
+  <div class="balance-card">
+    <p class="balance-label">رصيدك</p>
+    <p class="balance-value">12,450</p>
+    <p class="balance-currency">ر.س</p>
+  </div>
+
+  <!-- STATS GRID -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <p class="stat-label">الدخل</p>
+      <p class="stat-value stat-income" dir="ltr">+45,200</p>
+      <p class="stat-sub">ر.س</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">المصاريف</p>
+      <p class="stat-value stat-expense" dir="ltr">-8,500</p>
+      <p class="stat-sub">ر.س</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">التقدمات</p>
+      <p class="stat-value stat-advance" dir="ltr">-5,000</p>
+      <p class="stat-sub">ر.س</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">الصافي</p>
+      <p class="stat-value stat-net" dir="ltr">+31,700</p>
+      <p class="stat-sub">ر.س</p>
+    </div>
+  </div>
+
+  <!-- RECENT TRANSACTIONS -->
+  <div class="section">
+    <h2 class="section-title">آخر العمليات</h2>
+
+    <div class="tx-item">
+      <div class="tx-info">
+        <p class="tx-date">اليوم - 02:45 م</p>
+        <p class="tx-desc">نقل حي الملز</p>
+      </div>
+      <div class="tx-amount">
+        <p class="tx-value tx-income" dir="ltr">+850</p>
+      </div>
+    </div>
+
+    <div class="tx-item">
+      <div class="tx-info">
+        <p class="tx-date">اليوم - 01:15 م</p>
+        <p class="tx-desc">وقود</p>
+      </div>
+      <div class="tx-amount">
+        <p class="tx-value tx-expense" dir="ltr">-120</p>
+      </div>
+    </div>
+
+    <div class="tx-item">
+      <div class="tx-info">
+        <p class="tx-date">أمس - 04:30 م</p>
+        <p class="tx-desc">نقل الروضة</p>
+      </div>
+      <div class="tx-amount">
+        <p class="tx-value tx-income" dir="ltr">+1,250</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item active">
+      <span class="nav-icon">🏠</span>
+      <span>الرئيسية</span>
+    </button>
+    <button class="nav-item">
+      <span class="nav-icon">📊</span>
+      <span>الإحصائيات</span>
+    </button>
+    <button class="nav-item" style="opacity: 0;"></button>
+    <button class="nav-item">
+      <span class="nav-icon">💰</span>
+      <span>الأرصدة</span>
+    </button>
+    <button class="nav-item">
+      <span class="nav-icon">⚙️</span>
+      <span>الإعدادات</span>
+    </button>
+  </nav>
+
+  <!-- FAB BUTTON -->
+  <button class="fab" title="إضافة عملية">+</button>
+</body>
+</html>
