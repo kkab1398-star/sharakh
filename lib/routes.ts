@@ -95,18 +95,21 @@ export function buildPartnerWhatsAppMessage(params: {
   email: string;
   password: string;
   slug: string;
+  loginLink?: string;
   trialDays?: number;
 }): string {
   const trialEndDate = new Date();
   trialEndDate.setDate(trialEndDate.getDate() + (params.trialDays || 14));
   const dateStr = trialEndDate.toLocaleDateString('ar-SA');
 
+  const link = params.loginLink || ROUTES.partner.login(params.slug);
+
   const message = `🚀 مرحباً بك في نظام شراكة 🚀
 
 بيانات دخولك:
 📧 البريد: ${params.email}
 🔑 كلمة المرور: ${params.password}
-🔗 الرابط: ${ROUTES.partner.login(params.slug)}
+🔗 الرابط: ${link}
 
 📋 الخطوات الأولى:
 1️⃣ الإعدادات ← أضف بيانات شركتك
@@ -130,6 +133,7 @@ export function buildPartnerWhatsAppURL(params: {
   password: string;
   slug: string;
   phone: string;
+  loginLink?: string;
   trialDays?: number;
 }): string {
   const message = buildPartnerWhatsAppMessage({
@@ -137,6 +141,7 @@ export function buildPartnerWhatsAppURL(params: {
     email: params.email,
     password: params.password,
     slug: params.slug,
+    loginLink: params.loginLink,
     trialDays: params.trialDays,
   });
 
