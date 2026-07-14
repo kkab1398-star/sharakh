@@ -117,7 +117,7 @@ export default function DriverDetailPage() {
           password: newPassword || '',
           phone: worker.phone ?? undefined,
         } : null}
-        partnerSlug={partner?.slug}
+        partnerId={partner?.id}
         showPassword={!!newPassword}
         onClose={() => setShowShareModal(false)}
       />

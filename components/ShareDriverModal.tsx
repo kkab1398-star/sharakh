@@ -10,7 +10,7 @@ interface ShareDriverModalProps {
     password?: string;
     phone?: string;
   } | null;
-  partnerSlug?: string | null;
+  partnerId?: string | null;
   showPassword?: boolean;
   onClose: () => void;
 }
@@ -18,7 +18,7 @@ interface ShareDriverModalProps {
 export default function ShareDriverModal({
   isOpen,
   driver,
-  partnerSlug,
+  partnerId,
   showPassword = true,
   onClose,
 }: ShareDriverModalProps) {
@@ -26,9 +26,11 @@ export default function ShareDriverModal({
 
   if (!isOpen || !driver) return null;
 
-  // بناء رابط الدخول - دائماً رابط السائق، تجاهل partnerSlug
+  // بناء رابط الدخول للسائق مع partner_id
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://sharakh.vercel.app";
-  const loginLink = `${appUrl}/driver/login`;
+  const loginLink = partnerId
+    ? `${appUrl}/driver/login?p=${partnerId}`
+    : `${appUrl}/driver/login`;
 
   // بناء رسالة الواتساب
   let whatsappMessage = `مرحباً ${driver.full_name} 👋

@@ -92,7 +92,7 @@ export default function NewDriverPage() {
       <ShareDriverModal
         isOpen={showModal}
         driver={savedDriver}
-        partnerSlug={partner?.slug}
+        partnerId={partner?.id}
         onClose={handleCloseModal}
       />
       <div className="mb-6">
