@@ -29,6 +29,14 @@ export default function ShareDriverModal({
 
   if (!isOpen || !driver) return null;
 
+  console.log('=== DEBUG: ShareDriverModal ===');
+  console.log('partnerId value:', partnerId);
+  console.log('partnerId type:', typeof partnerId);
+  console.log('partnerId is null:', partnerId === null);
+  console.log('partnerId is undefined:', partnerId === undefined);
+  console.log('companyName:', companyName);
+  console.log('driver.full_name:', driver.full_name);
+
   const whatsappMessage = buildDriverWhatsAppMessage({
     driverName: driver.full_name,
     companyName,
@@ -36,6 +44,10 @@ export default function ShareDriverModal({
     password: showPassword ? driver.password : undefined,
     partnerId: partnerId || undefined,
   });
+
+  console.log('=== DEBUG: Generated Message ===');
+  console.log('whatsappMessage:', whatsappMessage);
+  console.log('=== END DEBUG ===')
 
   const handleCopy = () => {
     navigator.clipboard.writeText(whatsappMessage);

@@ -33,9 +33,19 @@ export function buildDriverWhatsAppMessage(params: {
   password?: string;
   partnerId?: string;
 }): string {
+  console.log('[lib/routes.ts] buildDriverWhatsAppMessage params:', {
+    driverName: params.driverName,
+    companyName: params.companyName,
+    username: params.username,
+    partnerId: params.partnerId,
+    hasPassword: !!params.password,
+  });
+
   const driverLoginUrl = params.partnerId
     ? ROUTES.driver.loginWithPartner(params.partnerId)
     : ROUTES.driver.login;
+
+  console.log('[lib/routes.ts] Generated driverLoginUrl:', driverLoginUrl);
 
   let message = `مرحباً ${params.driverName} 👋
 
