@@ -86,8 +86,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: authError.message }, { status: 400 });
     }
 
-    // استخرج slug من البريد الإلكتروني
-    let slug = email.split('@')[0].toLowerCase().replace(/[^a-z]/g, '');
+    // استخرج slug من البريد الإلكتروني - أول 4 حروف فقط
+    const prefix = email.split('@')[0];
+    const lettersOnly = prefix.replace(/[^a-zA-Z]/g, '').toLowerCase();
+    let slug = lettersOnly.slice(0, 4);
 
     // تحقق من تكرار slug وأضف رقم إذا لزم الأمر
     let finalSlug = slug;

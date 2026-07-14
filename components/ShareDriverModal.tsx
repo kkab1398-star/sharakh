@@ -28,9 +28,7 @@ export default function ShareDriverModal({
 
   // بناء رابط الدخول
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://sharakh.vercel.app";
-  const loginLink = partnerSlug
-    ? `${appUrl}/login/${partnerSlug}`
-    : `${appUrl}/driver/login`;
+  const loginLink = `${appUrl}/driver/login`;
 
   // بناء رسالة الواتساب
   let whatsappMessage = `مرحباً ${driver.full_name} 👋
