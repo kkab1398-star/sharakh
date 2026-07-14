@@ -28,7 +28,7 @@ export default function ShareDriverModal({
 
   if (!isOpen || !driver) return null;
 
-  const driverLoginUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://sharakh.vercel.app'}/driver/login`;
+  const driverLoginUrl = `https://sharakh.vercel.app/driver/login`;
 
   const whatsappMessage = `مرحباً ${driver.full_name} 👋
 
