@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { buildDriverWhatsAppMessage, buildDriverWhatsAppURL } from "@/lib/routes";
 
 interface ShareDriverModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface ShareDriverModalProps {
     phone?: string;
   } | null;
   partnerId?: string | null;
+  companyName?: string;
   showPassword?: boolean;
   onClose: () => void;
 }
@@ -19,6 +21,7 @@ export default function ShareDriverModal({
   isOpen,
   driver,
   partnerId,
+  companyName = "الشركة",
   showPassword = true,
   onClose,
 }: ShareDriverModalProps) {
@@ -26,30 +29,13 @@ export default function ShareDriverModal({
 
   if (!isOpen || !driver) return null;
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://sharakh.vercel.app";
-
-  // بناء رابط الدخول للسائق
-  // يجب استخدام /driver/login مع partner_id في query parameter
-  const driverLoginUrl = partnerId
-    ? `${appUrl}/driver/login?p=${partnerId}`
-    : `${appUrl}/driver/login`;
-
-  const whatsappMessage = `مرحباً ${driver.full_name} 👋
-
-تم تسجيلك في نظام شراكة لإدارة المعدات
-
-🔗 رابط دخولك:
-${driverLoginUrl}
-
-👤 اسم المستخدم:
-${driver.username}${showPassword && driver.password ? `
-
-🔑 كلمة المرور:
-${driver.password}
-
-⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد` : `
-
-⚠️ احتفظ بهذه البيانات ولا تشاركها مع أحد`}`;
+  const whatsappMessage = buildDriverWhatsAppMessage({
+    driverName: driver.full_name,
+    companyName,
+    username: driver.username,
+    password: showPassword ? driver.password : undefined,
+    partnerId: partnerId || undefined,
+  });
 
   const handleCopy = () => {
     navigator.clipboard.writeText(whatsappMessage);
@@ -63,16 +49,16 @@ ${driver.password}
       return;
     }
 
-    let phoneNumber = driver.phone.replace(/\D/g, "");
-    if (!phoneNumber.startsWith("966") && phoneNumber.startsWith("5")) {
-      phoneNumber = "966" + phoneNumber.substring(1);
-    }
-    if (!phoneNumber.startsWith("966")) {
-      phoneNumber = "966" + phoneNumber;
-    }
+    const whatsappUrl = buildDriverWhatsAppURL({
+      driverName: driver.full_name,
+      companyName,
+      username: driver.username,
+      password: showPassword ? driver.password : undefined,
+      phone: driver.phone,
+      partnerId: partnerId || undefined,
+    });
 
-    const encodedMessage = encodeURIComponent(whatsappMessage);
-    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, "_blank");
+    window.open(whatsappUrl, "_blank");
   };
 
   return (

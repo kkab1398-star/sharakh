@@ -118,6 +118,7 @@ export default function DriverDetailPage() {
           phone: worker.phone ?? undefined,
         } : null}
         partnerId={partner?.id}
+        companyName={partner?.company_name}
         showPassword={!!newPassword}
         onClose={() => setShowShareModal(false)}
       />
