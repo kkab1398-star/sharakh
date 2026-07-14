@@ -166,11 +166,11 @@ export async function POST(req: NextRequest) {
     });
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://sharakh.vercel.app';
-    const loginLink = `${appUrl}/login/${finalSlug}`;
 
     return NextResponse.json({
       partner: { ...partner, slug: finalSlug },
-      loginLink,
+      partnerLoginLink: `${appUrl}/login/${finalSlug}`,
+      driverLoginLink: `${appUrl}/driver/login`,
       slug: finalSlug,
     }, { status: 201 });
   } catch (err) {
