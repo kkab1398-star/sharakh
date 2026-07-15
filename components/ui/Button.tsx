@@ -6,6 +6,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   fullWidth?: boolean;
   isLoading?: boolean;
+  leftIcon?: React.ReactNode | string;
+  rightIcon?: React.ReactNode | string;
 }
 
 export function Button({
@@ -15,10 +17,12 @@ export function Button({
   fullWidth = false,
   isLoading = false,
   disabled = false,
+  leftIcon,
+  rightIcon,
   children,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'font-semibold rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'font-semibold rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2';
 
   const variantStyles = {
     primary: 'bg-yellow-400 text-black hover:bg-yellow-500 disabled:hover:bg-yellow-400',
@@ -40,7 +44,13 @@ export function Button({
       className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyle} ${className}`}
       {...props}
     >
-      {isLoading ? '⏳ جاري...' : children}
+      {isLoading ? '⏳ جاري...' : (
+        <>
+          {leftIcon && <span>{leftIcon}</span>}
+          {children}
+          {rightIcon && <span>{rightIcon}</span>}
+        </>
+      )}
     </button>
   );
 }
