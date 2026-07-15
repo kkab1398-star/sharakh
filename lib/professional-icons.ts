@@ -1,6 +1,5 @@
 // lib/professional-icons.ts
 // Radix Icons: Professional Enterprise-level icons from Vercel
-// Material Design Icons: Google's professional equipment icons (simplified)
 
 import {
   HomeIcon,
@@ -9,9 +8,9 @@ import {
   PlusIcon,
   MinusIcon,
   TrashIcon,
-  PencilIcon,
+  Pencil2Icon,
   EyeOpenIcon,
-  EyeNoneIcon,
+  EyeClosedIcon,
   MagnifyingGlassIcon,
   BellIcon,
   LayoutIcon,
@@ -35,11 +34,11 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   DashboardIcon,
-  ReaderIcon,
+  TextIcon,
   ViewGridIcon,
   ListBulletIcon,
   CopyIcon,
-  RefreshIcon,
+  ReloadIcon,
   UpdateIcon,
   CaretUpIcon,
   CaretDownIcon,
@@ -52,13 +51,10 @@ import {
   Share1Icon,
   OpenInNewWindowIcon,
   FileIcon,
-  FolderIcon,
-  FolderOpenIcon,
-  MixerHorizontalIcon,
   AvatarIcon,
 } from '@radix-ui/react-icons';
 
-// Material Design Icons: simplified imports
+// Material Design Icons
 import {
   Construction,
   Engineering,
@@ -125,6 +121,7 @@ export const ProfessionalNavIcons = {
   file: FileIcon,
   grid: ViewGridIcon,
   list: ListBulletIcon,
+  text: TextIcon,
 } as const;
 
 // ═══════════════════════════════════════════════════════════════
@@ -154,8 +151,8 @@ export const ProfessionalFinanceIcons = {
   chart: BarChartIcon,
   trend: ArrowUpIcon,
   trendDown: ArrowDownIcon,
-  document: ReaderIcon,
-  invoice: ReaderIcon,
+  document: TextIcon,
+  invoice: TextIcon,
   wallet: StarIcon,
 } as const;
 
@@ -166,12 +163,12 @@ export const ProfessionalActionIcons = {
   add: PlusIcon,
   remove: MinusIcon,
   delete: TrashIcon,
-  edit: PencilIcon,
-  view: EyeIcon,
+  edit: Pencil2Icon,
+  view: EyeOpenIcon,
   hide: EyeClosedIcon,
   search: MagnifyingGlassIcon,
   copy: CopyIcon,
-  refresh: RefreshIcon,
+  refresh: ReloadIcon,
   update: UpdateIcon,
   download: DownloadIcon,
   upload: UploadIcon,
@@ -203,7 +200,7 @@ export const ProfessionalFormIcons = {
   clock: ClockIcon,
   lock: LockClosedIcon,
   unlock: LockOpen1Icon,
-  visibility: EyeIcon,
+  visibility: EyeOpenIcon,
   visibilityOff: EyeClosedIcon,
 } as const;
 
@@ -230,7 +227,7 @@ export const ProfessionalSecurityIcons = {
   key: LockClosedIcon,
   security: Security,
   verified: VerifiedUser,
-  visibility: EyeIcon,
+  visibility: EyeOpenIcon,
   visibilityOff: EyeClosedIcon,
 } as const;
 
