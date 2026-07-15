@@ -4,7 +4,7 @@ import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
-  icon?: LucideIcon | React.ReactNode;
+  icon?: React.ReactNode;
   label: string;
   value: string | number;
   trend?: 'up' | 'down' | 'neutral';
@@ -64,9 +64,14 @@ export function StatCard({
             {label}
           </p>
         </div>
-        {icon && (
+        {icon && typeof icon === 'string' && (
           <div className={`text-2xl ${classes.icon}`}>
-            {typeof icon === 'string' ? icon : <icon className="w-6 h-6" />}
+            {icon}
+          </div>
+        )}
+        {icon && typeof icon !== 'string' && (
+          <div className={`text-2xl ${classes.icon}`}>
+            {icon}
           </div>
         )}
       </div>

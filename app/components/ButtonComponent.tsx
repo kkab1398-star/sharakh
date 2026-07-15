@@ -59,13 +59,33 @@ export function Button({
     .filter(Boolean)
     .join(' ');
 
-  const Element = asChild ? 'div' : 'button';
+  if (asChild) {
+    return (
+      <div
+        className={classes}
+        {...(props as React.HTMLAttributes<HTMLDivElement>)}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 size={20} className="animate-spin" />
+            {children}
+          </>
+        ) : (
+          <>
+            {leftIcon && <span>{leftIcon}</span>}
+            {children}
+            {rightIcon && <span>{rightIcon}</span>}
+          </>
+        )}
+      </div>
+    );
+  }
 
   return (
-    <Element
+    <button
       className={classes}
       disabled={isDisabled}
-      {...(!asChild && { ...props })}
+      {...props}
     >
       {isLoading ? (
         <>
@@ -79,6 +99,6 @@ export function Button({
           {rightIcon && <span>{rightIcon}</span>}
         </>
       )}
-    </Element>
+    </button>
   );
 }

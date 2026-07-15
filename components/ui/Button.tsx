@@ -1,13 +1,14 @@
 import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   fullWidth?: boolean;
   isLoading?: boolean;
   leftIcon?: React.ReactNode | string;
   rightIcon?: React.ReactNode | string;
+  asChild?: boolean;
 }
 
 export function Button({
@@ -19,6 +20,7 @@ export function Button({
   disabled = false,
   leftIcon,
   rightIcon,
+  asChild = false,
   children,
   ...props
 }: ButtonProps) {
@@ -28,6 +30,7 @@ export function Button({
     primary: 'bg-yellow-400 text-black hover:bg-yellow-500 disabled:hover:bg-yellow-400',
     secondary: 'bg-gray-700 text-white hover:bg-gray-600 disabled:hover:bg-gray-700',
     danger: 'bg-red-600 text-white hover:bg-red-700 disabled:hover:bg-red-600',
+    ghost: 'bg-transparent text-gray-400 hover:bg-gray-700 disabled:hover:bg-transparent',
   };
 
   const sizeStyles = {
@@ -38,19 +41,32 @@ export function Button({
 
   const widthStyle = fullWidth ? 'w-full' : '';
 
+  const buttonContent = isLoading ? '⏳ جاري...' : (
+    <>
+      {leftIcon && <span>{leftIcon}</span>}
+      {children}
+      {rightIcon && <span>{rightIcon}</span>}
+    </>
+  );
+
+  if (asChild) {
+    return (
+      <div
+        className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyle} ${className}`}
+        {...(props as React.HTMLAttributes<HTMLDivElement>)}
+      >
+        {buttonContent}
+      </div>
+    );
+  }
+
   return (
     <button
       disabled={disabled || isLoading}
       className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyle} ${className}`}
       {...props}
     >
-      {isLoading ? '⏳ جاري...' : (
-        <>
-          {leftIcon && <span>{leftIcon}</span>}
-          {children}
-          {rightIcon && <span>{rightIcon}</span>}
-        </>
-      )}
+      {buttonContent}
     </button>
   );
 }
