@@ -8,6 +8,7 @@ import { ProfessionalEquipmentIcons, ProfessionalFormIcons } from '@/lib/profess
 
 type Role = 'partner' | 'driver' | null;
 
+// Professional icon system fully integrated
 export default function LoginPage() {
   const router = useRouter();
   const [role, setRole] = useState<Role>(null);
