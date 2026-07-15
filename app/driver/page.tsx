@@ -52,10 +52,10 @@ export default function DriverHome() {
   }, []);
 
   if (loading) return (
-    <div style={{ minHeight: '100svh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F4F5F7' }}>
+    <div style={{ minHeight: '100svh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8FAFC' }}>
       <div style={{ textAlign: 'center' }}>
         <div style={{ fontSize: '40px', marginBottom: '12px' }}>🚜</div>
-        <p style={{ color: '#A0A0A0', fontSize: '13px' }}>جاري التحميل...</p>
+        <p style={{ color: '#64748B', fontSize: '13px' }}>جاري التحميل...</p>
       </div>
     </div>
   );
@@ -63,13 +63,13 @@ export default function DriverHome() {
   const firstLetter = worker?.full_name?.charAt(0)?.toUpperCase() ?? '?';
 
   return (
-    <div style={{ fontFamily: 'Cairo, sans-serif', minHeight: '100svh', background: '#F4F5F7' }}>
+    <div style={{ fontFamily: 'Cairo, sans-serif', minHeight: '100svh', background: '#F8FAFC' }}>
 
       {/* ╔════════════════════════════════════════════════════
-          HEADER: Yellow Top Bar
+          HEADER: White Top Bar
           ════════════════════════════════════════════════════╗ */}
       <header style={{
-        background: 'linear-gradient(135deg, #FFCD11 0%, #FFD700 100%)',
+        background: '#FFFFFF',
         padding: '12px 16px',
         position: 'sticky',
         top: 0,
@@ -78,7 +78,7 @@ export default function DriverHome() {
         alignItems: 'center',
         justifyContent: 'space-between',
         height: '60px',
-        boxShadow: '0 4px 12px rgba(255, 205, 17, 0.2)',
+        borderBottom: '1px solid #E2E8F0',
       }}>
         {/* LEFT: Logo/Name */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -86,8 +86,8 @@ export default function DriverHome() {
             width: '36px',
             height: '36px',
             borderRadius: '50%',
-            background: '#FFFFFF',
-            color: '#1A1A1A',
+            background: '#2563EB',
+            color: '#FFFFFF',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -98,17 +98,17 @@ export default function DriverHome() {
             {firstLetter}
           </div>
           <div style={{ minWidth: 0 }}>
-            <p style={{ fontSize: '12px', fontWeight: 700, color: '#1A1A1A', margin: 0 }}>
+            <p style={{ fontSize: '12px', fontWeight: 700, color: '#0F172A', margin: 0 }}>
               {worker?.full_name ?? '—'}
             </p>
-            <p style={{ fontSize: '10px', color: '#1A1A1A', opacity: 0.7, margin: 0 }}>
+            <p style={{ fontSize: '10px', color: '#64748B', margin: 0 }}>
               نشط
             </p>
           </div>
         </div>
 
         {/* CENTER: Company Name */}
-        <p style={{ fontSize: '12px', fontWeight: 700, color: '#1A1A1A', margin: 0, textAlign: 'center', flex: 1 }}>
+        <p style={{ fontSize: '12px', fontWeight: 700, color: '#0F172A', margin: 0, textAlign: 'center', flex: 1 }}>
           {worker?.company_name ?? ''}
         </p>
 
@@ -124,14 +124,14 @@ export default function DriverHome() {
           <div style={{
             margin: '40px 16px',
             background: '#FFFFFF',
-            border: '1px solid #E5E7EB',
-            borderRadius: '16px',
+            border: '1px solid #E2E8F0',
+            borderRadius: '24px',
             padding: '40px 20px',
             textAlign: 'center',
           }}>
             <p style={{ fontSize: '36px', margin: '0 0 12px' }}>📭</p>
-            <p style={{ fontWeight: 700, color: '#1A1A1A', fontSize: '15px', margin: 0 }}>لا توجد دورات</p>
-            <p style={{ fontSize: '13px', color: '#A0A0A0', marginTop: '6px', margin: '6px 0 0' }}>
+            <p style={{ fontWeight: 700, color: '#0F172A', fontSize: '15px', margin: 0 }}>لا توجد دورات</p>
+            <p style={{ fontSize: '13px', color: '#64748B', marginTop: '6px', margin: '6px 0 0' }}>
               تواصل مع الشريك لبدء دورة جديدة
             </p>
           </div>
@@ -142,14 +142,14 @@ export default function DriverHome() {
                 ════════════════════════════════════════════════════╗ */}
             <div style={{
               background: '#FFFFFF',
-              borderRadius: '16px',
-              border: '1px solid #E5E7EB',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
+              borderRadius: '24px',
+              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.04)',
               margin: '16px',
-              padding: '20px',
+              padding: '24px',
+              textAlign: 'center',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                <p style={{ fontSize: '12px', fontWeight: 700, color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
+                <p style={{ fontSize: '12px', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
                   ميزان السائق
                 </p>
                 <div style={{
@@ -163,10 +163,10 @@ export default function DriverHome() {
                   نشط
                 </div>
               </div>
-              <p style={{ fontSize: '32px', fontWeight: 900, color: '#1A1A1A', margin: '0 0 6px', fontFamily: "'Barlow Condensed', sans-serif", lineHeight: 1 }}>
+              <p style={{ fontSize: '40px', fontWeight: 900, color: '#2563EB', margin: '0 0 6px', fontFamily: "'Barlow Condensed', sans-serif", lineHeight: 1 }}>
                 {fmt(Number(cur.net_amount))}
               </p>
-              <p style={{ fontSize: '11px', color: '#A0A0A0', margin: 0 }}>
+              <p style={{ fontSize: '11px', color: '#64748B', margin: 0 }}>
                 {sym} | {cur.title ?? 'دورة'}
               </p>
             </div>
@@ -179,17 +179,17 @@ export default function DriverHome() {
               <div style={{
                 background: '#FFFFFF',
                 borderRadius: '12px',
-                border: '1px solid #E5E7EB',
+                border: '1px solid #E2E8F0',
                 padding: '12px',
                 textAlign: 'center',
               }}>
-                <p style={{ fontSize: '10px', fontWeight: 700, color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
+                <p style={{ fontSize: '10px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
                   الدخل
                 </p>
                 <p style={{ fontSize: '20px', fontWeight: 900, color: '#10B981', margin: '0 0 4px', fontFamily: "'Barlow Condensed', sans-serif" }}>
                   {fmt(Number(cur.total_income))}
                 </p>
-                <p style={{ fontSize: '10px', color: '#A0A0A0', margin: 0 }}>
+                <p style={{ fontSize: '10px', color: '#64748B', margin: 0 }}>
                   ↑ {sym}
                 </p>
               </div>
@@ -198,17 +198,17 @@ export default function DriverHome() {
               <div style={{
                 background: '#FFFFFF',
                 borderRadius: '12px',
-                border: '1px solid #E5E7EB',
+                border: '1px solid #E2E8F0',
                 padding: '12px',
                 textAlign: 'center',
               }}>
-                <p style={{ fontSize: '10px', fontWeight: 700, color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
+                <p style={{ fontSize: '10px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
                   المصاريف
                 </p>
                 <p style={{ fontSize: '20px', fontWeight: 900, color: '#EF4444', margin: '0 0 4px', fontFamily: "'Barlow Condensed', sans-serif" }}>
                   {fmt(Number(cur.total_expenses))}
                 </p>
-                <p style={{ fontSize: '10px', color: '#A0A0A0', margin: 0 }}>
+                <p style={{ fontSize: '10px', color: '#64748B', margin: 0 }}>
                   ↓ {sym}
                 </p>
               </div>
@@ -217,17 +217,17 @@ export default function DriverHome() {
               <div style={{
                 background: '#FFFFFF',
                 borderRadius: '12px',
-                border: '1px solid #E5E7EB',
+                border: '1px solid #E2E8F0',
                 padding: '12px',
                 textAlign: 'center',
               }}>
-                <p style={{ fontSize: '10px', fontWeight: 700, color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
+                <p style={{ fontSize: '10px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
                   السلف
                 </p>
                 <p style={{ fontSize: '20px', fontWeight: 900, color: '#3B82F6', margin: '0 0 4px', fontFamily: "'Barlow Condensed', sans-serif" }}>
                   {fmt(Number(cur.total_advances ?? 0))}
                 </p>
-                <p style={{ fontSize: '10px', color: '#A0A0A0', margin: 0 }}>
+                <p style={{ fontSize: '10px', color: '#64748B', margin: 0 }}>
                   ⟳ {sym}
                 </p>
               </div>
@@ -236,17 +236,17 @@ export default function DriverHome() {
               <div style={{
                 background: '#FFFFFF',
                 borderRadius: '12px',
-                border: '1px solid #E5E7EB',
+                border: '1px solid #E2E8F0',
                 padding: '12px',
                 textAlign: 'center',
               }}>
-                <p style={{ fontSize: '10px', fontWeight: 700, color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
+                <p style={{ fontSize: '10px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 8px' }}>
                   الصافي
                 </p>
-                <p style={{ fontSize: '20px', fontWeight: 900, color: '#FFCD11', margin: '0 0 4px', fontFamily: "'Barlow Condensed', sans-serif" }}>
+                <p style={{ fontSize: '20px', fontWeight: 900, color: '#2563EB', margin: '0 0 4px', fontFamily: "'Barlow Condensed', sans-serif" }}>
                   {fmt(Number(cur.net_amount))}
                 </p>
-                <p style={{ fontSize: '10px', color: '#A0A0A0', margin: 0 }}>
+                <p style={{ fontSize: '10px', color: '#64748B', margin: 0 }}>
                   = {sym}
                 </p>
               </div>
@@ -256,7 +256,7 @@ export default function DriverHome() {
                 RECENT TRANSACTIONS
                 ════════════════════════════════════════════════════╗ */}
             <div style={{ margin: '0 16px 20px' }}>
-              <h3 style={{ fontSize: '14px', fontWeight: 900, color: '#1A1A1A', margin: '0 0 12px' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: 900, color: '#0F172A', margin: '0 0 12px' }}>
                 آخر المعاملات
               </h3>
 
@@ -264,11 +264,11 @@ export default function DriverHome() {
                 <div style={{
                   background: '#FFFFFF',
                   borderRadius: '12px',
-                  border: '1px solid #E5E7EB',
+                  border: '1px solid #E2E8F0',
                   padding: '20px',
                   textAlign: 'center',
                 }}>
-                  <p style={{ fontSize: '13px', color: '#A0A0A0', margin: 0 }}>لا توجد معاملات</p>
+                  <p style={{ fontSize: '13px', color: '#64748B', margin: 0 }}>لا توجد معاملات</p>
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -281,7 +281,7 @@ export default function DriverHome() {
                       <div key={tx.id} style={{
                         background: '#FFFFFF',
                         borderRadius: '12px',
-                        border: '1px solid #E5E7EB',
+                        border: '1px solid #E2E8F0',
                         padding: '12px 14px',
                         display: 'flex',
                         alignItems: 'center',
@@ -292,12 +292,12 @@ export default function DriverHome() {
                             {isIncome ? 'دخل' : 'مصروف'}
                           </p>
                           {tx.description && (
-                            <p style={{ fontSize: '11px', color: '#A0A0A0', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            <p style={{ fontSize: '11px', color: '#64748B', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {tx.description}
                             </p>
                           )}
                           {tx.customer_name && (
-                            <p style={{ fontSize: '10px', color: '#A0A0A0', margin: '2px 0 0' }}>
+                            <p style={{ fontSize: '10px', color: '#64748B', margin: '2px 0 0' }}>
                               👤 {tx.customer_name}
                             </p>
                           )}
@@ -306,7 +306,7 @@ export default function DriverHome() {
                           <p style={{ fontSize: '13px', fontWeight: 900, color, margin: '0 0 2px', fontFamily: "'Barlow Condensed', sans-serif" }} dir="ltr">
                             {sign}{fmt(Number(tx.amount))}
                           </p>
-                          <p style={{ fontSize: '9px', color: '#A0A0A0', margin: 0 }}>
+                          <p style={{ fontSize: '9px', color: '#64748B', margin: 0 }}>
                             {new Date(tx.created_at).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}
                           </p>
                         </div>
@@ -329,17 +329,17 @@ export default function DriverHome() {
           bottom: 0,
           left: 0,
           right: 0,
-          height: '72px',
+          height: '76px',
           background: '#FFFFFF',
-          borderTop: '1px solid #E5E7EB',
+          borderTop: '1px solid #E2E8F0',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-around',
           zIndex: 40,
           paddingBottom: 'max(8px, env(safe-area-inset-bottom))',
           boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.04)',
-          borderTopLeftRadius: '20px',
-          borderTopRightRadius: '20px',
+          borderTopLeftRadius: '24px',
+          borderTopRightRadius: '24px',
         }}>
           {/* Home */}
           <button
@@ -354,7 +354,7 @@ export default function DriverHome() {
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#1A1A1A',
+              color: '#0F172A',
               fontSize: '12px',
               fontWeight: 700,
             }}
@@ -376,7 +376,7 @@ export default function DriverHome() {
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#A0A0A0',
+              color: '#64748B',
               fontSize: '12px',
               fontWeight: 700,
             }}
@@ -388,24 +388,25 @@ export default function DriverHome() {
           {/* FAB: Add Transaction */}
           <div style={{
             position: 'absolute',
-            bottom: '20px',
+            bottom: '44px',
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 50,
           }}>
             <Link href="/driver" style={{
-              width: '56px',
-              height: '56px',
+              width: '64px',
+              height: '64px',
               borderRadius: '50%',
-              background: '#FFCD11',
+              background: '#2563EB',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '28px',
+              color: '#FFFFFF',
               textDecoration: 'none',
-              boxShadow: '0 6px 20px rgba(255, 205, 17, 0.3)',
+              boxShadow: '0 10px 25px rgba(37, 99, 235, 0.35)',
               cursor: 'pointer',
-              border: '4px solid #FFFFFF',
+              border: '6px solid #F8FAFC',
               transition: 'transform 0.2s',
             }}
             onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.1)')}
@@ -428,7 +429,7 @@ export default function DriverHome() {
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#A0A0A0',
+              color: '#64748B',
               fontSize: '12px',
               fontWeight: 700,
             }}
@@ -449,7 +450,7 @@ export default function DriverHome() {
               background: 'transparent',
               border: 'none',
               cursor: 'pointer',
-              color: '#A0A0A0',
+              color: '#64748B',
               fontSize: '12px',
               fontWeight: 700,
             }}

@@ -49,39 +49,39 @@ export default function DashboardPage() {
   ];
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F4F5F7' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8FAFC' }}>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ width: 40, height: 40, border: '3px solid #FFCD11', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' }} />
-        <p style={{ color: '#A0A0A0', fontSize: 13 }}>جاري التحميل...</p>
+        <div style={{ width: 40, height: 40, border: '3px solid #2563EB', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 12px' }} />
+        <p style={{ color: '#64748B', fontSize: 13 }}>جاري التحميل...</p>
       </div>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 
   return (
-    <div dir="rtl" style={{ minHeight: '100vh', background: '#F4F5F7', fontFamily: 'Cairo, sans-serif' }}>
+    <div dir="rtl" style={{ minHeight: '100vh', background: '#F8FAFC', fontFamily: 'Cairo, sans-serif' }}>
 
       {/* ╔═════════════════════════════════════════════════
-          HEADER: Yellow Curved Top with Logo + Title + Menu
+          HEADER: Blue Curved Top with Logo + Title + Menu
           ═════════════════════════════════════════════════╗ */}
       <div style={{
-        background: 'linear-gradient(135deg, #FFCD11 0%, #FFD700 100%)',
+        background: '#2563EB',
+        minHeight: '220px',
         paddingTop: '20px',
         paddingBottom: '60px',
-        borderBottomLeftRadius: '32px',
-        borderBottomRightRadius: '32px',
-        boxShadow: '0 8px 24px rgba(255, 205, 17, 0.15)',
+        borderBottomLeftRadius: '40px',
+        borderBottomRightRadius: '40px',
         position: 'relative',
       }}>
         <div style={{ paddingLeft: '16px', paddingRight: '16px', maxWidth: '100%' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
             <div style={{ fontSize: '24px' }}>🚜</div>
-            <button style={{ background: 'transparent', border: 'none', fontSize: '24px', cursor: 'pointer' }}>☰</button>
+            <button style={{ background: 'transparent', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#FFFFFF' }}>☰</button>
           </div>
-          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#1A1A1A', margin: '0 0 4px', lineHeight: 1.1 }}>
+          <h1 style={{ fontSize: '28px', fontWeight: 900, color: '#FFFFFF', margin: '0 0 4px', lineHeight: 1.1 }}>
             أهلاً، {partner?.company_name ?? 'شريك'}
           </h1>
-          <p style={{ fontSize: '12px', color: '#1A1A1A', opacity: 0.7, margin: 0 }}>
+          <p style={{ fontSize: '12px', color: '#FFFFFF', opacity: 0.8, margin: 0 }}>
             {new Date().toLocaleDateString('ar-EG', { weekday: 'long', month: 'long', day: 'numeric' })}
           </p>
         </div>
@@ -106,18 +106,18 @@ export default function DashboardPage() {
               borderRadius: '16px',
               padding: '16px',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.04)',
-              border: '1px solid #E5E7EB',
+              border: '1px solid #E2E8F0',
             }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
-                <p style={{ fontSize: '11px', fontWeight: 700, color: '#1A1A1A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
+                <p style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: 0 }}>
                   {s.label}
                 </p>
                 <span style={{ fontSize: '20px' }}>{s.icon}</span>
               </div>
-              <p style={{ fontSize: '24px', fontWeight: 900, color: '#1A1A1A', margin: '8px 0', fontFamily: "'Barlow Condensed', sans-serif", lineHeight: 1 }}>
+              <p style={{ fontSize: '24px', fontWeight: 900, color: '#0F172A', margin: '8px 0', fontFamily: "'Barlow Condensed', sans-serif", lineHeight: 1 }}>
                 {s.value}
               </p>
-              <p style={{ fontSize: '10px', color: '#A0A0A0', margin: 0 }}>
+              <p style={{ fontSize: '10px', color: '#64748B', margin: 0 }}>
                 {s.sub}
               </p>
             </div>
@@ -129,7 +129,7 @@ export default function DashboardPage() {
           RECENT OPERATIONS SECTION
           ═════════════════════════════════════════════════╗ */}
       <div style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-        <h2 style={{ fontSize: '16px', fontWeight: 900, color: '#1A1A1A', marginBottom: '12px', marginTop: '0' }}>
+        <h2 style={{ fontSize: '16px', fontWeight: 900, color: '#0F172A', marginBottom: '12px', marginTop: '0' }}>
           آخر العمليات
         </h2>
 
@@ -139,11 +139,11 @@ export default function DashboardPage() {
             borderRadius: '16px',
             padding: '32px 16px',
             textAlign: 'center',
-            border: '1px solid #E5E7EB',
+            border: '1px solid #E2E8F0',
             marginBottom: '20px',
           }}>
             <p style={{ fontSize: '32px', margin: '0 0 8px' }}>📭</p>
-            <p style={{ fontSize: '13px', color: '#A0A0A0', margin: 0 }}>لا توجد عمليات بعد</p>
+            <p style={{ fontSize: '13px', color: '#64748B', margin: 0 }}>لا توجد عمليات بعد</p>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
@@ -161,14 +161,14 @@ export default function DashboardPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  border: '1px solid #E5E7EB',
+                  border: '1px solid #E2E8F0',
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)',
                 }}>
                   <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: '13px', fontWeight: 700, color: '#1A1A1A', margin: '0 0 2px' }}>
+                    <p style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: '0 0 2px' }}>
                       {worker?.full_name || 'السائق'}
                     </p>
-                    <p style={{ fontSize: '11px', color: '#A0A0A0', margin: 0 }}>
+                    <p style={{ fontSize: '11px', color: '#64748B', margin: 0 }}>
                       {tx.description || tx.type}
                     </p>
                   </div>
@@ -176,7 +176,7 @@ export default function DashboardPage() {
                     <p style={{ fontSize: '14px', fontWeight: 900, color: color, margin: '0 0 2px', fontFamily: "'Barlow Condensed', sans-serif" }} dir="ltr">
                       {sign}{fmt(Number(tx.amount))}
                     </p>
-                    <p style={{ fontSize: '10px', color: '#A0A0A0', margin: 0 }}>ر.س</p>
+                    <p style={{ fontSize: '10px', color: '#64748B', margin: 0 }}>ر.س</p>
                   </div>
                 </div>
               );
@@ -186,13 +186,13 @@ export default function DashboardPage() {
 
         {/* Quick Links */}
         <div style={{ marginBottom: '40px' }}>
-          <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#1A1A1A', marginBottom: '12px', marginTop: '0' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#0F172A', marginBottom: '12px', marginTop: '0' }}>
             إجراءات سريعة
           </h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             <Link href="/dashboard/cycles/new" style={{
-              background: '#FFCD11',
-              color: '#1A1A1A',
+              background: '#2563EB',
+              color: '#FFFFFF',
               padding: '12px 14px',
               borderRadius: '12px',
               textDecoration: 'none',
@@ -207,14 +207,14 @@ export default function DashboardPage() {
             </Link>
             <Link href="/dashboard/drivers/new" style={{
               background: '#FFFFFF',
-              color: '#1A1A1A',
+              color: '#0F172A',
               padding: '12px 14px',
               borderRadius: '12px',
               textDecoration: 'none',
               fontWeight: 700,
               fontSize: '12px',
               textAlign: 'center',
-              border: '1px solid #E5E7EB',
+              border: '1px solid #E2E8F0',
               cursor: 'pointer',
               transition: 'transform 0.2s',
             }}>
@@ -222,14 +222,14 @@ export default function DashboardPage() {
             </Link>
             <Link href="/dashboard/cycles" style={{
               background: '#FFFFFF',
-              color: '#1A1A1A',
+              color: '#0F172A',
               padding: '12px 14px',
               borderRadius: '12px',
               textDecoration: 'none',
               fontWeight: 700,
               fontSize: '12px',
               textAlign: 'center',
-              border: '1px solid #E5E7EB',
+              border: '1px solid #E2E8F0',
               cursor: 'pointer',
               transition: 'transform 0.2s',
             }}>
@@ -237,14 +237,14 @@ export default function DashboardPage() {
             </Link>
             <Link href="/dashboard/settings" style={{
               background: '#FFFFFF',
-              color: '#1A1A1A',
+              color: '#0F172A',
               padding: '12px 14px',
               borderRadius: '12px',
               textDecoration: 'none',
               fontWeight: 700,
               fontSize: '12px',
               textAlign: 'center',
-              border: '1px solid #E5E7EB',
+              border: '1px solid #E2E8F0',
               cursor: 'pointer',
               transition: 'transform 0.2s',
             }}>

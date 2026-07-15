@@ -11,14 +11,15 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
       {/* Backdrop */}
       <div onClick={onClose} style={{
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        background: 'rgba(0,0,0,0.5)', zIndex: 999,
+        background: 'rgba(15,23,42,0.4)', zIndex: 999,
       }} />
 
       {/* Drawer */}
       <div style={{
         position: 'fixed', top: 0, right: 0, bottom: 0, width: '80%', maxWidth: 280,
-        background: 'var(--bg)', zIndex: 1000, overflowY: 'auto',
-        boxShadow: '-2px 0 8px rgba(0,0,0,0.3)',
+        background: '#FFFFFF', zIndex: 1000, overflowY: 'auto',
+        boxShadow: '-8px 0 30px rgba(0,0,0,0.1)',
+        borderTopLeftRadius: 24, borderBottomLeftRadius: 24,
       }}>
         <Sidebar />
       </div>
@@ -47,14 +48,9 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
       <div
         style={{
           display: 'flex', minHeight: '100vh',
-          background: 'var(--bg)',
+          background: '#F8FAFC',
           fontFamily: "'Cairo','Barlow Condensed',sans-serif",
-          ['--tenant-primary' as string]:  '#FFCD11',
-          ['--tenant-bg' as string]:       '#111111',
-          ['--tenant-surface' as string]:  '#2A2A2A',
-          ['--tenant-text' as string]:     '#FFFFFF',
-          ['--tenant-muted' as string]:    '#A0A0A0',
-        } as React.CSSProperties}
+        }}
         dir="rtl"
       >
         {/* Sidebar (Desktop only) */}
@@ -67,21 +63,21 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
 
         {/* Main Content */}
         <main className="dashboard-main" style={{
-          overflowY: 'auto', minHeight: '100vh', background: 'var(--bg)',
+          overflowY: 'auto', minHeight: '100vh', background: '#F8FAFC',
         }}>
           {/* Mobile Header with Hamburger */}
           <div className="dashboard-hamburger" style={{
             alignItems: 'center', justifyContent: 'space-between',
-            padding: '12px 16px', borderBottom: '1px solid var(--cat-mid)',
-            background: 'var(--cat-black)',
+            padding: '12px 16px', borderBottom: '1px solid #E2E8F0',
+            background: '#FFFFFF',
           }}>
             <button onClick={() => setDrawerOpen(true)} style={{
               background: 'none', border: 'none', fontSize: 24, cursor: 'pointer',
-              color: 'var(--cat-yellow)', padding: 8,
+              color: '#2563EB', padding: 8,
             }}>
               ☰
             </button>
-            <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--cat-white)' }}>القائمة</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: '#0F172A' }}>القائمة</span>
           </div>
 
           {children}
