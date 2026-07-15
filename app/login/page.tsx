@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { ProIcon, ProIconButton } from '@/components/ui/ProIcon';
+import { ProfessionalEquipmentIcons, ProfessionalFormIcons } from '@/lib/professional-icons';
 
 type Role = 'partner' | 'driver' | null;
 
@@ -146,7 +148,11 @@ export default function LoginPage() {
             margin: '0 auto 12px',
             flexShrink: 0,
           }}>
-            🏗️
+            <ProIcon
+              icon={<ProfessionalEquipmentIcons.construction style={{ width: 40, height: 40, color: '#1A1A1A' }} />}
+              size="2xl"
+              color="dark"
+            />
           </div>
           <div style={{
             fontSize: 28,
@@ -218,7 +224,11 @@ export default function LoginPage() {
                 }
               }}
             >
-              <span style={{ fontSize: 28 }}>👔</span>
+              <ProIcon
+                icon={<ProfessionalEquipmentIcons.engineering style={{ width: 28, height: 28 }} />}
+                size="lg"
+                color={role === 'partner' ? 'primary' : 'light'}
+              />
               <div>
                 <div style={{
                   fontSize: 14,
@@ -272,7 +282,11 @@ export default function LoginPage() {
                 }
               }}
             >
-              <span style={{ fontSize: 28 }}>🚜</span>
+              <ProIcon
+                icon={<ProfessionalEquipmentIcons.truck style={{ width: 28, height: 28 }} />}
+                size="lg"
+                color={role === 'driver' ? 'primary' : 'light'}
+              />
               <div>
                 <div style={{
                   fontSize: 14,
@@ -474,7 +488,14 @@ export default function LoginPage() {
                     (e.currentTarget as HTMLButtonElement).style.color = showPassword ? '#FFCD11' : '#A0A0A0';
                   }}
                 >
-                  {showPassword ? '👁️' : '👁‍🗨️'}
+                  <ProIcon
+                    icon={showPassword
+                      ? <ProfessionalFormIcons.visibility style={{ width: 20, height: 20 }} />
+                      : <ProfessionalFormIcons.visibilityOff style={{ width: 20, height: 20 }} />
+                    }
+                    size="md"
+                    color={showPassword ? 'primary' : 'light'}
+                  />
                 </button>
               </div>
             </div>
@@ -528,7 +549,14 @@ export default function LoginPage() {
                 </>
               ) : (
                 <>
-                  {role === 'partner' ? '👔' : '🚜'}
+                  <ProIcon
+                    icon={role === 'partner'
+                      ? <ProfessionalEquipmentIcons.engineering style={{ width: 20, height: 20 }} />
+                      : <ProfessionalEquipmentIcons.truck style={{ width: 20, height: 20 }} />
+                    }
+                    size="md"
+                    color="dark"
+                  />
                   <span>{role === 'partner' ? 'دخول كمالك' : 'دخول كسائق'}</span>
                 </>
               )}
