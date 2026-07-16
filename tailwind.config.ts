@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { colors, spacing, borderRadius, shadows, sizing } from './lib/design-system';
 
 const config: Config = {
   content: [
@@ -8,18 +9,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // CAT Design System Colors
+        // Uber Style Primary
+        primary: colors.uberBlack,
+        secondary: colors.uberBlue,
+        accent: colors.uberYellow,
+
+        // Extended palette
+        success: colors.success,
+        danger: colors.danger,
+        warning: colors.warning,
+        info: colors.info,
+
+        // Legacy CAT System (for compatibility)
         cat: {
-          yellow: '#FFCD11',
-          black: '#1A1A1A',
-          dark: '#111111',
-          red: '#ef4444',
-          green: '#22c55e',
-          white: '#FFFFFF',
-          muted: '#A0A0A0',
-          gray: '#2A2A2A',
-          mid: '#3D3D3D',
-          light: '#F0F0F0',
+          yellow: colors.uberYellow,
+          black: colors.uberBlack,
+          dark: colors.uberBlack,
+          red: colors.danger,
+          green: colors.success,
+          white: colors.white,
+          muted: colors.text.tertiary,
+          gray: colors.gray[500],
+          mid: colors.gray[400],
+          light: colors.gray[50],
         },
       },
       fontFamily: {
@@ -37,7 +49,8 @@ const config: Config = {
         '3xl': ['32px', { lineHeight: '36px' }],
       },
       spacing: {
-        // 4px grid system
+        ...spacing,
+        // Legacy 4px grid system
         1: '4px',
         2: '8px',
         3: '12px',
@@ -52,21 +65,19 @@ const config: Config = {
         16: '64px',
       },
       borderRadius: {
-        none: '0',
-        sm: '4px',
-        md: '6px',
-        lg: '8px',
-        xl: '12px',
+        ...borderRadius,
+        // Legacy aliases
+        'sm': '4px',
+        'md': '6px',
+        'lg': '8px',
+        'xl': '12px',
         '2xl': '16px',
         '3xl': '20px',
-        full: '9999px',
       },
       boxShadow: {
-        xs: '0 1px 2px rgba(0, 0, 0, 0.05)',
-        sm: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        md: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        lg: '0 10px 15px rgba(0, 0, 0, 0.1)',
-        xl: '0 20px 25px rgba(0, 0, 0, 0.1)',
+        ...shadows,
+        // Legacy aliases
+        xs: shadows.sm,
         'yellow-glow': '0 4px 12px rgba(255, 205, 17, 0.4)',
       },
       animation: {
