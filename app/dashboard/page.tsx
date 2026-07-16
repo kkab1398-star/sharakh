@@ -1,105 +1,102 @@
 'use client';
 
-import { UberCard, UberButton, UberTable } from '@/components/ui';
-import { colors, spacing, typography } from '@/lib/design-system';
+import { UberCard, UberButton } from '@/components/ui';
+import { colors } from '@/lib/design-system';
 
 export default function PartnerDashboard() {
-  const statCards = [
-    { label: 'Active Equipment', value: 24, icon: '🚜', color: colors.uberYellow },
-    { label: 'Active Drivers', value: 18, icon: '👥', color: colors.success },
-    { label: 'Daily Income', value: '₹45.2K', icon: '📊', color: colors.uberBlue },
-    { label: 'Open Cycles', value: 3, icon: '⏱️', color: colors.warning },
-  ];
-
-  const tableColumns = [
-    { id: 'driver', label: 'Driver Name', sortable: true },
-    { id: 'equipment', label: 'Equipment', sortable: true },
-    { id: 'status', label: 'Status', sortable: true },
-    { id: 'earnings', label: 'Today Earnings', sortable: true },
-  ];
-
-  const tableData = [
-    { driver: 'Ahmed Al-Rashid', equipment: 'Excavator', status: 'Active', earnings: '₹2,450' },
-    { driver: 'Mohammed Salem', equipment: 'Loader', status: 'Active', earnings: '₹1,890' },
-    { driver: 'Hassan Ibrahim', equipment: 'Bulldozer', status: 'On Break', earnings: '₹1,200' },
-  ];
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.lg }}>
-      {/* HEADER */}
-      <div>
-        <h1 style={{ fontSize: typography.sizes['3xl'], fontWeight: typography.weights.black, color: colors.text.primary, margin: 0 }}>
-          Partner Dashboard
-        </h1>
-        <p style={{ fontSize: typography.sizes.sm, color: colors.text.secondary, marginTop: spacing.xs }}>
-          Manage your equipment and drivers
-        </p>
-      </div>
-
-      {/* STATS GRID */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: spacing.lg,
-      }}>
-        {statCards.map((card) => (
-          <UberCard key={card.label} variant="elevated">
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              marginBottom: spacing.md,
-            }}>
-              <div>
-                <p style={{
-                  fontSize: typography.sizes.xs,
-                  color: colors.text.secondary,
-                  fontWeight: typography.weights.semibold,
-                  textTransform: 'uppercase',
-                  margin: 0,
-                }}>
-                  {card.label}
-                </p>
-              </div>
-              <span style={{ fontSize: '24px' }}>{card.icon}</span>
-            </div>
-            <p style={{
-              fontSize: typography.sizes['2xl'],
-              fontWeight: typography.weights.black,
-              color: card.color,
-              margin: 0,
-            }}>
-              {card.value}
-            </p>
-          </UberCard>
-        ))}
-      </div>
-
-      {/* QUICK ACTIONS */}
-      <div style={{ display: 'flex', gap: spacing.md, flexWrap: 'wrap' }}>
-        <UberButton variant="primary">+ Add Driver</UberButton>
-        <UberButton variant="secondary">+ Add Equipment</UberButton>
-        <UberButton variant="ghost">View Reports</UberButton>
-      </div>
-
-      {/* ACTIVE DRIVERS TABLE */}
-      <UberCard variant="elevated">
-        <div style={{ marginBottom: spacing.lg }}>
-          <h2 style={{
-            fontSize: typography.sizes.lg,
-            fontWeight: typography.weights.bold,
-            color: colors.text.primary,
-            margin: 0,
-          }}>
-            Active Operations
-          </h2>
+    <div className="min-h-screen" style={{ backgroundColor: colors.bg.light }}>
+      {/* MAIN CONTENT */}
+      <div className="p-8">
+        {/* PAGE HEADER */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold" style={{ color: colors.text.primary }}>
+            🚚 Partner Dashboard
+          </h1>
+          <p className="text-gray-600 mt-2">Manage your equipment and drivers</p>
         </div>
-        <UberTable
-          columns={tableColumns}
-          data={tableData}
-          emptyMessage="No active operations"
-        />
-      </UberCard>
+
+        {/* STATS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <UberCard className="p-6">
+            <div className="text-sm font-semibold" style={{ color: colors.text.secondary }}>
+              Active Equipment
+            </div>
+            <div className="text-3xl font-bold mt-3" style={{ color: colors.uberYellow }}>
+              12
+            </div>
+          </UberCard>
+
+          <UberCard className="p-6">
+            <div className="text-sm font-semibold" style={{ color: colors.text.secondary }}>
+              Active Drivers
+            </div>
+            <div className="text-3xl font-bold mt-3" style={{ color: colors.uberBlue }}>
+              8
+            </div>
+          </UberCard>
+
+          <UberCard className="p-6">
+            <div className="text-sm font-semibold" style={{ color: colors.text.secondary }}>
+              Daily Income
+            </div>
+            <div className="text-3xl font-bold mt-3" style={{ color: colors.success }}>
+              $1,450
+            </div>
+          </UberCard>
+
+          <UberCard className="p-6">
+            <div className="text-sm font-semibold" style={{ color: colors.text.secondary }}>
+              Monthly Earnings
+            </div>
+            <div className="text-3xl font-bold mt-3" style={{ color: colors.uberBlack }}>
+              $38,200
+            </div>
+          </UberCard>
+        </div>
+
+        {/* ACTION CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <UberCard className="p-6 flex flex-col items-center text-center">
+            <div className="text-4xl mb-4">🚗</div>
+            <h3 className="text-lg font-bold" style={{ color: colors.text.primary }}>
+              Add Driver
+            </h3>
+            <p className="text-sm mt-2" style={{ color: colors.text.secondary }}>
+              Register a new driver
+            </p>
+            <UberButton variant="primary" size="md" className="mt-4 w-full">
+              + Add Driver
+            </UberButton>
+          </UberCard>
+
+          <UberCard className="p-6 flex flex-col items-center text-center">
+            <div className="text-4xl mb-4">🏗️</div>
+            <h3 className="text-lg font-bold" style={{ color: colors.text.primary }}>
+              Add Equipment
+            </h3>
+            <p className="text-sm mt-2" style={{ color: colors.text.secondary }}>
+              Register new equipment
+            </p>
+            <UberButton variant="primary" size="md" className="mt-4 w-full">
+              + Add Equipment
+            </UberButton>
+          </UberCard>
+
+          <UberCard className="p-6 flex flex-col items-center text-center">
+            <div className="text-4xl mb-4">📊</div>
+            <h3 className="text-lg font-bold" style={{ color: colors.text.primary }}>
+              View Reports
+            </h3>
+            <p className="text-sm mt-2" style={{ color: colors.text.secondary }}>
+              Analytics and insights
+            </p>
+            <UberButton variant="secondary" size="md" className="mt-4 w-full">
+              View Reports
+            </UberButton>
+          </UberCard>
+        </div>
+      </div>
     </div>
   );
 }

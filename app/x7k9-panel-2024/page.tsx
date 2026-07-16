@@ -1,104 +1,142 @@
 'use client';
 
-import { UberCard, UberButton, UberTable } from '@/components/ui';
-import { colors, spacing, typography } from '@/lib/design-system';
+import { UberCard, UberButton } from '@/components/ui';
+import { colors } from '@/lib/design-system';
 
 export default function SuperAdminDashboard() {
-  const statCards = [
-    { label: 'Total Tenants', value: 42, icon: '🏢', color: colors.uberBlue },
-    { label: 'Active Users', value: 127, icon: '✅', color: colors.success },
-    { label: 'Trial Users', value: 18, icon: '⏳', color: colors.warning },
-    { label: 'Revenue (SAR)', value: '1.2M', icon: '💰', color: colors.info },
-  ];
-
-  const tableColumns = [
-    { id: 'name', label: 'Tenant Name', sortable: true },
-    { id: 'email', label: 'Email', sortable: true },
-    { id: 'status', label: 'Status', sortable: true },
-    { id: 'drivers', label: 'Drivers', sortable: false },
-  ];
-
-  const tableData = [
-    { name: 'Tech Logistics', email: 'admin@techlog.com', status: 'Active', drivers: 12 },
-    { name: 'Fast Delivery', email: 'info@fastdel.com', status: 'Trial', drivers: 5 },
-    { name: 'Prime Transport', email: 'contact@prime.com', status: 'Active', drivers: 28 },
-  ];
-
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.lg }}>
-      {/* HEADER */}
-      <div>
-        <h1 style={{ fontSize: typography.sizes['3xl'], fontWeight: typography.weights.black, color: colors.text.primary, margin: 0 }}>
-          Dashboard
-        </h1>
-        <p style={{ fontSize: typography.sizes.sm, color: colors.text.secondary, marginTop: spacing.xs }}>
-          Welcome back! Here's your admin overview.
-        </p>
-      </div>
-
-      {/* STATS GRID */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: spacing.lg,
-      }}>
-        {statCards.map((card) => (
-          <UberCard key={card.label} variant="elevated">
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              marginBottom: spacing.md,
-            }}>
-              <div>
-                <p style={{
-                  fontSize: typography.sizes.xs,
-                  color: colors.text.secondary,
-                  fontWeight: typography.weights.semibold,
-                  textTransform: 'uppercase',
-                  margin: 0,
-                }}>
-                  {card.label}
-                </p>
-              </div>
-              <span style={{ fontSize: '24px' }}>{card.icon}</span>
-            </div>
-            <p style={{
-              fontSize: typography.sizes['2xl'],
-              fontWeight: typography.weights.black,
-              color: card.color,
-              margin: 0,
-            }}>
-              {card.value}
-            </p>
-          </UberCard>
-        ))}
-      </div>
-
-      {/* ACTIONS */}
-      <div style={{ display: 'flex', gap: spacing.md }}>
-        <UberButton variant="primary">+ Add Tenant</UberButton>
-        <UberButton variant="secondary">Export Report</UberButton>
-      </div>
-
-      {/* TENANTS TABLE */}
-      <UberCard variant="elevated">
-        <div style={{ marginBottom: spacing.lg }}>
-          <h2 style={{
-            fontSize: typography.sizes.lg,
-            fontWeight: typography.weights.bold,
-            color: colors.text.primary,
-            margin: 0,
-          }}>
-            Recent Tenants
-          </h2>
+    <div className="min-h-screen" style={{ backgroundColor: colors.bg.light }}>
+      {/* MAIN CONTENT */}
+      <div className="p-8">
+        {/* PAGE HEADER */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold" style={{ color: colors.text.primary }}>
+            🎯 Super Admin Dashboard
+          </h1>
+          <p className="text-gray-600 mt-2">Manage all tenants and system</p>
         </div>
-        <UberTable
-          columns={tableColumns}
-          data={tableData}
-          emptyMessage="No tenants found"
-        />
-      </UberCard>
+
+        {/* STATS GRID - 2x2 on mobile, 4 columns on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* STAT 1 */}
+          <UberCard className="p-6">
+            <div className="text-sm font-semibold" style={{ color: colors.text.secondary }}>
+              Total Tenants
+            </div>
+            <div className="text-3xl font-bold mt-3" style={{ color: colors.uberBlack }}>
+              24
+            </div>
+            <div className="text-xs mt-2" style={{ color: colors.text.tertiary }}>
+              Active subscriptions
+            </div>
+          </UberCard>
+
+          {/* STAT 2 */}
+          <UberCard className="p-6">
+            <div className="text-sm font-semibold" style={{ color: colors.text.secondary }}>
+              Total Revenue
+            </div>
+            <div className="text-3xl font-bold mt-3" style={{ color: colors.success }}>
+              $45,320
+            </div>
+            <div className="text-xs mt-2" style={{ color: colors.text.tertiary }}>
+              This month
+            </div>
+          </UberCard>
+
+          {/* STAT 3 */}
+          <UberCard className="p-6">
+            <div className="text-sm font-semibold" style={{ color: colors.text.secondary }}>
+              Active Drivers
+            </div>
+            <div className="text-3xl font-bold mt-3" style={{ color: colors.uberBlue }}>
+              156
+            </div>
+            <div className="text-xs mt-2" style={{ color: colors.text.tertiary }}>
+              Across all tenants
+            </div>
+          </UberCard>
+
+          {/* STAT 4 */}
+          <UberCard className="p-6">
+            <div className="text-sm font-semibold" style={{ color: colors.text.secondary }}>
+              Pending Issues
+            </div>
+            <div className="text-3xl font-bold mt-3" style={{ color: colors.danger }}>
+              3
+            </div>
+            <div className="text-xs mt-2" style={{ color: colors.text.tertiary }}>
+              Need attention
+            </div>
+          </UberCard>
+        </div>
+
+        {/* RECENT TENANTS TABLE */}
+        <UberCard className="p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold" style={{ color: colors.text.primary }}>
+              Recent Tenants
+            </h2>
+            <UberButton variant="primary" size="md">
+              + Add Tenant
+            </UberButton>
+          </div>
+
+          {/* TABLE */}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr style={{ borderBottom: `1px solid ${colors.gray[100]}` }}>
+                  <th className="text-left p-3 font-semibold" style={{ color: colors.text.secondary }}>
+                    Company Name
+                  </th>
+                  <th className="text-left p-3 font-semibold" style={{ color: colors.text.secondary }}>
+                    Email
+                  </th>
+                  <th className="text-left p-3 font-semibold" style={{ color: colors.text.secondary }}>
+                    Status
+                  </th>
+                  <th className="text-left p-3 font-semibold" style={{ color: colors.text.secondary }}>
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { name: 'Sharakh Co.', email: 'contact@sharakh.com', status: 'Active' },
+                  { name: 'Equipment Plus', email: 'admin@eqplus.com', status: 'Active' },
+                  { name: 'Fleet Managers', email: 'support@fleet.com', status: 'Pending' },
+                ].map((tenant, idx) => (
+                  <tr key={idx} style={{ borderBottom: `1px solid ${colors.gray[100]}` }}>
+                    <td className="p-3" style={{ color: colors.text.primary }}>
+                      {tenant.name}
+                    </td>
+                    <td className="p-3" style={{ color: colors.text.secondary }}>
+                      {tenant.email}
+                    </td>
+                    <td className="p-3">
+                      <span
+                        className="px-3 py-1 rounded-full text-xs font-semibold"
+                        style={{
+                          backgroundColor: tenant.status === 'Active' ? colors.success : colors.warning,
+                          color: colors.text.white,
+                        }}
+                      >
+                        {tenant.status}
+                      </span>
+                    </td>
+                    <td className="p-3">
+                      <UberButton variant="secondary" size="sm">
+                        Edit
+                      </UberButton>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </UberCard>
+      </div>
     </div>
   );
 }
